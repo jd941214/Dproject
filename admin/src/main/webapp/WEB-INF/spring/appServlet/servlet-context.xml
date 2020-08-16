@@ -23,14 +23,14 @@
 	
 	<context:component-scan base-package="team.Dproject.adminBus" />
 	
-	<beans:bean id="multipartResolver"
+	<!-- <beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="10485760" />
 	</beans:bean>
 	
 	<beans:bean id="upLoadPath" class="java.lang.String">
 		<beans:constructor-arg value="c://img" />
-	</beans:bean>
+	</beans:bean> -->
 	
 	
 </beans:beans>
