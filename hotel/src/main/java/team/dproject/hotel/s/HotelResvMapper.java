@@ -3,6 +3,6 @@ package team.dproject.hotel.s;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoomMapper {
+public class HotelResvMapper {
 
 }
