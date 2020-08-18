@@ -1,4 +1,4 @@
-package team.dproject.hotel;
+package team.dproject.main.hotel;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class MainController {
+public class HotelController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+	private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -36,9 +36,14 @@ public class MainController {
 		return "home";
 	}
 	
-	@RequestMapping("/hotelsearch")
-	public String search(){
+	@RequestMapping("/hotelsite")
+	public String site(){
 		return "hotel";
+	}
+	
+	@RequestMapping("/login")
+	public String login(){
+		return "login";
 	}
 	
 }

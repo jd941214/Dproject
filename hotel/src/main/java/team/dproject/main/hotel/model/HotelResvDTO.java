@@ -1,4 +1,4 @@
-package team.dproject.hotel.d;
+package team.dproject.main.hotel.model;
 
 public class HotelResvDTO {
 	private int hotel_resv_no;

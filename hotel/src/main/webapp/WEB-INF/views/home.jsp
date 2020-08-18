@@ -8,6 +8,7 @@
 </head>
 <body>
 <h1>Hello world!</h1>
-<p><a href="hotelsearch">호텔 검색 사이트</a></p>
+<p><a href="login">로그인 하기</a></p>
+<p><a href="hotelsite">호텔 검색 사이트</a></p>
 </body>
 </html>

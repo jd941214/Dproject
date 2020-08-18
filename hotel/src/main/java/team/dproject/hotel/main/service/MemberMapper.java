@@ -1,4 +1,4 @@
-package team.dproject.hotel.s;
+package team.dproject.hotel.main.service;
 
 import org.springframework.stereotype.Service;
 

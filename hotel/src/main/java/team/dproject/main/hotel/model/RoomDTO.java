@@ -1,4 +1,4 @@
-package team.dproject.hotel.d;
+package team.dproject.main.hotel.model;
 
 public class RoomDTO {
 	private int room_no;

@@ -1,4 +1,4 @@
-package team.dproject.hotel.d;
+package team.dproject.main.hotel.model;
 
 public class MemberDTO {
 	private int member_no; 
