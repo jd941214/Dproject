@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.Dproject.hotel.main.model">
+	<select id="listHotel" resultType="hotelDTO">
+		select * from hotel order by hotel_no desc
+	</select>
+	
+	<insert id="insertHotel" parameterType="hotelDTO">
+		insert into hotel values(hotel_no_seq.nextval,
+		#{name}, #{address}, #{hp1}, #{hp2}, #{hp3}, #{member_num}, 
+		#{hotel_info}, #{star}, #{filename}, #{filesize})
+	</insert>
+	
+	<select id="getHotel" resultType="hotelDTO" parameterType="int">
+		select * from hotel where hotel_no = #{hotel_no}
+	</select>
+</mapper>
