@@ -4,6 +4,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="team.Dproject.main.model.*"%>
+
 <%
 	Calendar cal = Calendar.getInstance();
 	String strYear = (String) request.getParameter("year");
@@ -30,6 +31,12 @@
 	int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 	
 	List<roomDTO> roomlist = (List) request.getAttribute("roomlist");
+	
+	String[] Bcolor={"#cce8e2","#bbdef2","#f0cfff","#ffdefa","#ffdee6","#fff7de","#f0ffde"};
+	int Bselect=0;
+	
+	int height=70;
+	height/=roomlist.size();
 %> 
 
 
@@ -48,15 +55,17 @@
 								if (month > 0) {
 							%> <a
 							href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&amp;?year=<%=year%>&amp;month=<%=month - 1%>">
-								이전달 </a> <%
+								<i class="fas fa-angle-left"></i></a> <%
 							 	} else {
 							 %> <%
 							 	}
 							 %> &nbsp;&nbsp; <%=year%>년 <%=month + 1%>월 &nbsp;&nbsp;<%
 							 	if (month < 11) {
-							 %> <a
-							href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"
-							target="_self"> 다음달 </a> <%
+							 %> 		 
+							<a href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"target="_self">
+							<i class="fas fa-angle-right"></i>
+							</a> 
+							<%
 							 	} else {
 							 %> <%
 							 	}
@@ -70,33 +79,32 @@
 
 	<br>
 
-	<table border="1" cellspacing="1" cellpadding="1" bgcolor="#FFFFFF"
-		align="center">
+	<table bgcolor="#FFFFFF" align="center">
 		<THEAD>
-			<TR bgcolor="#CECECE">
+			<TR bgcolor="#c0a1ff">
 				<TD width='100px'>
 					<DIV align="center">
-						<font color="red">일</font>
+						<font color="red">SUN</font>
 					</DIV>
 				</TD>
 				<TD width='100px'>
-					<DIV align="center">월</DIV>
+					<DIV align="center">MON</DIV>
 				</TD>
 				<TD width='100px'>
-					<DIV align="center">화</DIV>
+					<DIV align="center">TUE</DIV>
 				</TD>
 				<TD width='100px'>
-					<DIV align="center">수</DIV>
+					<DIV align="center">WED</DIV>
 				</TD>
 				<TD width='100px'>
-					<DIV align="center">목</DIV>
+					<DIV align="center">THU</DIV>
 				</TD>
 				<TD width='100px'>
-					<DIV align="center">금</DIV>
+					<DIV align="center">FRI</DIV>
 				</TD>
 				<TD width='100px'>
 					<DIV align="center">
-						<font color="#529dbc">토</font>
+						<font color="#055db5">SAT</font>
 					</DIV>
 				</TD>
 			</TR>
@@ -108,7 +116,7 @@
 					boolean fir = true;
 					//처음 빈공란 표시
 					for (int index = 1; index < start; index++) {
-						out.println("<TD >&nbsp;</TD>");
+						%><TD height="<%=height %>">&nbsp;</TD><%
 						newLine++;
 					}
 					for (int index = 1; index <= endDay; index++) {
@@ -116,20 +124,20 @@
 						if (newLine == 0) {
 							color = "RED";
 						} else if (newLine == 6) {
-							color = "#529dbc";
+							color = "#055db5";
 						} else {
-							color = "BLACK";
+							color = "#707070";
 						}
 						;
 
 						
-						String backColor = "#EFEFEF";
+						String backColor = "#fdf7ff";
 
 						out.println("<TD valign='top' align='left' height='1px' bgcolor='" + backColor + "' nowrap>");
 						cnt++;
 						cnt2++;
 				%>
-				<font color='<%=color%>'> <%=index%>
+				<font color="<%=color%>"> <%=index%>
 				</font>
 				<%
 					out.println("<BR>");
@@ -140,18 +148,20 @@
 
 							out.println("</TR>");
 							if (index <= endDay) {
-								out.println("<TR>");
+								%><TR  style="border-left:1; border-right:1;" ><%
 							}
 						}
 						if (newLine == 0 || endDay == index) {
 							newLine = 0;
 							//내용 쓰자
+								Bselect=0;
 							boolean check = false;
+			
 							for (roomDTO roomDTO : roomlist) {
 								int l = index ;
 								if (fir) {
 									for (int a = 1; a < start; a++) {
-										out.println("<TD >&nbsp;</TD>");
+										%><TD height="<%=height %>" ></TD><%
 										newLine++;
 									}
 								}
@@ -186,16 +196,20 @@
 										if (check) {
 										
 										%>
-											<TD height="30" align="center" bgcolor="#ffb4a3"><font size="1" color="#b52100" style="padding: 1px; magin: 1px; font-weight: bold "><%=roomDTO.getName()%>&lt;완&gt;</font></TD>
+											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
+											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
+											<%=roomDTO.getName()%> 방
+											</font>
+											</TD>
 										<%
 											newLine++;
 											
 										} else {
 										%>
-											<TD height="30" align="center" bgcolor="#a3aeff"><a style="text-decoration: none"> <font size="1"
-												color="#020c57" style="padding: 1px; magin: 1px; font-weight: bold "><%=roomDTO.getName()%>&lt;미&gt;</font></a></TD>
-						
-										
+											<%-- <TD height="30" align="center" bgcolor="#a3aeff"><a style="text-decoration: none"> <font size="1"
+												color="#020c57" style="padding: 1px; magin: 1px; font-weight: bold "><%=roomDTO.getName()%>&lt;미&gt;</font></a></TD> --%>
+											
+											<td height="<%=height %>"></td>
 										<%
 											newLine++;
 									}
@@ -207,18 +221,18 @@
 										cnt = 0;
 										break;
 									}
-
+								
 								}
 				%>
 			</tr>
-			<%
+			<%	Bselect++;
 				}cnt2=0;
 						
 						fir = false;
 					}
 				}
 			%>
-			</TR>
+			
 		</TBODY>
 	</TABLE>
 </DIV>

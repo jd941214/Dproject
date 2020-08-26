@@ -245,7 +245,6 @@ public class HADController {
 	
 	
 	@RequestMapping("/resv_list.do")
-//	@RequestMapping("/cal.do")
 	public ModelAndView resv_list(HttpServletRequest req) {
 		
 		ModelAndView mav = new ModelAndView();
@@ -281,8 +280,8 @@ public class HADController {
 		}
 		
 		
-//		mav.setViewName("hotelAD/hotel_resv/resv_list");  
-		mav.setViewName("cal");  
+		mav.setViewName("hotelAD/hotel_resv/resv_list");  
+		
 		if(roomlist!=null){	
 		mav.addObject("resvlist", resvlist);
 		mav.addObject("roomlist", roomlist);
