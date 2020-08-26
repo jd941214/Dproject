@@ -46,7 +46,7 @@
                     <div class="menu-wrapper d-flex align-items-center justify-content-between">
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="index.html"><img src="${pageContext.request.contextPath}/resources/assets/img/logo/logo.png" alt=""></a>
+                            <a href="index.jsp"><img src="${pageContext.request.contextPath}/resources/assets/img/logo/logo.png" alt=""></a>
                         </div>
                         <!-- Main-menu -->
                         <div class="main-menu f-right d-none d-lg-block">
