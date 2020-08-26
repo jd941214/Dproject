@@ -21,6 +21,9 @@ public class RoomMapper {
 	public List<RoomDTO> listRoom(){
 		return sqlSession.selectList("listRoom"); 
 	}
+	public List<RoomDTO> listRoom2(int hotel_no){
+		return sqlSession.selectList("listRoom2",hotel_no); 
+	}
 	
 	public RoomDTO getRoom(int room_no){
 		return sqlSession.selectOne("getRoom", room_no);

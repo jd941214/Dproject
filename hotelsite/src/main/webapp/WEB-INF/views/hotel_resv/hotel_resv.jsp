@@ -139,11 +139,11 @@ http://www.templatemo.com/tm-511-journey
                                 <div class="form-row tm-search-form-row">
 
                                     <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                        <label for="inputCheckIn">체크 인</label>
+                                        <label for="pickerCheckIn">체크 인</label>
                                         <input name="start_resv_date" type="text" class="form-control" id="start_resv_date" placeholder="Check In">
                                     </div>
                                     <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                        <label for="inputCheckOut">체크 아웃</label>
+                                        <label for="pickerCheckOut">체크 아웃</label>
                                         <input name="end_resv_date" type="text" class="form-control" id="end_resv_date" placeholder="Check Out">
                                     </div>
                                     <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
@@ -769,10 +769,10 @@ http://www.templatemo.com/tm-511-journey
             $('.tm-down-arrow-link').click(function(){
                 $.scrollTo('#tm-section-search', 300, {easing:'linear'});
             });
-
+			
             // Date Picker in Search form
             var pickerCheckIn = datepicker('#start_resv_date');
-            var pickerCheckOut = datepicker('#end_resv_date');
+            var pickerCheckOut = datepicker('#end_resv_date'); 
  
             // Update nav links on scroll
             $('#tm-top-bar').singlePageNav({
@@ -796,25 +796,6 @@ http://www.templatemo.com/tm-511-journey
             loadGoogleMap();                                       // Google Map                
             $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright           
         });
-        
-        $.datepicker.setDefaults({
-            dateFormat: 'yy년 mm월 dd일',
-            prevText: '이전 달',
-            nextText: '다음 달',
-            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-            showMonthAfterYear: true,
-            yearSuffix: '년'
-          })
-
-          $(function() {
-            $("#start_resv_date, #end_resv_date").datepicker()
-          })
-
-
 
     </script>             
 

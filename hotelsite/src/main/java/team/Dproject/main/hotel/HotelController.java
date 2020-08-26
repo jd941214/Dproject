@@ -273,7 +273,7 @@ public class HotelController {
 		int res = roomMapper.insertRoom(dto, hotel_no);
 		
 		if(dto.getHotel_no()==hotel_no){
-			List<RoomDTO> list = roomMapper.listRoom();
+			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
 			req.setAttribute("roomList", list);	
 		}
 		
@@ -282,8 +282,9 @@ public class HotelController {
 	
 	@RequestMapping("/roomlist")
 	public String roomlist(HttpServletRequest req, RoomDTO dto){
-		if(dto.getHotel_no()==Integer.parseInt(req.getParameter("hotel_no"))){
-			List<RoomDTO> list = roomMapper.listRoom();
+		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
+		if(dto.getHotel_no()==hotel_no){
+			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
 			req.setAttribute("roomList", list);	
 		}
 		

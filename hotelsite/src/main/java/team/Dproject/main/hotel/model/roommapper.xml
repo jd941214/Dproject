@@ -11,6 +11,9 @@
 	<select id="listRoom" resultType="roomDTO">
 		select * from room order by room_no desc
 	</select>
+	<select id="listRoom2" resultType="roomDTO" parameterType="int">
+		select * from room where hotel_no = #{hotel_no} order by room_no desc
+	</select>
 	<select id="getRoom" parameterType="int" resultType="roomDTO">
 		select * from room where room_no = #{room_no}
 	</select>
