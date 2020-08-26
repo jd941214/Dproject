@@ -38,7 +38,38 @@
 	int height=70;
 	height/=roomlist.size();
 %> 
+<style>
+	.roomname:link{
+		color:black;
+	}
+	
+	a{ 
+	text-decoration: none;
+	}
+	
+	.roomname:hover{
+		color:red;
+	}
+	.roomname:visited{
+		color:black;
+	}
 
+	i{ /*예은이가 함*/
+		  transform: scale(1);
+		  -webkit-transform: scale(1);
+		  -moz-transform: scale(1);
+		  -ms-transform: scale(1);
+		  -o-transform: scale(1);
+		  transition: all 0.2s ease-in-out;
+	}
+	i:hover {
+		  transform: scale(1.4);
+		  -webkit-transform: scale(1.4);
+		  -moz-transform: scale(1.4);
+		  -ms-transform: scale(1.4);
+		  -o-transform: scale(1.4);
+	}
+</style>
 
 <%@ include file="../top.jsp"%>
 <DIV width="80%" height="40">
@@ -198,7 +229,9 @@
 										%>
 											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
 											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
+											<a href="resv_show" class="roomname">
 											<%=roomDTO.getName()%> 방
+											</a>
 											</font>
 											</TD>
 										<%
