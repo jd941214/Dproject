@@ -1,92 +1,5 @@
-<!doctype html>
-<html class="no-js" lang="zxx">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>DirectoryListing</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/assets/img/favicon.ico">
+<%@ include file="top.jsp" %>
 
-	<!-- CSS here -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/owl.carousel.min.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/slicknav.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/flaticon.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/progressbar_barfiller.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/gijgo.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/animate.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/animated-headline.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/magnific-popup.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/fontawesome-all.min.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/themify-icons.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/slick.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/nice-select.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/style.css">
-</head>
-<body>
-    <!-- ? Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="${pageContext.request.contextPath}/resources/assets/img/logo/loder.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Preloader Start -->
-    <header>
-        <!-- Header Start -->
-        <div class="header-area header-transparent">
-            <div class="main-header header-sticky">
-                <div class="container-fluid">
-                    <div class="menu-wrapper d-flex align-items-center justify-content-between">
-                        <!-- Logo -->
-                        <div class="logo">
-                            <a href="index.jsp"><img src="${pageContext.request.contextPath}/resources/assets/img/logo/logo.png" alt=""></a>
-                        </div>
-                        <!-- Main-menu -->
-                        <div class="main-menu f-right d-none d-lg-block">
-                            <nav>
-                                <ul id="navigation">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="listing.html">Catagories</a></li> 
-                                    <li><a href="#">Pages</a>
-                                        <ul class="submenu">
-                                            <li><a href="directory_details.html">listing Details</a></li>
-                                            <li><a href="listing.html">Catagories</a></li> 
-                                        </ul>
-                                    </li>
-                                    <li><a href="blog.html">Blog</a>
-                                        <ul class="submenu">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li><a href="blog_details.html">Blog Details</a></li>
-                                            <li><a href="elements.html">Elements</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul>
-                            </nav>
-                        </div>          
-                        <!-- Header-btn -->
-                        <div class="header-btns d-none d-lg-block f-right">
-                            <a href="#" class="mr-40"><i class="ti-user"></i> Log in</a>
-                            <a href="#" class="btn">Add Listing</a>
-                        </div>
-                        <!-- Mobile Menu -->
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Header End -->
-    </header>
-    <main>
         <!--? Hero Area Start-->
         <div class="slider-area hero-bg1 hero-overly">
             <div class="single-slider hero-overly  slider-height1 d-flex align-items-center">
@@ -95,7 +8,7 @@
                         <div class="col-xl-10 col-lg-10">
                             <!-- Hero Caption -->
                             <div class="hero__caption pt-100">
-                                <h1>Explore Australia</h1>
+                                <h1>Let's Explore!</h1>
                                 <p>Let's uncover the best places to eat, drink, and shop nearest to you.</p>
                             </div>
                             <!--Hero form -->
@@ -618,77 +531,5 @@
             </div>
         </section>
         <!-- Want To work End -->
-    </main>
-    <footer>
-        <div class="footer-wrapper pt-30">
-            <!-- footer-bottom -->
-            <div class="footer-bottom-area">
-                <div class="container">
-                    <div class="footer-border">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-xl-10 col-lg-9 ">
-                                <div class="footer-copy-right">
-                                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 
-    <!-- Scroll Up -->
-    <div id="back-top" >
-        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-    </div>
-
-    <!-- JS here -->
-
-    <script src="${pageContext.request.contextPath}/resources/assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/slick.min.js"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/wow.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/animated.headline.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.magnific-popup.js"></script>
-
-    <!-- Date Picker -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/gijgo.min.js"></script>
-    <!-- Nice-select, sticky -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.sticky.js"></script>
-    <!-- Progress -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.barfiller.js"></script>
-    
-    <!-- counter , waypoint,Hover Direction -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.counterup.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/waypoints.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.countdown.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/hover-direction-snake.min.js"></script>
-
-    <!-- contact js -->
-    <script src="${pageContext.request.contextPath}/resources/assets/js/contact.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.form.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.validate.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/mail-script.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.ajaxchimp.min.js"></script>
-    
-    <!-- Jquery Plugins, main Jquery -->	
-    <script src="${pageContext.request.contextPath}/resources/assets/js/plugins.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
-
-
-    
-    </body>
-</html>
+    <%@ include file="bottom.jsp"%>

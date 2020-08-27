@@ -1,16 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<div>
+<%@ include file="top.jsp"%>
+<div class="slider-area hero-bg1 hero-overly">
+<div class="single-slider hero-overly  slider-height1 d-flex align-items-center">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-10 col-lg-10">
+<div align="center" style="margin-top:0px">
 	<h2>서울</h2>
 </div>
 
-<div>
+<div align="center">
 	icon
 </div>
 
-<div>
+<div align="center">
 	<label><a href="board_write.do">글쓰기</a></label>
 	<table width="900">
 		<tr bgcolor="#dbdbdb">
@@ -38,11 +43,17 @@
 			<tr>
 				<td><c:out value="${dto.main_board_no}"/></td>
 				<td>${dto.title}</td>
-				<td>${getId}</td>
-				<td>${dto.rno}</td>
+				<td></td>
+				<td></td>
 				<td>${dto.readcount}</td>
 				<td>${dto.reg_date}</td>
 			</tr>
 		</c:forEach>
 	</table>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<%@ include file="bottom.jsp"%>

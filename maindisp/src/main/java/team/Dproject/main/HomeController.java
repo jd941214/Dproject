@@ -2,14 +2,22 @@ package team.Dproject.main;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import team.Dproject.main.model.BoardDTO;
+import team.Dproject.main.service.BoardMapper;
 
 /**
  * Handles requests for the application home page.
@@ -18,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private BoardMapper boardMapper;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -34,6 +45,13 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "index";
+	}
+	
+	@RequestMapping(value="/board_list.do")
+	public String listBoard(HttpServletRequest req) {
+		List<BoardDTO> list = boardMapper.board_list();
+		req.setAttribute("listBoard", list);
+		return "list";
 	}
 	
 }
