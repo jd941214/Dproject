@@ -43,7 +43,6 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
 		return "index";
 	}
 	
@@ -52,6 +51,7 @@ public class HomeController {
 		List<BoardDTO> list = boardMapper.board_list();
 		req.setAttribute("listBoard", list);
 		return "list";
+
 	}
 	
 }
