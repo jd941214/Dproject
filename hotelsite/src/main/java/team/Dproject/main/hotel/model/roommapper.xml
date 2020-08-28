@@ -17,4 +17,12 @@
 	<select id="getRoom" parameterType="int" resultType="roomDTO">
 		select * from room where room_no = #{room_no}
 	</select>
+	
+	<delete id="deleteRoom" parameterType="String">
+    	delete from room where room_no=#{no}
+    </delete>
+    
+    <update id="updateRoom" parameterType="roomDTO">
+    	update room set hotel_no=#{hotel_no}, name=#{name}, roomsize=#{roomsize}, sleeps=#{sleeps}, item=#{item}, filename=#{filename}, filesize=#{filesize} where room_no=#{room_no}
+    </update>
 </mapper>

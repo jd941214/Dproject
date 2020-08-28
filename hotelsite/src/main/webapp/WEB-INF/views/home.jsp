@@ -15,5 +15,6 @@
 <P><a href="memberlogin">로그인</a></P>
 <P><a href="hotelcheck">호텔계정체크</a></P> 
 <P><a href="hotel_resv">호텔예약</a></P>
+<P><a href="CSS">CSS사용 호텔예약</a></P>
 </body>
 </html> 

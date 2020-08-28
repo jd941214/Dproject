@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
+        
+<head>         
 <title>로그인</title>
+
 <script type="text/javascript">
 	function searchMember(mode){
 		window.open("search.do?mode="+mode,"", "width=650, height=400")
@@ -45,8 +46,8 @@
 <br>
 <p>
 <img src="${pageContext.request.contextPath}/resources/img/tm_login.gif" width=100 height="13" border="0" 
-	align=center ALT="회원 로그인">
-<form name="f" action="login_ok.do" method="post">
+	align="center" ALT="회원 로그인">
+<form name="f" action="loginok" method="post">
 	<table width="60%" align="center" height="120" border="1">
 		<tr>
 			<td align="right" width="30%">

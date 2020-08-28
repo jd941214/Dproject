@@ -16,4 +16,16 @@
 	<select id="getHotel" resultType="hotelDTO" parameterType="int">
 		select * from hotel where hotel_no = #{hotel_no}
 	</select>
+	
+	<select id="listHotel1" parameterType="String" resultType="hotelDTO">
+		select * from hotel where address like #{address}
+	</select>
+	
+	<delete id="deleteHotel" parameterType="String">
+    	delete from hotel where hotel_no=#{no}
+    </delete>
+    
+    <update id="updateHotel" parameterType="hotelDTO">
+    	update hotel set name=#{name},address=#{address}, hp1=#{hp1}, hp2=#{hp2}, hp3=#{hp3}, hotel_info=#{hotel_info}, star=#{star}, filename=#{filename}, filesize=#{filesize} where hotel_no=#{hotel_no}
+    </update>
 </mapper>

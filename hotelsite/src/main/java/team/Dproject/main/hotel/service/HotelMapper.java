@@ -26,4 +26,15 @@ public class HotelMapper {
 		return  sqlSession.selectOne("getHotel", hotel_no);
 	}
 	
+	public List<HotelDTO> listHotel1(String address){
+		return sqlSession.selectList("listHotel1",address);
+	}
+	
+	public int deletetHotel(String no) {
+		return sqlSession.delete("deleteHotel", no);
+	}
+	
+	public int updateHotel(HotelDTO dto) {
+		return sqlSession.update("updateHotel", dto);
+	} 
 }

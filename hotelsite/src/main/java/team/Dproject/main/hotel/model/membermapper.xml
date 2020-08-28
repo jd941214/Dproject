@@ -22,5 +22,12 @@
 	<select id="getMember" resultType="memberDTO" parameterType="int">
 		select * from member where member_no = #{member_no}
 	</select>
+	
+	<select id = "getMember1" parameterType = "String" resultType ="memberDTO">
+		select * from member where id = #{id}
+	</select>
+	<select id = "getMemberPasswd" parameterType = "String" resultType = "String">
+		select passwd from member where id = #{id}
+	</select>
 
 </mapper>

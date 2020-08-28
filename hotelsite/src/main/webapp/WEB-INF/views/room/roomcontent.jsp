@@ -35,7 +35,9 @@
 		</tr>
 		<tr>
 			<th width="20%" bgcolor="yellow">룸 사진</th>
-			<td colspan="3"><img src="c:/hotelimg/${getRoom.filename}"></td>
+			<c:forEach var = "rfile" items = "${Rfiles}">
+			<td colspan="3"><img src="c:/hotelimg/${rfile}"></td>
+			</c:forEach>
 		</tr>
 		<tr bgcolor="yellow">
 			<td colspan="4" align="right">

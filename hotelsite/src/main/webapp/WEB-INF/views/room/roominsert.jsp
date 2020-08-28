@@ -30,10 +30,18 @@
 		<td><textarea rows="6" cols="30" name="item"></textarea></td>
 		</tr>
 		<tr>
+		<td>사진이름</td>
+		<td><input type="text" name="filename"></td>
+		</tr>
+		<tr>
 		<td>룸 사진</td>
 		<td>
 		<!-- <input multiple="multiple" type="file" name="file"> -->
-		<input type="file" name="filename">
+		<input type="file" name="rfile">
+		<input type="file" name="rfile">
+		<input type="file" name="rfile">
+		<input type="file" name="rfile">
+		<input type="file" name="rfile">
 		</td>
 		</tr>
 		<tr>

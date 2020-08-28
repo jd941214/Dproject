@@ -29,4 +29,12 @@ public class RoomMapper {
 		return sqlSession.selectOne("getRoom", room_no);
 	}
 	
+	public int deletetRoom(String no) {
+		return sqlSession.insert("deleteRoom", no);
+	}
+	
+	public int updateRoom(RoomDTO dto) {
+		return sqlSession.insert("updateRoom", dto);
+	}
+	
 }

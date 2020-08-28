@@ -40,6 +40,29 @@ public class MemberMapper {
 		return sqlSession.selectOne("getMember",member_no);
 	}
 	
+	public int memberLogin(String id, String passwd) {
+		String dbPasswd = sqlSession.selectOne("getMemberPasswd", id);
+		if(dbPasswd == null){
+			return 2; //해당하는 아이디가 없음
+			
+		}else{
+			if(dbPasswd.trim().equals(passwd)){
+				return 0; // 로그인 성공
+				
+			}else{
+				return 1; // 비밀번호가 틀림
+				
+			}
+			
+		}
+		
+	}
+
+	public MemberDTO getMember1(String id) {
+		MemberDTO dto = sqlSession.selectOne("getMember1", id);
+		return dto;
+		
+	}
 }
 
 
