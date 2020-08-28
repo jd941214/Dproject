@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page import="team.Dproject.main.model.*"%>
+<%@page import="java.util.*"%>
 <%@ include file="../top.jsp"%>
+<%
+List<roomDTO> list = (List) request.getAttribute("list");
+%>
 <div align="center">
 	<table width="100%">
 		<tr align="right">
@@ -24,28 +29,37 @@
 				<td colspan="7">등록된 방이 없습니다.</td>
 			</tr>
 		</c:if>
-		
-		<c:forEach var="dto" items="${list}">
-			<tr>
-				<td>${dto.room_no}</td>
-				<td>${dto.name}</td>
-				<td>${dto.roomsize}</td>
-				<td>${dto.sleeps}</td>
-				<td>${dto.item}</td>
-				<c:if test="${dto.filesize != 0}">
-					<td><img
-						src="c:/img/${dto.filename }" width="40">
-					</td>
-				</c:if>
-				<c:if test="${dto.filesize == 0}">
-					<td>이미지없음
-					</td>
-				</c:if>
-
-				<td><a href="room_update.do?no=${dto.room_no}">수정</a> | <a
-					href="room_delete.do?no=${dto.room_no}">삭제</a></td>
-			</tr>
-		</c:forEach>
+		<%
+		if(list!=null){
+			for(roomDTO dto : list){
+				%>
+					<TR>
+						<td><%=dto.getRoom_no() %></td>
+						<td><%=dto.getName() %></td>
+						<td><%=dto.getRoomsize() %></td>
+						<td><%=dto.getSleeps()%></td>
+						<td><%=dto.getItem() %></td>
+						<%
+							String img=dto.getFilename(); 
+							if(img!=null){
+								String[] SPimg=img.split("/");
+								%><td><%
+								for(int i=0;i<SPimg.length;i++){
+									%>
+									<img src="${pageContext.request.contextPath}/resources/img/<%=SPimg[i] %>" width="80" height="40">
+									<% 
+								}
+								%></td><%
+							}else{
+								%><td>이미지 없음</td><%
+							}%>
+						<td><a href="room_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
+						<a href="room_delete.do?no=<%=dto.getRoom_no()%>">삭제</a></td>
+					</TR>
+				<%
+			}
+		}
+		%>		
 	</table>
 </div>
 <%@ include file="../bottom.jsp"%>

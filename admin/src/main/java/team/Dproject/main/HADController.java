@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import team.Dproject.main.model.MemberDTO;
 import team.Dproject.main.model.hotelDTO;
 import team.Dproject.main.model.resvDTO;
 import team.Dproject.main.model.roomDTO;
 import team.Dproject.main.service.HotelMapper;
+import team.Dproject.main.service.MemberMapper;
 import team.Dproject.main.service.ResvMapper;
 import team.Dproject.main.service.RoomMapper;
 
@@ -45,6 +48,8 @@ public class HADController {
 	private RoomMapper roomMapper;
 	@Autowired
 	private ResvMapper resvMapper;
+	@Autowired
+	private MemberMapper memberMapper;
 	
 	private int memNUM;
 	
@@ -161,11 +166,41 @@ public class HADController {
 		ModelAndView mav = new ModelAndView();
 		if( req.getParameter("hnum")!=null){			
 			hnum= req.getParameter("hnum");
+			HttpSession session=req.getSession();
+			session.setAttribute("hnum", req.getParameter("hnum"));
 		}
 		List<roomDTO> list = roomMapper.listRoom(Integer.parseInt(hnum));
 		
 		mav.setViewName("hotelAD/room/room_list");  
 		mav.addObject("list", list);
+		return mav;
+	}
+	
+	@RequestMapping(value="/imgIN.do",method = RequestMethod.GET)
+	public String imgIN() {
+		return "hotelAD/room/imgIN";
+	}
+	@RequestMapping(value="/imgIN.do",method = RequestMethod.POST)
+	public ModelAndView imgIN2(HttpServletRequest req) {
+		String filename = "";
+		int filesize = 0;
+		MultipartHttpServletRequest mr = 
+									(MultipartHttpServletRequest)req;
+		MultipartFile file = mr.getFile("filename");
+		File target = new File(upLoadPath, file.getOriginalFilename());
+		if (file.getSize() > 0){
+			try{
+				file.transferTo(target);
+			}catch(IOException e){}
+			filename = file.getOriginalFilename();
+			filesize = (int)file.getSize();
+		}
+		
+		ModelAndView mav=new ModelAndView();
+		String img=req.getParameter("img")+filename+"/";
+		mav.setViewName("hotelAD/room/imgINclose");
+		mav.addObject("img", img);
+		
 		return mav;
 	}
 	
@@ -176,23 +211,16 @@ public class HADController {
 	
 	@RequestMapping(value="/room_insert.do",method = RequestMethod.POST)
 	public String room_insertOK(HttpServletRequest req,@ModelAttribute roomDTO dto, BindingResult result) {
-		
-		String filename = "";
-		int filesize = 0;
-		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
-		MultipartFile file = mr.getFile("filename");
-		File target = new File(upLoadPath, file.getOriginalFilename());
-		if (file.getSize() > 0){
-			try{
-				file.transferTo(target);
-			}catch(IOException e){}
-			filename = file.getOriginalFilename();
-			filesize = (int)file.getSize();
+		HttpSession session=req.getSession();
+		String hnum=(String)session.getAttribute("hnum");
+		roomMapper.seqUP();
+		String seq=String.valueOf(roomMapper.seqGET());
+		for(int i=1;i<=dto.getRooms();i++){
+			dto.setRoom_no(seq+"-"+i);
+			dto.setHotel_no(Integer.parseInt(hnum));
+			int res = roomMapper.insertRoom(dto);
 		}
-		dto.setFilename(filename);
-		dto.setFilesize(filesize);
-		int res = roomMapper.insertRoom(dto);
-		return "redirect:room_list.do?no="+dto.getHotel_no(); 
+		return "redirect:room_list.do?hnum="+hnum; 
 	}
 	
 	@RequestMapping("room_delete.do")
@@ -315,5 +343,29 @@ public class HADController {
 			re=String.valueOf(temp);
 		}
 		return re ;
+	}
+	
+	@RequestMapping("/resv_show.do")
+	public ModelAndView resv_show(HttpServletRequest req) {
+		
+		ModelAndView mav = new ModelAndView();
+		resvDTO dto = resvMapper.getResv(req.getParameter("hotel_resv_no"));
+		int HNO=dto.getHotel_no();
+		int MNO=dto.getMember_no();
+		String RNO=dto.getRoom_no();
+		
+		MemberDTO MDTO=memberMapper.getMember2(String.valueOf(MNO));
+		hotelDTO HDTO=hotelMapper.getHotel(String.valueOf(HNO));
+		roomDTO RDTO=roomMapper.getRoom(RNO);
+		
+		
+		
+		mav.setViewName("hotelAD/hotel_resv/resv_show");  		
+		mav.addObject("dto", dto);
+		mav.addObject("MDTO", MDTO);
+		mav.addObject("HDTO", HDTO);
+		mav.addObject("RDTO", RDTO);
+		
+		return mav;
 	}
 }

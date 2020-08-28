@@ -37,6 +37,7 @@
 	
 	int height=70;
 	height/=roomlist.size();
+	int resv_no=0;
 %> 
 <style>
 	.roomname:link{
@@ -189,6 +190,7 @@
 							boolean check = false;
 			
 							for (roomDTO roomDTO : roomlist) {
+								if(Bselect>6) Bselect=0;
 								int l = index ;
 								if (fir) {
 									for (int a = 1; a < start; a++) {
@@ -217,8 +219,9 @@
 									for (resvDTO resvDTO : resvlist) {										
 										temp=Integer.parseInt(resvDTO.getEnd_resv_date());
 										if (resvDTO.getStart_resv_date().equals(sUseDate)
-												&& resvDTO.getRoom_no() == roomDTO.getRoom_no()) {
+												&& resvDTO.getRoom_no().equals( roomDTO.getRoom_no())) {  
 											check = true;
+											resv_no=resvDTO.getHotel_resv_no();
 											break;
 										}
 										check = false;
@@ -229,7 +232,7 @@
 										%>
 											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
 											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
-											<a href="resv_show" class="roomname">
+											<a href="resv_show.do?hotel_resv_no=<%=resv_no %>" class="roomname">
 											<%=roomDTO.getName()%> 방
 											</a>
 											</font>

@@ -4,9 +4,10 @@ public class resvDTO {
 	private int hotel_resv_no;
 	private int member_no;
 	private int hotel_no;
-	private int room_no;
+	private String room_no;
 	private int use_point;
 	private int save_point;
+	private String pay;
 	private String start_resv_date;
 	private String end_resv_date;
 	public int getHotel_resv_no() {
@@ -18,6 +19,12 @@ public class resvDTO {
 	public int getMember_no() {
 		return member_no;
 	}
+	public String getPay() {
+		return pay;
+	}
+	public void setPay(String pay) {
+		this.pay = pay;
+	}
 	public void setMember_no(int member_no) {
 		this.member_no = member_no;
 	}
@@ -27,10 +34,10 @@ public class resvDTO {
 	public void setHotel_no(int hotel_no) {
 		this.hotel_no = hotel_no;
 	}
-	public int getRoom_no() {
+	public String getRoom_no() {
 		return room_no;
 	}
-	public void setRoom_no(int room_no) {
+	public void setRoom_no(String room_no) {
 		this.room_no = room_no;
 	}
 	public int getUse_point() {

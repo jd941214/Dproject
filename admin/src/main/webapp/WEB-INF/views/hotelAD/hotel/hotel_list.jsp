@@ -42,7 +42,7 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 				<td>${dto.star}</td>
 				<c:if test="${dto.filesize != 0}">
 					<td><img
-						src="c:/img/${dto.filename }" width="40">
+						src="${pageContext.request.contextPath}/resources/img/${dto.filename }" width="40">
 					</td>
 				</c:if>
 				<c:if test="${dto.filesize == 0}">
@@ -51,10 +51,10 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 				</c:if>
 
 				<td>
-					<a href="room_list.do?hnum=${dto.hotel_no}">방정보 보기</a> |
+					<a href="room_list.do?hnum=${dto.hotel_no}">방정보 보기</a>
 				</td>
 				<td>
-					<a href="resv_list.do?hnum=${dto.hotel_no}">호텔예약 보기</a> |
+					<a href="resv_list.do?hnum=${dto.hotel_no}">호텔예약 보기</a>
 				</td>
 				<td>
 					<a href="hotel_update.do?hnum=${dto.hotel_no}">수정</a> | <a

@@ -34,4 +34,11 @@ public class RoomMapper {
 	public int updateRoom(roomDTO dto) {
 		return sqlSession.insert("updateRoom", dto);
 	}
+	
+	public int seqUP(){
+		return sqlSession.insert("seqUP");
+	}
+	public int seqGET(){
+		return sqlSession.selectOne("seqGET");
+	}
 }
