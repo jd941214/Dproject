@@ -622,7 +622,7 @@ public class BusController {
 				return mav;
 		}
 		
-		
+		//좌석 선택
 		@RequestMapping(value="bus_resv_user_seat.do")
 		public  ModelAndView bus_resv_user_seat(Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
@@ -634,6 +634,27 @@ public class BusController {
 			mav.addObject("one_date",one_date);
 			mav.addObject("dto",dto);
 			mav.setViewName("bus_resv_user/bus_resv_user_seat");
+			return mav;
+		}
+		
+		//결제 페이지
+		@RequestMapping(value="bus_resv_user_pay.do")
+		public ModelAndView bus_resv_user_pay(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
+			ModelAndView mav = new ModelAndView();
+			Bus_BusRoadDTO resv_dto= busResvMapper.resv_user_seat_select(road_no);
+			dto.setArrival(arrival);
+			dto.setDeparture(departure);
+			
+			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
+			for(String seats : seat){ //좌석숫 자 구하기
+				
+			}
+			int seat_no=seat.length;//좌석수 저장
+			mav.addObject("resv_dto",resv_dto);
+			mav.addObject("one_date",one_date);
+			mav.addObject("seat_no",seat_no);
+			mav.addObject("dto",dto);
+			mav.setViewName("bus_resv_user/bus_resv_user_pay");
 			return mav;
 		}
 		
