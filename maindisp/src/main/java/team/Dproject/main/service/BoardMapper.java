@@ -17,4 +17,8 @@ public class BoardMapper {
 	public List<BoardDTO> board_list(){
 		return sqlSession.selectList("board_list");
 	}
+	
+	public int board_insert(BoardDTO dto) {
+		return sqlSession.insert("board_insert", dto);
+	}
 }

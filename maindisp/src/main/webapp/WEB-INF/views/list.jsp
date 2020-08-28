@@ -4,9 +4,9 @@
 <%@ include file="top.jsp"%>
 <div class="slider-area hero-bg1 hero-overly">
 <div class="single-slider hero-overly  slider-height1 d-flex align-items-center">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-10 col-lg-10">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-xl-10 col-lg-10">
 <div align="center" style="margin-top:0px">
 	<h2>서울</h2>
 </div>
@@ -17,12 +17,12 @@
 
 <div align="center">
 	<label><a href="board_write.do">글쓰기</a></label>
-	<table width="900">
+	<table width="900" bgcolor="white">
 		<tr bgcolor="#dbdbdb">
 			<!-- 게시글 번호 -->
 			<th>Nr.</th> 
 			<!-- 제목 -->
-			<th>Subject</th> 
+			<th>Title</th> 
 			<!-- 작성자 -->
 			<th>User</th>
 			<!-- 댓글 수 -->
@@ -43,7 +43,7 @@
 			<tr>
 				<td><c:out value="${dto.main_board_no}"/></td>
 				<td>${dto.title}</td>
-				<td></td>
+				<td>${dto.member_no}</td>
 				<td></td>
 				<td>${dto.readcount}</td>
 				<td>${dto.reg_date}</td>

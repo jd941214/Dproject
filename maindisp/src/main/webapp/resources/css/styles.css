@@ -1,8 +1,3 @@
-/* Template: Juno - Multipurpose Landing Page Pack
-   Author: InovatikThemes
-   Created: Mar 2019
-   Description: Master CSS file
-*/
 
 /*****************************************
 Table Of Contents:
@@ -589,13 +584,13 @@ input[type='checkbox'] {
 	height: 1rem;
 	border-radius: 100%;
 	background-color: #fff;
-	-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+	-webkit-animation: sk-bouncedelay 1.0s infinite ease-in-out both;
 	animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 
 .spinner .bounce1 {
-	-webkit-animation-delay: -0.32s;
-	animation-delay: -0.32s;
+	-webkit-animation-delay: -0.15s;
+	animation-delay: -0.15s;
 }
 
 .spinner .bounce2 {

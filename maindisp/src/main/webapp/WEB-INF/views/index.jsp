@@ -20,8 +20,8 @@
                                     <div class="select-itms">
                                         <select name="select" id="select1">
                                             <option value="">In where?</option>
-                                            <option value="">Catagories One</option>
-                                            <option value="">Catagories Two</option>
+                                            <option value="">Seoul</option>
+                                            <option value="">Daegu</option>
                                             <option value="">Catagories Three</option>
                                             <option value="">Catagories Four</option>
                                         </select>
@@ -32,11 +32,11 @@
                                 </div>	
                             </form>	
                             <!-- hero category1 img -->
-                            <div class="category-img text-center">
+                            <%-- <div class="category-img text-center">
                                 <a href="listing.html"> <img src="${pageContext.request.contextPath}/resources/assets/img/gallery/hero_category1.png" alt=""></a>
                                 <a href="listing.html"> <img src="${pageContext.request.contextPath}/resources/assets/img/gallery/hero_category2.png" alt=""></a>
                                 <a href="listing.html"> <img src="${pageContext.request.contextPath}/resources/assets/img/gallery/hero_category3.png" alt=""></a>
-                            </div>
+                            </div> --%>
                         </div>
                     </div>
                 </div>

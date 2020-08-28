@@ -1069,7 +1069,7 @@ hr {
 }
 
 .mr-40 {
-	margin-right: 40px
+	margin-right: 10px
 }
 
 .mr-45 {
@@ -2681,7 +2681,7 @@ keyframes zoom { 0%{
 .main-header .main-menu ul li a {
 	color: #021a47;
 	font-weight: 500;
-	padding: 28px 19px;
+	padding: 28px 5px;
 	display: block;
 	font-size: 16px;
 	position: relative;
@@ -2741,7 +2741,7 @@ keyframes zoom { 0%{
 }
 
 .header-sticky.sticky-bar.sticky .main-menu ul>li>a {
-	padding: 20px 20px
+	padding: 5px 5px
 }
 
 .slicknav_menu .slicknav_icon-bar {
@@ -2749,7 +2749,7 @@ keyframes zoom { 0%{
 }
 
 .header-sticky.sticky-bar.sticky .header-btn .get-btn {
-	padding: 20px 20px
+	padding: 5px 5px
 }
 
 .header-area .slicknav_btn {

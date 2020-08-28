@@ -1,20 +1,12 @@
 package team.Dproject.main;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.BoardDTO;
 import team.Dproject.main.service.BoardMapper;
@@ -25,24 +17,15 @@ import team.Dproject.main.service.BoardMapper;
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	@Autowired
 	private BoardMapper boardMapper;
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
+
+	@RequestMapping(value = "/")
+	public String home() {
+		return "index";
+	}
+	@RequestMapping(value = "/index")
+	public String home2() {
 		return "index";
 	}
 	
@@ -52,6 +35,29 @@ public class HomeController {
 		req.setAttribute("listBoard", list);
 		return "list";
 
+	}
+	
+	@RequestMapping(value="/board_write.do", method=RequestMethod.GET)
+	public String writeForm() {
+		return "writeform";
+	}
+	
+	@RequestMapping(value="/board_write.do", method=RequestMethod.POST)
+	public String insertBoard(HttpServletRequest req, BoardDTO dto) {
+		dto.setIp(req.getRemoteAddr());
+		int res = boardMapper.board_insert(dto);
+		String msg = null, url = null;
+		if(res>0) {
+			msg = "새 글 작성이 완료되었습니다. 게시글 목록으로 이동합니다.";
+			url = "board_list.do";
+		}else {
+			msg = "새 글 작성이 완료되지 않았습니다. 다시 작성해주세요.";
+			url = "board_list.do";
+		}
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("url", url);
+		return "message";
 	}
 	
 }
