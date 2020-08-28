@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.Dproject.adminBus.bus_resvMapper">
+	
+	<select id="listBus_resv" resultType="BusResvDTO">
+		select * from bus_resv
+	</select>
+	<insert id="insertBus_resv" parameterType="BusResvDTO">
+		insert into bus_resv values(bus_resv_seq.nextval,#{member_no},#{bus_no},#{road_no},#{seat},#{use_point},#{save_point},#{resv_date})
+	</insert>
+	<delete id="deleteBus_resv" parameterType="String">
+		delete from bus_resv where resv_no=#{no}
+	</delete>
+	<select id="getBus_resv" parameterType="String" resultType="BusResvDTO">
+		select * from bus_resv where resv_no=#{no}
+	</select>
+	<update id="updateBus_resv" parameterType="BusResvDTO">
+		update bus_resv set member_no=#{member_no}, bus_no=#{bus_no}, road_no=#{road_no}, seat=#{seat}, use_point=#{use_point}, save_point=#{save_point}, resv_date=#{resv_date} where resv_no=#{resv_no}
+	</update>
+
+	<select id="listDispatch_resv"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO">
+		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{arrival} and departure=#{departure} and grade=#{grade}
+		
+	</select>
+	
+	<select id="listDispatch_resv_reverse"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO">
+		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{departure} and departure=#{arrival} and grade=#{grade}
+		
+	</select>
+	<select id="listDispatch_resv_all"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO">
+		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{arrival} and departure=#{departure}
+		
+	</select>
+	
+	<select id="listDispatch_resv_all_reverse"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO">
+		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{departure} and departure=#{arrival}
+		
+	</select>
+	
+	<select id="resv_user_seat_select"  parameterType="int" resultType="Bus_BusRoadDTO">
+		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where road_no=#{road_no}
+	</select>
+	
+	
+	
+	
+	
+</mapper>
