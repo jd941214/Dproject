@@ -17,10 +17,10 @@
 		<h2>버스관리자 페이지</h2>
 		<table>
 			<tr>
-				<td><a href="bus_list.do">버스리스트</a> | </td>
-				<td><a href="bus_station_list.do">터미널리스트</a> | </td>
-				<td><a href="bus_load_list.do">버스노선리스트</a> | </td>
-				<td><a href="bus_resv_list.do">버스예약리스트</a> | </td>
+				<td><a href="ADbus_list.do">버스리스트</a> | </td>
+				<td><a href="ADbus_station_list.do">터미널리스트</a> | </td>
+				<td><a href="ADbus_load_list.do">버스노선리스트</a> | </td>
+				<td><a href="ADbus_resv_list.do">버스예약리스트</a> | </td>
 				<td><a href="home.do">관리자</a></td>
 			</tr>
 		</table>

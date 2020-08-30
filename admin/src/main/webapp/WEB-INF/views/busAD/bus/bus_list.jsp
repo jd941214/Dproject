@@ -6,7 +6,7 @@
 		<table width="100%">
 			<tr align="right">
 				<td colspan="4">
-					<a href="bus_insert.do">추가</a>
+					<a href="ADbus_insert.do">추가</a>
 				</td>
 			</tr>
 			<tr>
@@ -26,8 +26,8 @@
 				<td>${dto.grade}</td>
 				<td>${dto.seat}</td>
 				<td>
-					<a href="bus_update.do?no=${dto.bus_no}">수정</a> | 
-					<a href="bus_delete.do?no=${dto.bus_no}">삭제</a>
+					<a href="ADbus_update.do?no=${dto.bus_no}">수정</a> | 
+					<a href="ADbus_delete.do?no=${dto.bus_no}">삭제</a>
 				</td>
 			</tr>	
 			</c:forEach>

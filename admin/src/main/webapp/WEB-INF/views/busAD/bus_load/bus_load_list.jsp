@@ -6,7 +6,7 @@
 		<table width="100%">
 			<tr align="right">
 				<td colspan="8">
-					<a href="bus_load_insert.do">추가</a>
+					<a href="ADbus_load_insert.do">추가</a>
 				</td>
 			</tr>
 			<tr>

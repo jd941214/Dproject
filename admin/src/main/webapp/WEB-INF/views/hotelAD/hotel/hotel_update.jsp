@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../top.jsp" %>
 	<div align="center">
-		<form action="hotel_update.do" method="post" enctype="multipart/form-data">
+		<form action="ADhotel_update.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="member_num" value="0">
 		<input type="hidden" name="hotel_no" value="${dto.hotel_no}">
 		<table width="100%">

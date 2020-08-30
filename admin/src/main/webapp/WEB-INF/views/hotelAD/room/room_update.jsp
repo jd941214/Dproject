@@ -9,7 +9,7 @@
 	} 
 %>
 	<div align="center">
-		<form action="room_update.do" method="post" enctype="multipart/form-data">
+		<form action="ADroom_update.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="member_num" value="2">
 		<input type="hidden" name="room_no" value="${dto.room_no}">
 		<table width="100%">

@@ -12,7 +12,7 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 <div align="center">
 	<table width="100%">
 		<tr align="right">
-			<td colspan="9"><a href="hotel_insert.do">추가</a></td>
+			<td colspan="9"><a href="ADhotel_insert.do">추가</a></td>
 		</tr>
 		<tr>
 			<td>호텔번호</td>
@@ -51,14 +51,14 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 				</c:if>
 
 				<td>
-					<a href="room_list.do?hnum=${dto.hotel_no}">방정보 보기</a>
+					<a href="ADroom_list.do?hnum=${dto.hotel_no}">방정보 보기</a>
 				</td>
 				<td>
-					<a href="resv_list.do?hnum=${dto.hotel_no}">호텔예약 보기</a>
+					<a href="ADresv_list.do?hnum=${dto.hotel_no}">호텔예약 보기</a>
 				</td>
 				<td>
-					<a href="hotel_update.do?hnum=${dto.hotel_no}">수정</a> | <a
-					href="hotel_delete.do?hnum=${dto.hotel_no}">삭제</a></td>
+					<a href="ADhotel_update.do?hnum=${dto.hotel_no}">수정</a> | <a
+					href="ADhotel_delete.do?hnum=${dto.hotel_no}">삭제</a></td>
 			</tr>
 		</c:forEach>
 	</table>

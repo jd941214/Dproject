@@ -102,8 +102,12 @@ public class MemberMapper {
 	
 	public MemberDTO getMember2(String member_no) {
 		MemberDTO dto = sqlSession.selectOne("getMember2", member_no);
-		return dto;
-		
+		return dto;	
+	}
+	
+	public List<MemberDTO> getPosition(String posistion) {
+		List<MemberDTO> list = sqlSession.selectList("getPosition",posistion);
+		return list;	
 	}
 
 	public List<MemberDTO> searchMember(String mode, String searchString, String ssn1, String ssn2) {

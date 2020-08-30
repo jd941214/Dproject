@@ -6,7 +6,7 @@
 		<table width="100%">
 			<tr align="right">
 				<td colspan="9">
-					<a href="bus_insert.do">추가</a>
+					<a href="ADbus_insert.do">추가</a>
 				</td>
 			</tr>
 			<tr>
@@ -36,8 +36,8 @@
 				<td>${dto.save_point}</td>
 				<td>${dto.resv_date}</td>
 				<td>
-					<a href="bus_resv_update.do?no=${dto.resv_no}">수정</a> | 
-					<a href="bus_resv_delete.do?no=${dto.resv_no}">삭제</a>
+					<a href="ADbus_resv_update.do?no=${dto.resv_no}">수정</a> | 
+					<a href="ADbus_resv_delete.do?no=${dto.resv_no}">삭제</a>
 				</td>
 			</tr>	
 			</c:forEach>

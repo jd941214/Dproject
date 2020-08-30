@@ -20,9 +20,9 @@
 List<roomDTO> list = (List) request.getAttribute("list");
 %>
 <div align="center">
-	<table width="100%" border="1">
+	<table width="70%" border="1">
 		<tr align="right">
-			<td colspan="7"><a href="room_insert.do?hnum=<%=request.getParameter("hnum")%>">추가</a></td>
+			<td colspan="7"><a href="ADroom_insert.do?hnum=<%=request.getParameter("hnum")%>">추가</a></td>
 		</tr>
 		<tr>
 			<td>방번호</td>
@@ -31,8 +31,7 @@ List<roomDTO> list = (List) request.getAttribute("list");
 			<td>방이름</td>
 			<td>방 평수</td>
 			<td>인원수</td>
-			<td>상세설명 (구비물품)</td>
-			<td>이미지</td>
+			<td>상세보기</td>
 			<td>수정/삭제</td>
 		</tr>
 		
@@ -49,40 +48,26 @@ List<roomDTO> list = (List) request.getAttribute("list");
 				String[] arrtemp=temp.split("-");
 				if(num.equals(arrtemp[0])||num==arrtemp[0]){
 					%>
-					<TR id="<%=dto.getRoom_no() %>" style="display:none">
+					<TR id="<%=dto.getRoom_no() %>" style="display:none; background-color:#c4fffd;'">
 					<td>└<%=dto.getRoom_no() %></td>
 					<%
 				}else{
 					%>
-					<TR>
+					<TR style="background-color:#00cfc8;">
 					<td><%=dto.getRoom_no() %><input type="button" onclick="javascript:show(<%=arrtemp[0]%>,<%=dto.getRooms() %>);" value="보기"></td>
 					<%
 				}
 				%>
-						<td><a href="room_show.do?no=<%=dto.getRoom_no()%>"><%=dto.getName() %></a></td>
+						<td><%=dto.getName() %></td>
 						<td><%=dto.getRoomsize() %></td>
 						<td><%=dto.getSleeps()%></td>
-						<td><%=dto.getItem() %></td>
-						<%
-							String img=dto.getFilename(); 
-							if(img!=null){
-								String[] SPimg=img.split("/");
-								%><td><%
-								for(int i=0;i<SPimg.length;i++){
-									%>
-									<img src="${pageContext.request.contextPath}/resources/img/<%=SPimg[i] %>" width="80" height="40">
-									<% 
-								}
-								%></td><%
-							}else{
-								%><td>이미지 없음</td><%
-							}
-						if(num.equals(arrtemp[0])||num==arrtemp[0]){%>
-						<td><a href="room_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
-						<a href="room_delete.do?no=<%=dto.getRoom_no()%>">삭제</a></td>
+						<td><a href="ADroom_show.do?no=<%=dto.getRoom_no()%>">상세보기</a></td>					
+						<%if(num.equals(arrtemp[0])||num==arrtemp[0]){%>
+		 				<td><a href="ADroom_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
+						<a href="ADroom_delete.do?no=<%=dto.getRoom_no()%>">삭제</a></td>
 						<%}else{ %>
-						<td><a href="room_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
-						<a href="room_alldelete.do?no=<%=arrtemp[0]%>">전체삭제</a></td>
+						<td><a href="ADroom_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
+						<a href="ADroom_alldelete.do?no=<%=arrtemp[0]%>">전체삭제</a></td>
 						<%} %>
 					</TR>
 				<%

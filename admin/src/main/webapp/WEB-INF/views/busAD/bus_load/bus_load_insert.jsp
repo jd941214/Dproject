@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../top.jsp" %>
 	<div align="center">
-		<form action="bus_load_insert.do" method="post">
+		<form action="ADbus_load_insert.do" method="post">
 			<table width="100%">
 				<tr>
 					<td>버스번호 : <input type="text" name="bus_no"></td>

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../top.jsp" %>
 	<div align="center">
-		<form action="bus_station_update.do" method="post">
+		<form action="ADbus_station_update.do" method="post">
 		<input type="hidden" name="station_no" value="${station.station_no}">
 			<table width="100%">
 				<tr>

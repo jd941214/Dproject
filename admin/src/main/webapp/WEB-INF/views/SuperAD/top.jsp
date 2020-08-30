@@ -11,10 +11,7 @@
 		align:"center";
 	}
 </style>
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css"
-  />
+
 </head>
 <body>
 <%int member_num=2; %>
@@ -22,8 +19,9 @@
 		<h2>호텔관리자 페이지</h2>
 		<table>
 			<tr>
-				<td><a href="ADhotel_board.do?member_num=<%=member_num%>">호텔 게시판</a> | </td>
-				<td><a href="ADhotel_list.do?member_num=<%=member_num%>">호텔리스트</a> | </td>
+				<td><a href="ADBAD_list.do?pos=1">버스관리자 리스트</a> | </td>
+				<td><a href="ADHAD_list.do?pos=2">호텔관리자 리스트</a> | </td>
+				<td><a href="ADmember_list.do">회원리스트</a> | </td>
 				<td><a href="home.do">관리자</a></td>
 			</tr>
 		</table>

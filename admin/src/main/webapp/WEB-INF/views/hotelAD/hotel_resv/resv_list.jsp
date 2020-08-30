@@ -86,7 +86,7 @@
 							<%
 								if (month > 0) {
 							%> <a
-							href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&amp;?year=<%=year%>&amp;month=<%=month - 1%>">
+							href="ADresv_list.do?hnum=<%=request.getAttribute("hnum")%>&amp;?year=<%=year%>&amp;month=<%=month - 1%>">
 								<i class="fas fa-angle-left"></i></a> <%
 							 	} else {
 							 %> <%
@@ -94,7 +94,7 @@
 							 %> &nbsp;&nbsp; <%=year%>년 <%=month + 1%>월 &nbsp;&nbsp;<%
 							 	if (month < 11) {
 							 %> 		 
-							<a href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"target="_self">
+							<a href="ADresv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"target="_self">
 							<i class="fas fa-angle-right"></i>
 							</a> 
 							<%
@@ -232,7 +232,7 @@
 										%>
 											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
 											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
-											<a href="resv_show.do?hotel_resv_no=<%=resv_no %>" class="roomname">
+											<a href="ADresv_show.do?hotel_resv_no=<%=resv_no %>" class="roomname">
 											<%=roomDTO.getName()%> 방
 											</a>
 											</font>

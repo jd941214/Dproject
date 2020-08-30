@@ -54,7 +54,8 @@ public class BADController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		//return "home";
+		return "SuperAD/SAD_main";
 	}
 	
 
@@ -65,13 +66,13 @@ public class BADController {
 	}
 	
 	//버스관련---------------------------------------------------------------
-	@RequestMapping("/busAD.do")
+	@RequestMapping("/ADbusAD.do")
 	public String busAD() {
 		return "busAD/BAD_main";
 	}
 	
 	//버스---------------------------------------------------------------
-	@RequestMapping(value="/bus_list.do" )
+	@RequestMapping(value="/ADbus_list.do" )
 	public ModelAndView bus_list() {
 		List<busDTO> list = busMapper.listBus();
 		ModelAndView mav = new ModelAndView();
@@ -79,56 +80,56 @@ public class BADController {
 		mav.addObject("bus_list", list);
 		return mav;
 	}
-	@RequestMapping(value="/bus_insert.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_insert.do",method = RequestMethod.GET)
 	public String bus_insert() {
 		return "busAD/bus/bus_insert";
 	}
-	@RequestMapping(value="/bus_insert.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_insert.do",method = RequestMethod.POST)
 	public String bus_insertOK(HttpServletRequest req, busDTO dto)  {
 		int res=busMapper.insertBus(dto);
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "버스등록 성공";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		} else {
 			msg = "버스등록 실패";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping("bus_delete.do")
+	@RequestMapping("ADbus_delete.do")
 	public String bus_delete(HttpServletRequest req) {
 		int res=busMapper.deletetBus(req.getParameter("no"));
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "버스삭제 성공";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		} else {
 			msg = "버스삭제 실패";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping(value="/bus_update.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_update(HttpServletRequest req) {
 		busDTO dto = busMapper.getBus(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus/bus_update", "bus", dto);
 		return mav;
 	}
-	@RequestMapping(value="/bus_update.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_update.do",method = RequestMethod.POST)
 	public String bus_updateOK(HttpServletRequest req, busDTO dto)  {
 		int res=busMapper.updateBus(dto); 
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "버스수정 성공";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		} else {
 			msg = "버스수정 실패";
-			url = "bus_list.do";
+			url = "ADbus_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
@@ -137,7 +138,7 @@ public class BADController {
 	
 	
 	//터미널---------------------------------------------------------------
-	@RequestMapping("/bus_station_list.do")
+	@RequestMapping("/ADbus_station_list.do")
 	public ModelAndView bus_station_list() {
 		List<bus_stationDTO> list = bus_stationMapper.listBus_station();
 		ModelAndView mav = new ModelAndView();
@@ -145,56 +146,56 @@ public class BADController {
 		mav.addObject("bus_station_list", list);
 		return mav;
 	}
-	@RequestMapping(value="/bus_station_insert.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_station_insert.do",method = RequestMethod.GET)
 	public String bus_station_insert() {
 		return "busAD/bus_station/bus_station_insert";
 	}
-	@RequestMapping(value="/bus_station_insert.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_station_insert.do",method = RequestMethod.POST)
 	public String bus_station_insertOK(HttpServletRequest req, bus_stationDTO dto)  {
 		int res=bus_stationMapper.insertBus_station(dto);
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "터미널등록 성공";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		} else {
 			msg = "터미널등록 실패";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping("bus_station_delete.do")
+	@RequestMapping("ADbus_station_delete.do")
 	public String bus_station_delete(HttpServletRequest req) {
 		int res=bus_stationMapper.deletetBus_station(req.getParameter("no"));
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "터미널삭제 성공";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		} else {
 			msg = "터미널삭제 실패";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping(value="/bus_station_update.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_station_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_station_update(HttpServletRequest req) {
 		bus_stationDTO dto = bus_stationMapper.getBus_station(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_station/bus_station_update", "station", dto);
 		return mav;
 	}
-	@RequestMapping(value="/bus_station_update.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_station_update.do",method = RequestMethod.POST)
 	public String bus_station_updateOK(HttpServletRequest req, bus_stationDTO dto)  {
 		int res=bus_stationMapper.updateBus_station(dto); 
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "터미널수정 성공";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		} else {
 			msg = "터미널수정 실패";
-			url = "bus_station_list.do";
+			url = "ADbus_station_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
@@ -203,7 +204,7 @@ public class BADController {
 	
 	
 	//노선---------------------------------------------------------------
-	@RequestMapping(value="/bus_load_list.do" )
+	@RequestMapping(value="/ADbus_load_list.do" )
 	public ModelAndView bus_load_list() {
 		List<bus_loadDTO> list = bus_loadMapper.listBus_load();
 		ModelAndView mav = new ModelAndView();
@@ -211,56 +212,56 @@ public class BADController {
 		mav.addObject("bus_load_list", list);
 		return mav;
 	}
-	@RequestMapping(value="/bus_load_insert.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.GET)
 	public String bus_load_insert() {
 		return "busAD/bus_load/bus_load_insert";
 	}
-	@RequestMapping(value="/bus_load_insert.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.POST)
 	public String bus_load_insertOK(HttpServletRequest req, bus_loadDTO dto)  {
 		int res=bus_loadMapper.insertBus_load(dto);
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "노선등록 성공";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		} else {
 			msg = "노선등록 실패";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping("bus_load_delete.do")
+	@RequestMapping("ADbus_load_delete.do")
 	public String bus_load_delete(HttpServletRequest req) {
 		int res=bus_loadMapper.deletetBus_load(req.getParameter("no"));
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "노선삭제 성공";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		} else {
 			msg = "노선삭제 실패";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping(value="/bus_load_update.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_load_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_load_update(HttpServletRequest req) {
 		bus_loadDTO dto = bus_loadMapper.getBus_load(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_load/bus_load_update", "bus", dto);
 		return mav;
 	}
-	@RequestMapping(value="/bus_load_update.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_load_update.do",method = RequestMethod.POST)
 	public String bus_load_updateOK(HttpServletRequest req, bus_loadDTO dto)  {
 		int res=bus_loadMapper.updateBus_load(dto); 
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "노선수정 성공";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		} else {
 			msg = "노선수정 실패";
-			url = "bus_load_list.do";
+			url = "ADbus_load_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
@@ -270,7 +271,7 @@ public class BADController {
 		
 	
 	//예약---------------------------------------------------------------
-	@RequestMapping(value="/bus_resv_list.do" )
+	@RequestMapping(value="/ADbus_resv_list.do" )
 	public ModelAndView bus_resv_list() {
 		List<bus_resvDTO> list = bus_resvMapper.listBus_resv();
 		ModelAndView mav = new ModelAndView();
@@ -278,56 +279,56 @@ public class BADController {
 		mav.addObject("list", list);
 		return mav;
 	}
-	@RequestMapping(value="/bus_resv_insert.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.GET)
 	public String bus_resv_insert() {
 		return "busAD/bus_resv/bus_resv_insert";
 	}
-	@RequestMapping(value="/bus_resv_insert.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.POST)
 	public String bus_resv_insertOK(HttpServletRequest req, bus_resvDTO dto)  {
 		int res=bus_resvMapper.insertBus_resv(dto);
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "예약등록 성공";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		} else {
 			msg = "예약등록 실패";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping("bus_resv_delete.do")
+	@RequestMapping("ADbus_resv_delete.do")
 	public String bus_resv_delete(HttpServletRequest req) {
 		int res=bus_resvMapper.deletetBus_resv(req.getParameter("no"));
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "예약삭제 성공";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		} else {
 			msg = "예약삭제 실패";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
-	@RequestMapping(value="/bus_resv_update.do",method = RequestMethod.GET)
+	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_resv_update(HttpServletRequest req) {
 		bus_resvDTO dto = bus_resvMapper.getBus_resv(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_resv/bus_resv_update", "bus", dto);
 		return mav;
 	}
-	@RequestMapping(value="/bus_resv_update.do",method = RequestMethod.POST)
+	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.POST)
 	public String bus_resv_updateOK(HttpServletRequest req, bus_resvDTO dto)  {
 		int res=bus_resvMapper.updateBus_resv(dto); 
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "예약수정 성공";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		} else {
 			msg = "예약수정 실패";
-			url = "bus_resv_list.do";
+			url = "ADbus_resv_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
