@@ -24,7 +24,11 @@ public class RoomMapper {
 	}
 
 	public int deletetRoom(String no) {
-		return sqlSession.insert("deleteRoom", no);
+		return sqlSession.delete("deleteRoom", no);
+	}
+	
+	public int deletetallRoom(String no) {
+		return sqlSession.delete("deleteallRoom", no);
 	}
 
 	public roomDTO getRoom(String no) {
@@ -32,7 +36,7 @@ public class RoomMapper {
 	}
 
 	public int updateRoom(roomDTO dto) {
-		return sqlSession.insert("updateRoom", dto);
+		return sqlSession.update("updateRoom", dto);
 	}
 	
 	public int seqUP(){
