@@ -9,7 +9,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-x.y.z.js"></script>  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>bus_main</title>
+<title>bus_main()</title>
 </head>
 <body>
 	<div align="center">
