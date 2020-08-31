@@ -25,6 +25,7 @@
 			<input type="hidden" name="road_no" value="${seat_dto.road_no}">
 			<input type="hidden" name="arrival" value="${dto.arrival}">
 			<input type="hidden" name="departure" value="${dto.departure}">
+			<input type="hidden" name="seat_no" value="${seat_no}">
 			
 			
 		</div><!-- 출발지 도착지 -->

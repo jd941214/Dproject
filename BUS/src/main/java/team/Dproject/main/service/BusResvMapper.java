@@ -81,5 +81,15 @@ public class BusResvMapper {
 		   
 	   return sqlSession.selectOne("resv_user_seat_select",road_no);
 	   }
+	   
+	   public int insertBus_resv_user(BusResvDTO dto){
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("bus_no",dto.getBus_no());
+		   map.put("road_no",dto.getRoad_no());
+		   map.put("seat",dto.getSeat());
+		   map.put("resv_date",dto.getResv_date());
+		   
+		   return sqlSession.insert("insertBus_resv_user",map);
+	   }
 	    
 }

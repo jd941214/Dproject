@@ -35,15 +35,17 @@
 	</select>
 	
 	<select id="listDispatch_resv_all_reverse"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO">
-		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{departure} and departure=#{arrival}
+		select * from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{departure} and departure=#{arrival}
 		
 	</select>
 	
 	<select id="resv_user_seat_select"  parameterType="int" resultType="Bus_BusRoadDTO">
-		select road_no,grade,arrival,departure,grade,price,arr_time,tot_time,seat from bus inner join bus_road on bus.bus_no=bus_road.bus_no where road_no=#{road_no}
+		select * from bus inner join bus_road on bus.bus_no=bus_road.bus_no where road_no=#{road_no}
 	</select>
 	
-	
+	<insert id="insertBus_resv_user" parameterType="java.util.Map">
+		insert into bus_resv values(bus_resv_seq.nextval,1,#{bus_no},#{road_no},#{seat},0,0,#{resv_date})
+	</insert>
 	
 	
 	

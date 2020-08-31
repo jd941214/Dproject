@@ -1,11 +1,13 @@
 package team.Dproject.main.model;
 
+
+
 public class BusResvDTO {
 	private int resv_no;
 	private int member_no;
 	private int bus_no;
 	private int road_no;
-	private int seat;
+	private String seat;
 	private int  use_point;
 	private int save_point;
 	private String resv_date;
@@ -35,10 +37,12 @@ public class BusResvDTO {
 	public void setRoad_no(int road_no) {
 		this.road_no = road_no;
 	}
-	public int getSeat() {
+	
+	
+	public String getSeat() {
 		return seat;
 	}
-	public void setSeat(int seat) {
+	public void setSeat(String seat) {
 		this.seat = seat;
 	}
 	public int getUse_point() {
