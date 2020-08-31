@@ -17,13 +17,12 @@
   />
 </head>
 <body>
-<%int member_num=2; %>
 	<div align="center">
 		<h2>호텔관리자 페이지</h2>
 		<table>
 			<tr>
-				<td><a href="ADhotel_board.do?member_num=<%=member_num%>">호텔 게시판</a> | </td>
-				<td><a href="ADhotel_list.do?member_num=<%=member_num%>">호텔리스트</a> | </td>
+				<td><a href="ADhotel_board.do">호텔 게시판</a> | </td>
+				<td><a href="ADhotel_list.do">호텔리스트</a> | </td>
 				<td><a href="home.do">관리자</a></td>
 			</tr>
 		</table>

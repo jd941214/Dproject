@@ -22,7 +22,7 @@
 	<hr color="green" width="300">
 	<table width="100%" class="outline">
 		<tr>
-			<td colspan="7" align="right">
+			<td colspan="8" align="right">
 			<a href="ADmember_input.do">회원가입</a>
 			<a href="ADmember_list.do?mode=1">회원찾기</a>
 			</td>

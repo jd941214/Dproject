@@ -36,6 +36,7 @@
 	int Bselect=0;
 	
 	int height=70;
+	if(roomlist.size()!=0)
 	height/=roomlist.size();
 	int resv_no=0;
 %> 
@@ -233,7 +234,7 @@
 											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
 											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
 											<a href="ADresv_show.do?hotel_resv_no=<%=resv_no %>" class="roomname">
-											<%=roomDTO.getName()%> 방
+											<%=roomDTO.getName()%> 방(<%=roomDTO.getRoom_no() %>)
 											</a>
 											</font>
 											</TD>

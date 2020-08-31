@@ -19,7 +19,7 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 			<td>호텔이름</td>
 			<td>호텔주소</td>
 			<td>전화번호</td>
-			<td>회원번호</td>
+			<!-- 멤버넘 -->
 			<td>호텔정보</td>
 			<td>호텔 성급</td>
 			<td>이미지</td>
@@ -38,7 +38,6 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 				<td>${dto.name}</td>
 				<td>${dto.address}</td>
 				<td>${dto.hp1} - ${dto.hp2} - ${dto.hp3}</td>
-				<td>${dto.member_num } </td>
 				<td>${dto.hotel_info}</td>
 				<td>${dto.star}</td>
 				<c:if test="${dto.filesize != 0}">

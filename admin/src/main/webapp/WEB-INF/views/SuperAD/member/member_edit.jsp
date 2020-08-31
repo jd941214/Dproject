@@ -2,7 +2,7 @@
 <!-- member_edit.jsp -->
 <%@ include file="../top.jsp" %>
 <link rel="stylesheet" type="text/css" href="style.css">
-<form name="f" method="post" action="member_edit_ok.do">
+<form name="f" method="post" action="ADmember_edit_ok.do">
 	<input type="hidden" name="member_no" value="${dto.member_no}"/>
 	<table width="600" align="center" class="outline">
   		<tr>
@@ -63,7 +63,7 @@
   		</tr>
   		<tr>
 			<td colspan="2" align="center">
-				<input type="button" value="수정" onclick='javascript:check()'>
+				<input type="submit" value="수정" >
 				<input type = "button" value = "취소" onclick = "window.location='ADmember_list.do'">
 			</td>
   		</tr>

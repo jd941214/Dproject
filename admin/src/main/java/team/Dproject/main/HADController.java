@@ -63,10 +63,10 @@ public class HADController {
 	}
 
 	@RequestMapping("/ADhotel_list.do")
-	public ModelAndView hotel_list(HttpServletRequest req) {
-		List<hotelDTO> list = hotelMapper.listHotel(req.getParameter("member_num"));
+	public ModelAndView hotel_list(HttpServletRequest req,HttpSession session) {
+		Integer MNUM=(Integer)session.getAttribute("MNUM");
+		List<hotelDTO> list = hotelMapper.listHotel(String.valueOf(MNUM));
 		ModelAndView mav = new ModelAndView();
-		memNUM = Integer.parseInt(req.getParameter("member_num"));
 		mav.setViewName("hotelAD/hotel/hotel_list");
 		mav.addObject("list", list);
 		return mav;
@@ -78,7 +78,9 @@ public class HADController {
 	}
 
 	@RequestMapping(value = "/ADhotel_insert.do", method = RequestMethod.POST)
-	public String hotel_insertOK(HttpServletRequest req, @ModelAttribute hotelDTO dto, BindingResult result) {
+	public String hotel_insertOK(HttpServletRequest req, @ModelAttribute hotelDTO dto, BindingResult result, HttpSession session) {
+		Integer MNUM=(Integer)session.getAttribute("MNUM");
+		dto.setMember_num(MNUM);
 		String filename = "";
 		int filesize = 0;
 		MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
@@ -311,6 +313,7 @@ public class HADController {
 			int a = Integer.parseInt(dto.getEnd_resv_date());
 			for (int i = 0; i < a - 1; i++) {
 				resvDTO Tdto = new resvDTO();
+				Tdto.setMember_no(dto.getMember_no());
 				Tdto.setEnd_resv_date(dto.getEnd_resv_date());
 				Tdto.setHotel_no(dto.getHotel_no());
 				Tdto.setHotel_resv_no(dto.getHotel_resv_no());

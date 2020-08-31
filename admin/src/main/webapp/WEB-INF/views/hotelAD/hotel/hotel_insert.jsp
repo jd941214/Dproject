@@ -4,7 +4,6 @@
 <%@ include file="../top.jsp"%> 
 <div align="center">
 	<form action="ADhotel_insert.do" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="member_num" value="<%=member_num %>">
 		<table width="100%">
 			<tr>
 				<td>호텔이름 : <input type="text" name="name"></td>

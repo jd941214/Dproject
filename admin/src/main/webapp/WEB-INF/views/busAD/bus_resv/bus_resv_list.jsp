@@ -2,13 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../top.jsp" %>
+
 	<div align="center">
 		<table width="100%">
-			<tr align="right">
-				<td colspan="9">
-					<a href="ADbus_insert.do">추가</a>
-				</td>
-			</tr>
 			<tr>
 				<td>예약번호</td>
 				<td>예약한 사람</td>
@@ -18,6 +14,7 @@
 				<td>사용한 포인트</td>
 				<td>적립 포인트</td>
 				<td>예약 날짜</td>
+				<td>가격</td>
 				<td>수정/삭제</td>
 			</tr> 
 			<c:if test="${empty list}">
@@ -35,6 +32,7 @@
 				<td>${dto.use_point}</td>
 				<td>${dto.save_point}</td>
 				<td>${dto.resv_date}</td>
+				<td>${dto.price }</td>
 				<td>
 					<a href="ADbus_resv_update.do?no=${dto.resv_no}">수정</a> | 
 					<a href="ADbus_resv_delete.do?no=${dto.resv_no}">삭제</a>

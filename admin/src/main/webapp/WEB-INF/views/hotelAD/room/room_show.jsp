@@ -269,7 +269,7 @@
 		<tr align="center"><td>방 평수 : <%=dto.getRoomsize() %></td></tr>
 		<tr align="center"><td>인원 수 : <%=dto.getSleeps() %></td></tr>
 		<tr align="center"><td>상세설명</td></tr>
-		<tr align="center"><td><textarea rows="10" cols="60" readonly><%=dto.getItem() %></textarea></td></tr>
+		<tr align="center"><td><textarea rows="5" cols="30" readonly><%=dto.getItem() %></textarea></td></tr>
 		<tr align="center"><td><a href="ADroom_update.do?no=<%=dto.getRoom_no()%>">수정</a> | 
 						<a href="ADroom_delete.do?no=<%=dto.getRoom_no()%>">삭제</a></td></tr>
 	</table>

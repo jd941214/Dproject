@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import team.Dproject.main.model.MemberDTO;
 import team.Dproject.main.model.busDTO;
 import team.Dproject.main.model.bus_loadDTO;
 import team.Dproject.main.model.bus_resvDTO;
@@ -24,6 +26,7 @@ import team.Dproject.main.service.BusMapper;
 import team.Dproject.main.service.Bus_loadMapper;
 import team.Dproject.main.service.Bus_resvMapper;
 import team.Dproject.main.service.Bus_stationMapper;
+import team.Dproject.main.service.MemberMapper;
 
 /**
  * Handles requests for the application home page.
@@ -40,11 +43,11 @@ public class BADController {
 	private Bus_loadMapper bus_loadMapper;
 	@Autowired
 	private Bus_resvMapper bus_resvMapper;
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	@Autowired
+	private MemberMapper memberMapper;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -53,9 +56,8 @@ public class BADController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
-		//return "home";
-		return "SuperAD/SAD_main";
+		session.setAttribute("MNUM", 0);
+		return "home";
 	}
 	
 
@@ -213,11 +215,19 @@ public class BADController {
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.GET)
-	public String bus_load_insert() {
-		return "busAD/bus_load/bus_load_insert";
+	public ModelAndView bus_load_insert() {
+		List<busDTO> list = busMapper.listBus();
+		List<bus_stationDTO> list2 = bus_stationMapper.listBus_station();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("busAD/bus_load/bus_load_insert");
+		mav.addObject("bus_list", list);
+		mav.addObject("bus_station_list", list2);
+		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.POST)
-	public String bus_load_insertOK(HttpServletRequest req, bus_loadDTO dto)  {
+	public String bus_load_insertOK(HttpServletRequest req, bus_loadDTO dto,HttpSession session)  {
+		Integer MNUM=(Integer)session.getAttribute("MNUM");
+		dto.setMember_no(MNUM);
 		int res=bus_loadMapper.insertBus_load(dto);
 		String msg = null, url = null;
 		if (res > 0) {
@@ -274,17 +284,39 @@ public class BADController {
 	@RequestMapping(value="/ADbus_resv_list.do" )
 	public ModelAndView bus_resv_list() {
 		List<bus_resvDTO> list = bus_resvMapper.listBus_resv();
+		for(bus_resvDTO dto : list){
+			bus_loadDTO price=bus_loadMapper.getBus_load(String.valueOf(dto.getRoad_no()));
+			dto.setPrice(price.getPrice());
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_resv/bus_resv_list");
 		mav.addObject("list", list);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.GET)
-	public String bus_resv_insert() {
-		return "busAD/bus_resv/bus_resv_insert";
+	public ModelAndView bus_resv_insert(HttpServletRequest req) {
+		bus_loadDTO dto=bus_loadMapper.getBus_load(req.getParameter("no"));
+		List<MemberDTO> mlist=memberMapper.memberList();
+		
+		String a=dto.getArrival();
+		String b=dto.getDeparture();
+		bus_stationDTO c=bus_stationMapper.getBus_station(a);
+		String temp=c.getStation_name();
+		dto.setArrival(temp);
+		c=bus_stationMapper.getBus_station(b);
+		temp=c.getStation_name(); 
+		dto.setDeparture(temp);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("busAD/bus_resv/bus_resv_insert");
+		mav.addObject("dto", dto);
+		mav.addObject("mlist", mlist);
+		return mav;
 	}
 	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.POST)
-	public String bus_resv_insertOK(HttpServletRequest req, bus_resvDTO dto)  {
+	public String bus_resv_insertOK(HttpServletRequest req, bus_resvDTO dto, HttpSession session)  {
+		Integer MNUM=(Integer)session.getAttribute("MNUM");
+		dto.setMember_no(MNUM);
 		int res=bus_resvMapper.insertBus_resv(dto);
 		String msg = null, url = null;
 		if (res > 0) {

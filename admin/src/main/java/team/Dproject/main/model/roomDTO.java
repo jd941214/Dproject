@@ -5,12 +5,6 @@ public class roomDTO {
 	private int hotel_no;
 	private String name;
 	private int roomsize;
-	public int getRoomsize() {
-		return roomsize;
-	}
-	public void setRoomsize(int roomsize) {
-		this.roomsize = roomsize;
-	}
 	private int sleeps;
 	private String item;
 	private String filename;
@@ -19,6 +13,12 @@ public class roomDTO {
 	private int price;
 	
 	
+	public int getRoomsize() {
+		return roomsize;
+	}
+	public void setRoomsize(int roomsize) {
+		this.roomsize = roomsize;
+	}
 	
 	public String getRoom_no() {
 		return room_no;

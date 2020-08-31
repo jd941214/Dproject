@@ -34,7 +34,7 @@
 						<td>${dto.joindate}</td>
 						<td>${dto.position}</td>
 						<td>
-							<a href = "">관리중인 버스</a> |
+							<a href = "ADBADbus_list.do">관리중인 버스</a> |
 							<a href = "ADmember_edit.do?id=${dto.id}">수정</a> |
 							<a href = "ADmember_delete.do?id=${dto.id}">삭제</a>
 						</td>

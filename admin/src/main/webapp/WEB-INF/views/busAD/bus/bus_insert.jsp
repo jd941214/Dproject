@@ -6,7 +6,12 @@
 		<form action="ADbus_insert.do" method="post">
 			<table width="100%">
 				<tr>
-					<td>버스등급 : <input type="text" name="grade"></td>
+					<td>버스등급 : 
+						<select name="grade">
+							<option value="일반">일반</option>
+							<option value="우등">우등</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td>버스좌석수 : <input type="text" name="seat"></td>
