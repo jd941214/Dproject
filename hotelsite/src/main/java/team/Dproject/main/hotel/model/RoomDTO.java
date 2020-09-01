@@ -1,7 +1,7 @@
 package team.Dproject.main.hotel.model;
 
 public class RoomDTO {
-	private int room_no;
+	private String room_no;
 	private int hotel_no; 
 	private String name;
 	private int roomsize;
@@ -10,11 +10,13 @@ public class RoomDTO {
 	private String filename; 
 	private int filesize;
 	private int price;
+	private int rooms;
 	
-	public int getRoom_no() {
+	
+	public String getRoom_no() {
 		return room_no;
 	}
-	public void setRoom_no(int room_no) {
+	public void setRoom_no(String room_no) {
 		this.room_no = room_no;
 	}
 	public int getHotel_no() {
@@ -64,6 +66,12 @@ public class RoomDTO {
 	}
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public int getRooms() {
+		return rooms;
+	}
+	public void setRooms(int rooms) {
+		this.rooms = rooms;
 	}
 	
 	

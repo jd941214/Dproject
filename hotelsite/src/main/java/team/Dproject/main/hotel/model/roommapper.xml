@@ -4,9 +4,9 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.Dproject.hotel.main.model">
 	<insert id="insertRoom" parameterType="roomDTO">
-		insert into room values(room_seq.nextval,
+		insert into room values(#{room_no},
 		#{hotel_no}, #{name}, #{roomsize}, #{sleeps}, 
-		#{item}, #{filename}, #{filesize}, #{price})
+		#{item}, #{filename}, #{filesize}, #{price}, #{rooms})
 	</insert>
 	<select id="listRoom" resultType="roomDTO">
 		select * from room order by room_no desc
@@ -14,7 +14,7 @@
 	<select id="listRoom2" resultType="roomDTO" parameterType="int">
 		select * from room where hotel_no = #{hotel_no} order by room_no desc
 	</select>
-	<select id="getRoom" parameterType="int" resultType="roomDTO">
+	<select id="getRoom" parameterType="String" resultType="roomDTO">
 		select * from room where room_no = #{room_no}
 	</select>
 	
@@ -25,4 +25,11 @@
     <update id="updateRoom" parameterType="roomDTO">
     	update room set hotel_no=#{hotel_no}, name=#{name}, roomsize=#{roomsize}, sleeps=#{sleeps}, item=#{item}, filename=#{filename}, filesize=#{filesize} where room_no=#{room_no}
     </update>
+    
+    <insert id="seqUP" >
+    	insert into seq values(room_seq.nextval)
+    </insert>
+    <select id="seqGET" resultType="int">
+    	select MAX(seq) from seq
+    </select>
 </mapper>
