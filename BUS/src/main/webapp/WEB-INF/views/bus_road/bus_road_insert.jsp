@@ -7,13 +7,15 @@
 <%@ include file="../top.jsp" %>
 	<div align="center">
 		<form action="bus_road_insert.do" method="post">
-		
+			
 			<table width="50%" border="1">
 				<tr>
 					<td>버스번호:
 						<c:set var="loop_flag" value="false"/>
 						<select name="bus_no">
-							
+								<c:if test="${empty bus_no_list}">
+								<option>사용가능한 버스가 없습니다</option>
+								</c:if>
 								<c:forEach var="dto" items="${bus_no_list}">
 									<option value="${dto.bus_no}">${dto.bus_no}</option>
 								</c:forEach>

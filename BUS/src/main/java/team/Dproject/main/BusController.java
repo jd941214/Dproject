@@ -2,7 +2,6 @@ package team.Dproject.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,6 +27,7 @@ import team.Dproject.main.model.BusRoadDTO;
 import team.Dproject.main.model.BusStationDTO;
 import team.Dproject.main.model.Bus_BusRoadDTO;
 import team.Dproject.main.model.MemberDTO;
+import team.Dproject.main.model.Member_BusRoadDTO;
 import team.Dproject.main.service.BusMapper;
 import team.Dproject.main.service.BusResvMapper;
 import team.Dproject.main.service.BusRoadMapper;
@@ -461,22 +461,26 @@ public class BusController {
 		@RequestMapping(value="/bus_road_list.do" )
 		public ModelAndView bus_road_list() {
 			List<BusRoadDTO> list = busRoadMapper.listBus_road();
+			
 			for(BusRoadDTO dto : list){
 				BusStationDTO to=busStationMapper.getBus_station(String.valueOf((dto.getArrival())));
 				dto.setArrival(to.getStation_name());
 				BusStationDTO to1=busStationMapper.getBus_station(String.valueOf((dto.getDeparture())));
 				dto.setDeparture((to1.getStation_name()));
+				
 			}
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_list");
 			mav.addObject("listBus_road", list);
+			
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_insert(HttpServletRequest req) {
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
 			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
-		
+	
+			
 			ModelAndView mav = new ModelAndView();
 			
 			mav.addObject("bus_no_list",bus_no_list);
@@ -487,11 +491,14 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.POST)
 		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String arrival,@RequestParam String departure)  {
-			//HttpSession session=req.getSession();
-			//session.getAttribute("sedto");
+
+			HttpSession session = req.getSession();
+			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
 			
-			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));
-			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));
+			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int 형값 을 string 형으로 변경 작업(출발지 한글로 표시하기위해)
+			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int 형값 을 string 형으로 변경 작업(도착지 한글로 표시위해)
+			dto.setMember_no(mdto.getMember_no());
+			
 			int res=busRoadMapper.insertBus_road(dto);
 			String msg = null, url = null;
 			if (res > 0) {

@@ -7,7 +7,7 @@
     	select * from bus_road order by road_no
     </select>
     <insert id="insertBus_road" parameterType="BusRoadDTO">
-    	insert into bus_road values(bus_road_seq.nextval,#{bus_no},1,#{arrival},#{departure},#{price},#{arr_time},#{tot_time})
+    	insert into bus_road values(bus_road_seq.nextval,#{bus_no},#{member_no},#{arrival},#{departure},#{price},#{arr_time},#{tot_time})
     </insert>
     <delete id="deleteBus_road" parameterType="String">
     	delete from bus_road where road_no=#{no}
@@ -25,6 +25,9 @@
     <select id="bus_no_list_null" resultType="Bus_BusRoadDTO"> <!-- 사용중인 bus_no 값제외하고 출력 -->
     	select A.bus_no from bus A left outer join bus_road B on A.bus_no=B.bus_no where B.bus_no is null
     </select>
+    <select id="bus_road_member_name" resultType="Member_BusRoadDTO" parameterType="int">
+		select name from member  full outer join bus_road on member.member_no=bus_road.member_no where where bus_road.member_no=#{member_no}
+	</select>
 </mapper>
 
     
