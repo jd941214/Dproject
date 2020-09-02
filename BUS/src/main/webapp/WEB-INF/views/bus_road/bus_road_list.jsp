@@ -27,7 +27,7 @@
 				<th>수정/삭제</th>
 			</tr> 
 			<c:if test="${empty listBus_road}">
-				<tr>
+				<tr>S
 					<td colspan="9">등록된 노선이 없습니다.</td>
 				</tr>	
 			</c:if>
