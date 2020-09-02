@@ -474,20 +474,15 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_insert(HttpServletRequest req) {
-			List<BusDTO> bus_list = busMapper.listBus(); //bus_no 받아오기
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
-			List<BusRoadDTO> road_list = busRoadMapper.listBus_road(); 
 			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
 		
 			ModelAndView mav = new ModelAndView();
 			
-			mav.setViewName("bus_road/bus_road_insert");
-			mav.addObject("bus_list",bus_list);
-			mav.addObject("road_list",road_list);
 			mav.addObject("bus_no_list",bus_no_list);
-			
 			mav.addObject("bus_station_list",bus_station_list);
-		
+			mav.setViewName("bus_road/bus_road_insert");
+			
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.POST)
