@@ -9,20 +9,31 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-x.y.z.js"></script>  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>bus_main()</title>
+<title>bus_main</title>
 </head>
 <body>
+	<c:set var = "member_no" value = "${sedto.member_no}"/>
 	<div align="center">
 		<table border="1" width="800" height="600">
 			<tr align="center">
+				
+				<c:if test="${empty sedto}">
+					<td><a href="member_login.do">로그인</a>/<a href="member_input.do">회원가입</a></td>
+				</c:if> 
+				<c:if test="${not empty sedto}">
+					<td><a href="member_logout.do">로그아웃</a>/<a href="member_mypage.do">마이페이지</a></td>
+				</c:if>
 				<td><a href="bus_user_resv_lookup.do">배자정보 조회  및 예약</a></td>
 				<td><a href="#">예약내역</a></td>
 				<td><a href="bus_station_info.do">터미널 정보</a></td>
-				<td><a href="bus_insert.do">버스등록</a>/<a href="bus_list.do">버스리스트</a></td>
-				<td><a href="bus_station_insert.do">버스정류소 등록</a>/<a href="bus_station_list.do">버스정류소 리스트</a></td>
-				<td><a href="bus_road_insert.do">버스노선 등록</a>/<a href="bus_road_list.do">버스노선 리스트</a></td>
-				<td><a href="bus_resv_insert.do">버스예약 등록</a>/<a href="bus_resv_list.do">버스예약 리스트</a></td>
+				
+				<c:if test="${sedto.position==0 || sedto.position==1}">
+					<td><a href="bus_insert.do">버스등록</a>/<a href="bus_list.do">버스리스트</a></td>
+					<td><a href="bus_station_insert.do">버스정류소 등록</a>/<a href="bus_station_list.do">버스정류소 리스트</a></td>
+					<td><a href="bus_road_insert.do">버스노선 등록</a>/<a href="bus_road_list.do">버스노선 리스트</a></td>
+					<td><a href="bus_resv_insert.do">버스예약 등록</a>/<a href="bus_resv_list.do">버스예약 리스트</a></td>
+				</c:if>
 			</tr>
 			<tr height="70%" align="center">
-				<td colspan="7">
+				<td colspan="8">
 

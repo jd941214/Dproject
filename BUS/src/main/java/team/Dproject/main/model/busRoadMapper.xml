@@ -15,9 +15,16 @@
     <select id="getBus_road" parameterType="String" resultType="BusRoadDTO">
     	select * from bus_road where road_no=#{no}
     </select>
+    <select id="getBus_road_plus" parameterType="String" resultType="BusRoadDTO">
+    	select bus_no from bus_road where road_no=#{no}
+    </select>
     <update id="updateBus_road" parameterType="BusRoadDTO">
     	update bus_road set bus_no=#{bus_no},member_no=#{member_no},arrival=#{arrival}, departure=#{departure}, price=#{price}, arr_time=#{arr_time}, tot_time=#{tot_time} where road_no=#{road_no}
     </update>
+    
+    <select id="bus_no_list_null" resultType="Bus_BusRoadDTO"> <!-- 사용중인 bus_no 값제외하고 출력 -->
+    	select A.bus_no from bus A left outer join bus_road B on A.bus_no=B.bus_no where B.bus_no is null
+    </select>
 </mapper>
 
     

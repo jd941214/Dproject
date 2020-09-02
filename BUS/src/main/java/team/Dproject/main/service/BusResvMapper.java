@@ -82,7 +82,7 @@ public class BusResvMapper {
 	   return sqlSession.selectOne("resv_user_seat_select",road_no);
 	   }
 	   
-	   public int insertBus_resv_user(BusResvDTO dto){
+	   public int insertBus_resv_user(BusResvDTO dto){//bus_Resv 테이블 insert 후 결제하기 위해
 		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
 		   map.put("bus_no",dto.getBus_no());
 		   map.put("road_no",dto.getRoad_no());
