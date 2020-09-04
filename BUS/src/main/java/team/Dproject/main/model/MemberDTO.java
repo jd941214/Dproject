@@ -15,6 +15,7 @@ public class MemberDTO {
 	private int sex;
 	private int point;
 	private String joindate;
+	
 	public int getMember_no() {
 		return member_no;
 	}

@@ -10,6 +10,7 @@ import team.Dproject.main.model.BusRoadDTO;
 import team.Dproject.main.model.Bus_BusRoadDTO;
 import team.Dproject.main.model.Member_BusRoadDTO;
 
+
 @Service
 public class BusRoadMapper {
 	@Autowired
@@ -17,13 +18,17 @@ public class BusRoadMapper {
 	
 	 public List<BusRoadDTO> listBus_road(){
 	      return sqlSession.selectList("listBus_road");
-  }
+	 }
 	 public List<Bus_BusRoadDTO> bus_no_list_null(){//사용중인 bus_no값 제외하고 출력
 		 return sqlSession.selectList("bus_no_list_null");
 	 }
-	 public Member_BusRoadDTO bus_road_member_name(int member_no){//bus_road_list 에 member_no값을 name 으로 바꾸기
-		 return sqlSession.selectOne("bus_road_member_name",member_no);
+	 
+	 public List<Member_BusRoadDTO> bus_road_member_list(){
+		 
+		 return sqlSession.selectList("bus_road_member_list");
 	 }
+	
+
   public int insertBus_road(BusRoadDTO dto){
 	  
 	  return sqlSession.insert("insertBus_road",dto);

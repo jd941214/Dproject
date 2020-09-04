@@ -42,5 +42,6 @@
 	<delete id = "deleteMember" parameterType = "Integer">
 		delete from member where member_no = #{member_no}
 	</delete>
-
+	
+	
 </mapper>

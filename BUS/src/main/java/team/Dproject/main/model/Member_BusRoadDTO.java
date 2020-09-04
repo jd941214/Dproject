@@ -22,6 +22,7 @@ public class Member_BusRoadDTO {
 	private int price;
 	private int arr_time;
 	private int tot_time;
+	
 	public int getMember_no() {
 		return member_no;
 	}

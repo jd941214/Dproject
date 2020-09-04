@@ -11,7 +11,17 @@
 					<td>버스번호 : <input type="text" name="bus_no" value="${bus.bus_no}" readonly></td>
 				</tr>
 				<tr>
-					<td>버스등급 : <input type="text" name="grade" value="${bus.grade}"></td>
+					<td>버스등급 : 
+					<select name="grade">
+						<option>${bus.grade}</option>
+						<c:if test="${bus.grade=='일반' }"><!-- 버스 등급이 일반인 경우 우등 출력 추가 -->
+							<option value="우등">우등</option>
+						</c:if>
+						<c:if test="${bus.grade=='우등' }"><!-- 버스 등급이 우등인 경우 일반출력 추가 -->
+							<option value="일반">일반</option>
+						</c:if>
+					</select>
+					
 				</tr>
 				<tr>
 					<td>버스좌석수 : <input type="text" name="seat" value="${bus.seat}"></td>

@@ -56,8 +56,8 @@ public class BusController {
 	
 	}
 	
-	//·Î±×ÀÎ,È¸¿ø°¡ÀÔ----------------------------------------------------------------------------------
-	@RequestMapping(value = "/member_login.do") //·Î±×ÀÎ ÆäÀÌÁö ÀÌµ¿ ÈÄ ÄíÅ°°ª ÀúÀå
+	//ë¡œê·¸ì¸,íšŒì›ê°€ì…----------------------------------------------------------------------------------
+	@RequestMapping(value = "/member_login.do") //ë¡œê·¸ì¸ í˜ì´ì§€ ì´ë™ í›„ ì¿ í‚¤ê°’ ì €ì¥
 	public String MemberLogin(HttpServletRequest req){
 		Cookie[] cks = req.getCookies();
 		String value = null;
@@ -78,7 +78,7 @@ public class BusController {
 		
 	}
 	
-	@RequestMapping(value = "/member_login_ok.do")//·Î±×ÀÎ ¿Ï·á
+	@RequestMapping(value = "/member_login_ok.do")//ë¡œê·¸ì¸ ì™„ë£Œ
 	public String MemberLoginOk(HttpServletRequest req, HttpServletResponse resp){
 		String id = req.getParameter("id");
 		String passwd = req.getParameter("passwd");
@@ -99,17 +99,17 @@ public class BusController {
 			}
 			resp.addCookie(ck);
 			session.setAttribute("sedto", dto);
-			msg = dto.getName() + "´Ô È¯¿µÇÕ´Ï´Ù. ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+			msg = dto.getName() + "ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤. ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 			url = "bus_main.do";
 			break;
 			
 		case 1 :
-			msg = "ºñ¹Ğ¹øÈ£¸¦ Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä";
+			msg = "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ ì£¼ì„¸ìš”";
 			url = "member_login.do";
 			break;
 			
 		case 2 :
-			msg = "¾ø´Â ¾ÆÀÌµğ ÀÔ´Ï´Ù. ´Ù½Ã È®ÀÎÇÏ½Ã°í ÀÔ·ÂÇØ ÁÖ¼¼¿ä";
+			msg = "ì—†ëŠ” ì•„ì´ë”” ì…ë‹ˆë‹¤. ë‹¤ì‹œ í™•ì¸í•˜ì‹œê³  ì…ë ¥í•´ ì£¼ì„¸ìš”";
 			url = "member_login.do";
 			break;
 		
@@ -121,23 +121,23 @@ public class BusController {
 		
 	}
 	
-	@RequestMapping(value = "/member_logout.do") //·Î±×¾Æ¿ô ÆäÀÌÁö
+	@RequestMapping(value = "/member_logout.do") //ë¡œê·¸ì•„ì›ƒ í˜ì´ì§€
 	public String MemberLogout(HttpServletRequest req){
 		HttpSession session = req.getSession();
 		session.removeAttribute("sedto");
-		req.setAttribute("msg", "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù. ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+		req.setAttribute("msg", "ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤. ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
 		req.setAttribute("url", "bus_main.do");
 		return "message";
 		
 	}
 	
 	
-	@RequestMapping(value = "/member_input.do")//È¸¿ø °¡ÀÔ ÆäÀÌÁö ÀÌµ¿
+	@RequestMapping(value = "/member_input.do")//íšŒì› ê°€ì… í˜ì´ì§€ ì´ë™
 	public String MemberInput(){
 		return "/member/member_input";
 		
 	}
-	@RequestMapping(value = "/member_input_ok.do")//È¸¿ø °¡ÀÔ ¿Ï·á
+	@RequestMapping(value = "/member_input_ok.do")//íšŒì› ê°€ì… ì™„ë£Œ
 	public String MemberInputOk(HttpServletRequest req, MemberDTO dto){
 		boolean checkMember = memberMapper.checkMember(dto);
 		boolean isId;
@@ -147,24 +147,24 @@ public class BusController {
 			if(isId){
 				int res = memberMapper.insertMember(dto);
 				if(res > 0){
-					msg = "È¸¿ø°¡ÀÔ¼º°ø! ·Î±×ÀÎ ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+					msg = "íšŒì›ê°€ì…ì„±ê³µ! ë¡œê·¸ì¸ í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 					url = "member_login.do";
 					
 				}else{
-					msg = "È¸¿ø°¡ÀÔ½ÇÆĞ! ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+					msg = "íšŒì›ê°€ì…ì‹¤íŒ¨! ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 					url = "bus_main.do";
 					
 				}
 				
 			}else{
-				msg = "Áßº¹µÈ ¾ÆÀÌµğ°¡ ÀÖ½À´Ï´Ù. ´Ù¸¥ ¾ÆÀÌµğ·Î °¡ÀÔÇØ ÁÖ¼¼¿ä";
+				msg = "ì¤‘ë³µëœ ì•„ì´ë””ê°€ ìˆìŠµë‹ˆë‹¤. ë‹¤ë¥¸ ì•„ì´ë””ë¡œ ê°€ì…í•´ ì£¼ì„¸ìš”";
 				url = "member_input.do";
 				
 			}
 			
 			
 		}else{
-			msg = "¾ÆÀÌµğ°¡ ³Ê¹« ¸¹½À´Ï´Ù. ·Î±×ÀÎ ÇØÁÖ¼¼¿ä.";
+			msg = "ì•„ì´ë””ê°€ ë„ˆë¬´ ë§ìŠµë‹ˆë‹¤. ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”.";
 			url = "member_login.do";
 			
 		}
@@ -174,14 +174,14 @@ public class BusController {
 		
 	}
 	
-	@RequestMapping(value = "/member_search.do")//¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ Ã£±â ÆäÀÌÁö ÀÌµ¿
+	@RequestMapping(value = "/member_search.do")//ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° í˜ì´ì§€ ì´ë™
 	public String MemberSearch(HttpServletRequest req){
 		String mode = req.getParameter("mode");
 		req.setAttribute("mode", mode);
 		return "/member/member_search";
 		
 	}
-	@RequestMapping(value = "/member_search_ok.do")//¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ Ã£±â ¿Ï·á
+	@RequestMapping(value = "/member_search_ok.do")//ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° ì™„ë£Œ
 	public String MemberSearchOk(HttpServletRequest req){
 		String mode = req.getParameter("mode");
 		String searchString = req.getParameter("searchString");
@@ -202,13 +202,13 @@ public class BusController {
 		
 	}
 	
-	@RequestMapping(value = "/member_mypage.do") //¸¶ÀÌÆäÀÌÁö     
+	@RequestMapping(value = "/member_mypage.do") //ë§ˆì´í˜ì´ì§€     
 	public String MemberMypage(HttpServletRequest req){
 		return "/member/mypage";
 		
 	}
 	
-	@RequestMapping(value = "/member_edit_ok.do")//¼öÁ¤¿Ï·á
+	@RequestMapping(value = "/member_edit_ok.do")//ìˆ˜ì •ì™„ë£Œ
 	public String MemberEditOk(HttpServletRequest req, MemberDTO dto){
 		String msg = null, url = null, mode = req.getParameter("mode");
 		if(mode == null){
@@ -221,22 +221,22 @@ public class BusController {
 			session.removeAttribute("sedto");
 			session.setAttribute("sedto", dto);
 			if(mode.equals("mypage")){
-				msg = "È¸¿ø¼öÁ¤¼º°ø! ¸¶ÀÌÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›ìˆ˜ì •ì„±ê³µ! ë§ˆì´í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "member_mypage.do";
 				
 			}else{
-				msg = "È¸¿ø¼öÁ¤¼º°ø! È¸¿ø¸ñ·ÏÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›ìˆ˜ì •ì„±ê³µ! íšŒì›ëª©ë¡ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "member_list.do";
 				
 			}
 			
 		}else{
 			if(mode.equals("mypage")){
-				msg = "È¸¿ø¼öÁ¤½ÇÆĞ! ¸¶ÀÌÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›ìˆ˜ì •ì‹¤íŒ¨! ë§ˆì´í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "member_mypage.do";
 				
 			}else{
-				msg = "È¸¿ø¼öÁ¤½ÇÆĞ! È¸¿ø¼öÁ¤ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›ìˆ˜ì •ì‹¤íŒ¨! íšŒì›ìˆ˜ì •í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "member_edit.do?id=" + dto.getId();
 				
 			}
@@ -257,10 +257,10 @@ public class BusController {
 	
 	
 	
-	//¹ö½º°ü·Ã---------------------------------------------------------------
+	//ë²„ìŠ¤ê´€ë ¨---------------------------------------------------------------
 		
 		
-		//¹ö½º---------------------------------------------------------------
+		//ë²„ìŠ¤---------------------------------------------------------------
 		@RequestMapping(value="/bus_list.do" )
 		public ModelAndView bus_list() {
 			List<BusDTO> list = busMapper.listBus();
@@ -281,10 +281,10 @@ public class BusController {
 			int res=busMapper.insertBus(dto);
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¹ö½ºµî·Ï ¼º°ø";
+				msg = "ë²„ìŠ¤ë“±ë¡ ì„±ê³µ";
 				url = "bus_list.do";
 			} else {
-				msg = "¹ö½ºµî·Ï ½ÇÆĞ";
+				msg = "ë²„ìŠ¤ë“±ë¡ ì‹¤íŒ¨";
 				url = "bus_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -296,10 +296,10 @@ public class BusController {
 			int res=busMapper.deletetBus(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¹ö½º»èÁ¦ ¼º°ø";
+				msg = "ë²„ìŠ¤ì‚­ì œ ì„±ê³µ";
 				url = "bus_list.do";
 			} else {
-				msg = "¹ö½º»èÁ¦ ½ÇÆĞ";
+				msg = "ë²„ìŠ¤ì‚­ì œ ì‹¤íŒ¨";
 				url = "bus_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -317,10 +317,10 @@ public class BusController {
 			int res=busMapper.updateBus(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¹ö½º¼öÁ¤ ¼º°ø";
+				msg = "ë²„ìŠ¤ìˆ˜ì • ì„±ê³µ";
 				url = "bus_list.do";
 			} else {
-				msg = "¹ö½º¼öÁ¤ ½ÇÆĞ";
+				msg = "ë²„ìŠ¤ìˆ˜ì • ì‹¤íŒ¨";
 				url = "bus_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -328,7 +328,7 @@ public class BusController {
 			return "message";
 		}
 		
-		@RequestMapping(value = "/member_withdraw.do")//È¸¿ø Å»Åğ
+		@RequestMapping(value = "/member_withdraw.do")//íšŒì› íƒˆí‡´
 		public String MemberWithdraw(HttpServletRequest req){
 			HttpSession session = req.getSession();
 			MemberDTO dto = (MemberDTO)session.getAttribute("sedto");
@@ -336,11 +336,11 @@ public class BusController {
 			String msg = null, url = null;
 			if(res > 0){
 				session.removeAttribute("sedto");
-				msg = "È¸¿øÅ»Åğ¼º°ø! ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›íƒˆí‡´ì„±ê³µ! ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "bus_main.do";
 				
 			}else{
-				msg = "È¸¿øÅ»Åğ½ÇÆĞ! ¸ŞÀÎÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.";
+				msg = "íšŒì›íƒˆí‡´ì‹¤íŒ¨! ë©”ì¸í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.";
 				url = "bus_main.do";
 				
 			}
@@ -350,7 +350,7 @@ public class BusController {
 			
 		}
 		
-		//ÅÍ¹Ì³Î---------------------------------------------------------------
+		//í„°ë¯¸ë„---------------------------------------------------------------
 		@RequestMapping("/bus_station_list.do")
 		public ModelAndView bus_station_list() {
 			List<BusStationDTO> list = busStationMapper.listBus_station();
@@ -384,10 +384,10 @@ public class BusController {
 			
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¹ö½ºÁ¤·ù¼Ò ¼º°ø";
+				msg = "ë²„ìŠ¤ì •ë¥˜ì†Œ ì„±ê³µ";
 				url = "bus_station_list.do";
 			} else {
-				msg = "¹ö½ºÁ¤·ù¼Ò ½ÇÆĞ";
+				msg = "ë²„ìŠ¤ì •ë¥˜ì†Œ ì‹¤íŒ¨";
 				url = "bus_station_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -400,10 +400,10 @@ public class BusController {
 			int res=busStationMapper.deletetBus_station((req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "ÅÍ¹Ì³Î»èÁ¦ ¼º°ø";
+				msg = "í„°ë¯¸ë„ì‚­ì œ ì„±ê³µ";
 				url = "bus_station_list.do";
 			} else {
-				msg = "ÅÍ¹Ì³Î»èÁ¦ ½ÇÆĞ";
+				msg = "í„°ë¯¸ë„ì‚­ì œ ì‹¤íŒ¨";
 				url = "bus_station_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -436,7 +436,7 @@ public class BusController {
 				dto.setFilename(filename);
 				dto.setFilesize(filesize);
 			}else{
-				dto.setFilename("ÆÄÀÏ¾øÀ½");
+				dto.setFilename("íŒŒì¼ì—†ìŒ");
 				dto.setFilesize(0);
 			}
 			
@@ -446,10 +446,10 @@ public class BusController {
 			int res=busStationMapper.updateBus_station(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "ÅÍ¹Ì³Î¼öÁ¤ ¼º°ø";
+				msg = "í„°ë¯¸ë„ìˆ˜ì • ì„±ê³µ";
 				url = "bus_station_list.do";
 			} else {
-				msg = "ÅÍ¹Ì³Î¼öÁ¤ ½ÇÆĞ";
+				msg = "í„°ë¯¸ë„ìˆ˜ì • ì‹¤íŒ¨";
 				url = "bus_station_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -457,28 +457,30 @@ public class BusController {
 			return "message";
 		}
 		
-		//³ë¼±---------------------------------------------------------------
+		//ë…¸ì„ ---------------------------------------------------------------
 		@RequestMapping(value="/bus_road_list.do" )
 		public ModelAndView bus_road_list() {
-			List<BusRoadDTO> list = busRoadMapper.listBus_road();
+			List<Member_BusRoadDTO> listBus_road=busRoadMapper.bus_road_member_list();//ë…¸ì„ ë§Œë“ ì‚¬ëŒ í•œê¸€ë¡œ í‘œì‹œìœ„í•´ member í…Œì´ë¸” bus_roadí…Œì´ë¸” ì¡°ì¸
 			
-			for(BusRoadDTO dto : list){
-				BusStationDTO to=busStationMapper.getBus_station(String.valueOf((dto.getArrival())));
-				dto.setArrival(to.getStation_name());
-				BusStationDTO to1=busStationMapper.getBus_station(String.valueOf((dto.getDeparture())));
-				dto.setDeparture((to1.getStation_name()));
+			for(Member_BusRoadDTO mdto : listBus_road){ //ì¶œë°œì§€ ë„ì°©ì§€ í•œê¸€ë¡œ í‘œì‹œí•˜ëŠ” ì‘ì—…
+				BusStationDTO to=busStationMapper.getBus_station(String.valueOf(mdto.getArrival()));
+				mdto.setArrival(to.getStation_name());
+				BusStationDTO to1=busStationMapper.getBus_station(String.valueOf(mdto.getDeparture()));
+				mdto.setDeparture(to1.getStation_name());
 				
 			}
+			
+		
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_list");
-			mav.addObject("listBus_road", list);
+			mav.addObject("listBus_road",listBus_road);
 			
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_insert(HttpServletRequest req) {
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no ¹Ş¾Æ¿À±â
-			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // »ç¿ëÁßÀÎ bus_no Á¦¿ÜÇÏ°í Ãâ·Â
+			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no ë°›ì•„ì˜¤ê¸°
+			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // ì‚¬ìš©ì¤‘ì¸ bus_no ì œì™¸í•˜ê³  ì¶œë ¥
 	
 			
 			ModelAndView mav = new ModelAndView();
@@ -493,19 +495,19 @@ public class BusController {
 		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String arrival,@RequestParam String departure)  {
 
 			HttpSession session = req.getSession();
-			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//·Î±×ÀÎµÇ¾îÀÖ´Â È¸¿ø Á¤º¸ ºÒ·¯¿À±â
+			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//ë¡œê·¸ì¸ë˜ì–´ìˆëŠ” íšŒì› ì •ë³´ ë¶ˆëŸ¬ì˜¤ê¸°
 			
-			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int Çü°ª À» string ÇüÀ¸·Î º¯°æ ÀÛ¾÷(Ãâ¹ßÁö ÇÑ±Û·Î Ç¥½ÃÇÏ±âÀ§ÇØ)
-			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int Çü°ª À» string ÇüÀ¸·Î º¯°æ ÀÛ¾÷(µµÂøÁö ÇÑ±Û·Î Ç¥½ÃÀ§ÇØ)
+			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int í˜•ê°’ ì„ string í˜•ìœ¼ë¡œ ë³€ê²½ ì‘ì—…(ì¶œë°œì§€ í•œê¸€ë¡œ í‘œì‹œí•˜ê¸°ìœ„í•´)
+			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int í˜•ê°’ ì„ string í˜•ìœ¼ë¡œ ë³€ê²½ ì‘ì—…(ë„ì°©ì§€ í•œê¸€ë¡œ í‘œì‹œìœ„í•´)
 			dto.setMember_no(mdto.getMember_no());
 			
 			int res=busRoadMapper.insertBus_road(dto);
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "³ë¼±µî·Ï ¼º°ø";
+				msg = "ë…¸ì„ ë“±ë¡ ì„±ê³µ";
 				url = "bus_road_list.do";
 			} else {
-				msg = "³ë¼±µî·Ï ½ÇÆĞ";
+				msg = "ë…¸ì„ ë“±ë¡ ì‹¤íŒ¨";
 				url = "bus_road_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -517,10 +519,10 @@ public class BusController {
 			int res=busRoadMapper.deletetBus_road(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "³ë¼±»èÁ¦ ¼º°ø";
+				msg = "ë…¸ì„ ì‚­ì œ ì„±ê³µ";
 				url = "bus_road_list.do";
 			} else {
-				msg = "³ë¼±»èÁ¦ ½ÇÆĞ";
+				msg = "ë…¸ì„ ì‚­ì œ ì‹¤íŒ¨";
 				url = "bus_road_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -531,8 +533,8 @@ public class BusController {
 		public ModelAndView bus_road_update(HttpServletRequest req) {
 			BusRoadDTO dto = busRoadMapper.getBus_road(Integer.parseInt(req.getParameter("no")));
 	
-			List<BusDTO> bus_list = busMapper.listBus(); //bus_no ¹Ş¾Æ¿À±â
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no ¹Ş¾Æ¿À±â
+			List<BusDTO> bus_list = busMapper.listBus(); //bus_no ë°›ì•„ì˜¤ê¸°
+			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no ë°›ì•„ì˜¤ê¸°
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_update");
@@ -552,10 +554,10 @@ public class BusController {
 			int res=busRoadMapper.updateBus_road(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "³ë¼±¼öÁ¤ ¼º°ø";
+				msg = "ë…¸ì„ ìˆ˜ì • ì„±ê³µ";
 				url = "bus_road_list.do";
 			} else {
-				msg = "³ë¼±¼öÁ¤ ½ÇÆĞ";
+				msg = "ë…¸ì„ ìˆ˜ì • ì‹¤íŒ¨";
 				url = "bus_road_list.do";
 			}
 			
@@ -565,7 +567,7 @@ public class BusController {
 			mav.addObject("url",url);
 			return mav;
 		}
-		//¿¹¾à---------------------------------------------------------------
+		//ì˜ˆì•½---------------------------------------------------------------
 		@RequestMapping(value="/bus_resv_list.do" )
 		public ModelAndView bus_resv_list() {
 			List<BusResvDTO> list = busResvMapper.listBus_resv();
@@ -583,10 +585,10 @@ public class BusController {
 			int res=busResvMapper.insertBus_resv(dto);
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¿¹¾àµî·Ï ¼º°ø";
+				msg = "ì˜ˆì•½ë“±ë¡ ì„±ê³µ";
 				url = "bus_resv_list.do";
 			} else {
-				msg = "¿¹¾àµî·Ï ½ÇÆĞ";
+				msg = "ì˜ˆì•½ë“±ë¡ ì‹¤íŒ¨";
 				url = "bus_resv_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -598,10 +600,10 @@ public class BusController {
 			int res=busResvMapper.deletetBus_resv(req.getParameter("no"));
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¿¹¾à»èÁ¦ ¼º°ø";
+				msg = "ì˜ˆì•½ì‚­ì œ ì„±ê³µ";
 				url = "bus_resv_list.do";
 			} else {
-				msg = "¿¹¾à»èÁ¦ ½ÇÆĞ";
+				msg = "ì˜ˆì•½ì‚­ì œ ì‹¤íŒ¨";
 				url = "bus_resv_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -619,10 +621,10 @@ public class BusController {
 			int res=busResvMapper.updateBus_resv(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
-				msg = "¿¹¾à¼öÁ¤ ¼º°ø";
+				msg = "ì˜ˆì•½ìˆ˜ì • ì„±ê³µ";
 				url = "bus_resv_list.do";
 			} else {
-				msg = "¿¹¾à¼öÁ¤ ½ÇÆĞ";
+				msg = "ì˜ˆì•½ìˆ˜ì • ì‹¤íŒ¨";
 				url = "bus_resv_list.do";
 			}
 			req.setAttribute("msg", msg);
@@ -630,9 +632,9 @@ public class BusController {
 			return "message";
 		}
 		
-		//¹ö½º À¯Àú ÆäÀÌÁö--------------------------------------------------
+		//ë²„ìŠ¤ ìœ ì € í˜ì´ì§€--------------------------------------------------
 		
-		//¹ö½º ÅÍ¹Ì³Î Á¤º¸
+		//ë²„ìŠ¤ í„°ë¯¸ë„ ì •ë³´
 		
 		@RequestMapping(value="/bus_station_info.do")
 		public ModelAndView bus_station_info(){
@@ -645,7 +647,7 @@ public class BusController {
 			return mav;
 		}
 		
-		@RequestMapping(value="bus_station_info_detail.do") //¹ö½ºÁ¤·ù¼Ò µğÅ×ÀÏ ÆäÀÌÁö
+		@RequestMapping(value="bus_station_info_detail.do") //ë²„ìŠ¤ì •ë¥˜ì†Œ ë””í…Œì¼ í˜ì´ì§€
 		public ModelAndView bus_station_info_detail(@RequestParam String station_no){
 			BusStationDTO dto =busStationMapper.getBus_station(station_no);
 			
@@ -656,7 +658,7 @@ public class BusController {
 			return mav;
 		}
 		
-		@RequestMapping(value="bus_station_info_map.do") //Áöµµ È®´ë ÆäÀÌÁö
+		@RequestMapping(value="bus_station_info_map.do") //ì§€ë„ í™•ëŒ€ í˜ì´ì§€
 		public ModelAndView bus_station_info_map(){
 			ModelAndView mav =new ModelAndView();
 			
@@ -665,8 +667,8 @@ public class BusController {
 			return mav;
 		}
 		
-		//¹ö½º ³ë¼± Á¶È¸ ¹× ¿¹¾à
-		@RequestMapping(value="bus_user_resv_lookup.do") //¹ö½º Á¶È¸ ¹× ¿¹¾à ¸ŞÀÎ
+		//ë²„ìŠ¤ ë…¸ì„  ì¡°íšŒ ë° ì˜ˆì•½
+		@RequestMapping(value="bus_user_resv_lookup.do") //ë²„ìŠ¤ ì¡°íšŒ ë° ì˜ˆì•½ ë©”ì¸
 		public ModelAndView bus_user_resv_list(){
 			
 			
@@ -677,7 +679,7 @@ public class BusController {
 			
 		}
 		
-		@RequestMapping(value="bus_resv_user_arrival.do", method=RequestMethod.GET) //Ãâ¹ßÁö ¼±ÅÃ ÆäÀÌÁö
+		@RequestMapping(value="bus_resv_user_arrival.do", method=RequestMethod.GET) //ì¶œë°œì§€ ì„ íƒ í˜ì´ì§€
 		public ModelAndView bus_resv_user_arrival(){
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
 			
@@ -686,7 +688,7 @@ public class BusController {
 			mav.addObject("bus_station_list",bus_station_list);
 			return mav;
 		}
-		@RequestMapping(value="bus_resv_user_arrival_select.do")//Ãâ¹ßÁö ¼±ÅÃ ÇÏ±â
+		@RequestMapping(value="bus_resv_user_arrival_select.do")//ì¶œë°œì§€ ì„ íƒ í•˜ê¸°
 		public ModelAndView bus_resv_user_arrival_select(BusStationDTO dto,@RequestParam String arrival) {
 		
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
@@ -705,7 +707,7 @@ public class BusController {
 					}	
 				
 				}
-		@RequestMapping(value="bus_resv_user_arrival.do" ,method =RequestMethod.POST)//Ãâ¹ßÁö ¼±ÅÃÈÄ ¿ø·¡ÆäÀÌÁö
+		@RequestMapping(value="bus_resv_user_arrival.do" ,method =RequestMethod.POST)//ì¶œë°œì§€ ì„ íƒí›„ ì›ë˜í˜ì´ì§€
 		public ModelAndView bus_Resv_user_arrivalOk(HttpServletRequest req,@RequestParam String arrival){
 			ModelAndView mav = new ModelAndView();
 			
@@ -731,7 +733,7 @@ public class BusController {
 		
 	
 		
-		@RequestMapping(value="bus_resv_user_departure.do",method=RequestMethod.GET)//µµÂøÁö ÆäÀÌÁö
+		@RequestMapping(value="bus_resv_user_departure.do",method=RequestMethod.GET)//ë„ì°©ì§€ í˜ì´ì§€
 		public ModelAndView bus_resv_user_departure_select() {
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
 			
@@ -742,7 +744,7 @@ public class BusController {
 				
 				}
 		
-		@RequestMapping(value="bus_resv_user_departure_select.do")//µµÂøÁö ¼±ÅÃ ÇÏ±â
+		@RequestMapping(value="bus_resv_user_departure_select.do")//ë„ì°©ì§€ ì„ íƒ í•˜ê¸°
 		public ModelAndView bus_resv_user_departure_select(BusStationDTO dto,@RequestParam String departure) {
 		
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
@@ -786,7 +788,7 @@ public class BusController {
 			return mav;
 		}
 				
-		@RequestMapping(value="resv_user_arrival_find.do")//Ãâ¹ßÁö °Ë»ö
+		@RequestMapping(value="resv_user_arrival_find.do")//ì¶œë°œì§€ ê²€ìƒ‰
 		public ModelAndView bus_resv_arrival_find(@RequestParam String searchString){
 			ModelAndView mav = new ModelAndView();
 			
@@ -795,7 +797,7 @@ public class BusController {
 			mav.setViewName("/bus_resv_user/bus_resv_user_arrival");
 			return mav;
 		}
-		@RequestMapping(value="resv_user_departure_find.do")//µµÂøÁö °Ë»ö
+		@RequestMapping(value="resv_user_departure_find.do")//ë„ì°©ì§€ ê²€ìƒ‰
 		public ModelAndView bus_resv_departure_find(@RequestParam String searchString){
 			ModelAndView mav= new ModelAndView();
 			
@@ -805,7 +807,7 @@ public class BusController {
 			return mav;
 		}
 		
-		//¹èÂ÷Á¶È¸ list
+		//ë°°ì°¨ì¡°íšŒ list
 		@RequestMapping(value="bus_resv_user_dispatch.do")
 		public ModelAndView bus_user_dispatch(
 				BusRoadDTO dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
@@ -813,7 +815,7 @@ public class BusController {
 				if(mode.equals("oneway")){
 					List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv(arrival,departure,grade);
 					
-					if(grade.equals("ÀüÃ¼")){//grade °¡ ÀüÃ¼ ÀÏ‹š
+					if(grade.equals("ì „ì²´")){//grade ê°€ ì „ì²´ ì¼Â‹Âš
 					dispatch_list=busResvMapper.listDispatch_resv_all(arrival, departure);
 					}
 					
@@ -834,7 +836,7 @@ public class BusController {
 				if(mode.equals("twoway")){
 					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper.listdispatch_resv(arrival, departure, grade);
 					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper.listDispatch_resv_reverse(arrival, departure, grade);
-					if(grade.equals("ÀüÃ¼")){//grade °¡ ÀüÃ¼ ÀÏ‹š
+					if(grade.equals("ì „ì²´")){//grade ê°€ ì „ì²´ ì¼Â‹Âš
 						arr_dispatch_list=busResvMapper.listDispatch_resv_all(arrival, departure);
 						dep_dispatch_list=busResvMapper.listDispatch_resv_all_reverse(arrival, departure);
 						}
@@ -866,7 +868,7 @@ public class BusController {
 				return mav;
 		}
 		
-		//ÁÂ¼® ¼±ÅÃ
+		//ì¢Œì„ ì„ íƒ
 		@RequestMapping(value="bus_resv_user_seat.do")
 		public  ModelAndView bus_resv_user_seat(Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
@@ -881,7 +883,7 @@ public class BusController {
 			return mav;
 		}
 		
-		//°áÁ¦ ÆäÀÌÁö
+		//ê²°ì œ í˜ì´ì§€
 		@RequestMapping(value="bus_resv_user_pay.do")
 		public ModelAndView bus_resv_user_pay(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
@@ -889,9 +891,9 @@ public class BusController {
 			dto.setArrival(arrival);
 			dto.setDeparture(departure);
 			
-			String[] seat = req.getParameterValues("seat");//ÁÂ¼®¼ö ¹è¿­¿¡ ÀúÀå
+			String[] seat = req.getParameterValues("seat");//ì¢Œì„ìˆ˜ ë°°ì—´ì— ì €ì¥
 		
-			int seat_no=seat.length;//ÁÂ¼®¼ö ÀúÀå,Æ¼ÄÏÃÑ°¡°İ ±¸ÇÏ±âÀ§ÇØ
+			int seat_no=seat.length;//ì¢Œì„ìˆ˜ ì €ì¥,í‹°ì¼“ì´ê°€ê²© êµ¬í•˜ê¸°ìœ„í•´
 			
 			mav.addObject("resv_dto",resv_dto);
 			mav.addObject("one_date",one_date);
@@ -903,20 +905,20 @@ public class BusController {
 			return mav;
 		}
 		
-		//°áÁ¦¿Ï·á (bus_resv Å×ÀÌºí¿¡ ÀúÀå)
+		//ê²°ì œì™„ë£Œ (bus_resv í…Œì´ë¸”ì— ì €ì¥)
 		@RequestMapping(value="bus_resv_user_payok.do")
 		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no){
 			ModelAndView mav=new ModelAndView();
 			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
-			String[] seat = req.getParameterValues("seat");//ÁÂ¼®¼ö ¹è¿­¿¡ ÀúÀå
-			String[] seats=new String[seat.length];//ÁÂ¼®¼ö¸¦ for¹® µ¹¸±‹š setter ¸Ş¼Òµå ÀúÀå ¿ëµµ
-			int seat_no=seat.length;//ÁÂ¼®¼ö ÀúÀå,Æ¼ÄÏÃÑ°¡°İ ±¸ÇÏ±âÀ§ÇØ
-			//ÁÂ¼®¹øÈ£ ±¸ÇÏ±â
+			String[] seat = req.getParameterValues("seat");//ì¢Œì„ìˆ˜ ë°°ì—´ì— ì €ì¥
+			String[] seats=new String[seat.length];//ì¢Œì„ìˆ˜ë¥¼ forë¬¸ ëŒë¦´Â‹Âš setter ë©”ì†Œë“œ ì €ì¥ ìš©ë„
+			int seat_no=seat.length;//ì¢Œì„ìˆ˜ ì €ì¥,í‹°ì¼“ì´ê°€ê²© êµ¬í•˜ê¸°ìœ„í•´
+			//ì¢Œì„ë²ˆí˜¸ êµ¬í•˜ê¸°
 			for(int i=0; i<seat.length; i++){
 				dto.setSeat(seat[i]);
 				seats[i]=dto.getSeat();
 			}
-			String result_seat = String.join("/",seats); //seats ¹è¿­ÀÇ ÀÚ¸® ¹øÈ£¸¦ '/' ±âÁØÀ¸·Î ³ª´©¾î¼­ ÀúÀå
+			String result_seat = String.join("/",seats); //seats ë°°ì—´ì˜ ìë¦¬ ë²ˆí˜¸ë¥¼ '/' ê¸°ì¤€ìœ¼ë¡œ ë‚˜ëˆ„ì–´ì„œ ì €ì¥
 			
 			dto.setBus_no(rdto.getBus_no());
 			dto.setResv_date(one_date);
@@ -933,7 +935,3 @@ public class BusController {
 		}
 		
 	}
-			
-	
-	
-
