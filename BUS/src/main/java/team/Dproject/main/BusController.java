@@ -493,7 +493,7 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.POST)
-		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam int bus_no,@RequestParam int tot_time,@RequestParam String arrival,@RequestParam String departure)  {
+		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String plus,@RequestParam int bus_no,@RequestParam int tot_time,@RequestParam String arrival,@RequestParam String departure)  {
 			BusDTO bdto = busMapper.getBus(bus_no);
 			
 			
@@ -511,9 +511,13 @@ public class BusController {
 				int price=8000;
 				dto.setPrice(price*tot_time);	
 			}
-			
-			
-			int res=busRoadMapper.insertBus_road(dto);
+			int res;
+			if(plus.equals("plural")){
+				String dip_time=req.getParameter("dip_time");
+				 res=busRoadMapper.insertBus_road(dto);
+			}else{
+				 res=busRoadMapper.insertBus_road(dto);
+			}
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "노선등록 성공";
