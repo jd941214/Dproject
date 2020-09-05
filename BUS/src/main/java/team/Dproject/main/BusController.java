@@ -513,8 +513,48 @@ public class BusController {
 			}
 			int res;
 			if(plus.equals("plural")){
-				String dip_time=req.getParameter("dip_time");
+				int dip_time=Integer.parseInt(req.getParameter("dip_time")); 
 				 res=busRoadMapper.insertBus_road(dto);
+				 int a_time=dto.getArr_time();
+				 int bus_count=0; //버스갯수
+				
+				 for(int i=a_time; i<=22; i++){//필요한 버스 갯수 
+					 if(a_time>=22){
+						 break;
+					 }
+					 a_time=dto.getTot_time()+dip_time;
+					
+					 bus_count++;
+
+				 }
+					 int count=busRoadMapper.bus_no_list_null_count();//사용중이지않은 버스 갯수
+					 
+					 if(count<bus_count){//버스갯수가 부족할떄
+						 //버스추가후 노선생성
+						for(int j=0; j<bus_count; j++){
+							 res=busMapper.insertBus_normal();//일반 버스 생성
+							 Bus_BusRoadDTO bbdto1=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+							 dto.setBus_no(bbdto1.getBus_no());
+							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);
+							 if(dto.getArr_time()>22){
+								 break;
+							 }
+							 res=busRoadMapper.insertBus_road(dto);
+
+						 }
+					 }else if(count>=bus_count){
+						 for(int j=0; j<bus_count; j++){
+							 Bus_BusRoadDTO bbdto2=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+							 dto.setBus_no(bbdto2.getBus_no());
+							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);
+							 if(dto.getArr_time()>22){
+								 break;
+							 }
+							 res=busRoadMapper.insertBus_road(dto);
+							
+						 }
+					 }
+				 
 			}else{
 				 res=busRoadMapper.insertBus_road(dto);
 			}

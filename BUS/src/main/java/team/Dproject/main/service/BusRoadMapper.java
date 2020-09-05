@@ -22,6 +22,12 @@ public class BusRoadMapper {
 	 public List<Bus_BusRoadDTO> bus_no_list_null(){//사용중인 bus_no값 제외하고 출력
 		 return sqlSession.selectList("bus_no_list_null");
 	 }
+	 public int bus_no_list_null_count(){//사용중이지 않은 bus_no 값 수 구하기
+		 return sqlSession.selectOne("bus_no_list_null_count");
+	 }
+	 public Bus_BusRoadDTO bus_no_null_rownum(){//사용중이지 않은 bus_no 값중에 첫번째값
+		 return sqlSession.selectOne("bus_no_null_rownum");
+	 }
 	 
 	 public List<Member_BusRoadDTO> bus_road_member_list(){
 		 

@@ -25,6 +25,12 @@
     <select id="bus_no_list_null" resultType="Bus_BusRoadDTO"> <!-- 사용중인 bus_no 값제외하고 출력 -->
     	select A.bus_no,grade from bus A left outer join bus_road B on A.bus_no=B.bus_no where B.bus_no is null
     </select>
+     <select id="bus_no_null_rownum" resultType="Bus_BusRoadDTO"> <!-- 사용중이지 않은 bus_no 첫번쨰값만-->
+    	select  A.bus_no from bus A left outer join bus_road B on A.bus_no=B.bus_no where B.bus_no is null and rownum=1
+    </select>
+    <select id="bus_no_list_null_count" resultType="int"><!-- 사용중이지 않은 bus_no 숫자 출력 -->
+    	select count(A.bus_no) from bus A left outer join bus_road B on A.bus_no=B.bus_no where B.bus_no is null
+    </select>
     <select id="bus_road_member_list" resultType="Member_BusRoadDTO"><!--노선 만든사람 한글로 표시하기위해 -->
 		select * from member inner join bus_road on member.member_no=bus_road.member_no
 	</select>

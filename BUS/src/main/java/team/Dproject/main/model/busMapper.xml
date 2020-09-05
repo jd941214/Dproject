@@ -9,6 +9,9 @@
     <insert id="insertBus" parameterType="BusDTO">
     	insert into bus values(bus_seq.nextval,#{grade},#{seat})
     </insert>
+    <insert id="insertBus_normal" parameterType="BusDTO">
+    	insert into bus values(bus_seq.nextval,'일반',30)
+    </insert>
     <delete id="deleteBus" parameterType="String">
     	delete from bus where bus_no=#{no}
     </delete>

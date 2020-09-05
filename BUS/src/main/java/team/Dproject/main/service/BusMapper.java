@@ -21,6 +21,9 @@ public class BusMapper {
   public int insertBus(BusDTO dto){
 	      return sqlSession.insert("insertBus",dto);
   }
+  public int insertBus_normal(){
+	  return sqlSession.insert("insertBus_normal");
+  }
   public int deletetBus(int no){
 	      return sqlSession.insert("deleteBus",no);
   }

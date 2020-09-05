@@ -22,13 +22,6 @@
 				return
 			}
 			
-			if(f.plus.value="plural"){
-				if (f.dip_time.value=="선택"){
-					alert("배차시간을 입력하세요")
-					f.tot_time.focus()
-					return
-				}
-			}
 			document.f.submit()
 		}
 		function reset(){
