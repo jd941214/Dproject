@@ -11,7 +11,7 @@
 			<table width="50%" border="1">
 				<tr>
 					<td>버스번호:
-						<c:set var="loop_flag" value="false"/>
+						
 						<select name="bus_no">
 								<c:if test="${empty bus_no_list}">
 								<option>사용가능한 버스가 없습니다</option>
@@ -21,6 +21,7 @@
 								</c:forEach>
 					    	
 						</select>
+					
 					</td>
 
 
@@ -43,9 +44,7 @@
 						</select>
 					</td>
 				</tr>
-				<tr>
-					<td>가격 : <input type="text" name="price" ></td>
-				</tr>
+			
 				<tr>
 					<td>출발시간 : <input type="text" name="arr_time" ></td>
 				</tr>

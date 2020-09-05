@@ -14,7 +14,7 @@
 					<td>버스등급 : 
 					<select name="grade">
 						<option>${bus.grade}</option>
-						<c:if test="${bus.grade=='일반' }"><!-- 버스 등급이 일반인 경우 우등 출력 추가 -->
+						<c:if test="${bus.grade=='일반' }"><!-- 버스 등급이 일반인 경우 우등 출력 추가c -->
 							<option value="우등">우등</option>
 						</c:if>
 						<c:if test="${bus.grade=='우등' }"><!-- 버스 등급이 우등인 경우 일반출력 추가 -->

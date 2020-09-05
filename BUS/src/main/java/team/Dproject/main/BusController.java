@@ -3,6 +3,7 @@ package team.Dproject.main;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -481,7 +482,7 @@ public class BusController {
 		public ModelAndView bus_road_insert(HttpServletRequest req) {
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
 			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
-	
+			
 			
 			ModelAndView mav = new ModelAndView();
 			
@@ -492,14 +493,25 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.POST)
-		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String arrival,@RequestParam String departure)  {
-
+		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam int bus_no,@RequestParam int tot_time,@RequestParam String arrival,@RequestParam String departure)  {
+			BusDTO bdto = busMapper.getBus(bus_no);
+			
+			
 			HttpSession session = req.getSession();
 			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
+			
 			
 			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int 형값 을 string 형으로 변경 작업(출발지 한글로 표시하기위해)
 			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int 형값 을 string 형으로 변경 작업(도착지 한글로 표시위해)
 			dto.setMember_no(mdto.getMember_no());
+			if(bdto.getGrade().equals("일반")){
+				int price=5000;
+				dto.setPrice(price*tot_time);
+			}else if(bdto.getGrade().equals("우등")){
+				int price=8000;
+				dto.setPrice(price*tot_time);	
+			}
+			
 			
 			int res=busRoadMapper.insertBus_road(dto);
 			String msg = null, url = null;
@@ -531,17 +543,22 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_road_update.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_update(HttpServletRequest req) {
-			BusRoadDTO dto = busRoadMapper.getBus_road(Integer.parseInt(req.getParameter("no")));
-	
-			List<BusDTO> bus_list = busMapper.listBus(); //bus_no 받아오기
+			BusRoadDTO dto = busRoadMapper.getBus_road(Integer.parseInt(req.getParameter("no")));//특정 bus_no 값을가지고 있는 항목 
+			BusStationDTO arr_dto=busStationMapper.getBus_station(dto.getArrival());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
+			BusStationDTO dep_dto=busStationMapper.getBus_station(dto.getDeparture());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
+			dto.setArrival(arr_dto.getStation_name());//넘어온 bus_no 값을 출발지  숫자->한글
+			dto.setDeparture(dep_dto.getStation_name());//넘어온 bus_no 에 대한 도착지 숫자->한글
+			
+			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
 			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_update");
 			mav.addObject("bus_road_getBoard",dto);
-			
-			mav.addObject("bus_list",bus_list);
+			mav.addObject("bus_no_list",bus_no_list);
 			mav.addObject("bus_station_list",bus_station_list);
+			mav.addObject("add_dto",arr_dto);//jsp 창에서 조건문 쓰기위해 저장
+			mav.addObject("dep_dto",dep_dto);//jsp 창에서 조건문 쓰기위해 저장
 			
 			return mav;
 		}

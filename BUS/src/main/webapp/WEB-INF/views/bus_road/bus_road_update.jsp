@@ -10,14 +10,15 @@
 			<table width="50%" border="1">
 				<tr>
 					<td>버스번호:
-						<select name="bus_no">
-							<option value="${bus_road_getBoard.bus_no}" selected>${bus_road_getBoard.bus_no}</option>
-						<c:forEach var="dto" items="${bus_list}">
-							<c:if test="${bus_road_getBoard.bus_no != dto.bus_no}">
-								<option value="${dto.bus_no}">${dto.bus_no}</option>
-							</c:if>
-					    </c:forEach>
+					<select name="bus_no">
+						<option value="${bus_road_getBoard.bus_no}" selected>${bus_road_getBoard.bus_no}</option>
+							<c:forEach var="dto" items="${bus_no_list}"><!--  사용 안하는 버스번호 리스트 -->
+								<c:if test="${bus_road_getBoard.bus_no != dto.bus_no}"> <!-- 기존버스 번호와 다른 값들이면서 사용안하는 버스만 출력 -->
+									<option value="${dto.bus_no}">${dto.bus_no}</option>
+								</c:if>
+					   		 </c:forEach>
 					</select>
+					
 					</td>
 				</tr>
 				<tr>
@@ -25,7 +26,7 @@
 						<select name="arrival">
 							<option value="${bus_road_getBoard.arrival}" selected>${bus_road_getBoard.arrival}</option>
 							<c:forEach var="dto" items="${bus_station_list}">
-								<c:if test ="${bus_road_getBoard.arrival != dto.station_no}">
+								<c:if test ="${bus_road_getBoard.arrival != arr_dto.station_name}"><!-- 기존 출발지와 다른 출발지들만 출력 -->
 									<option value="${dto.station_name}">${dto.station_name}</option>
 								</c:if>
 						</c:forEach>
@@ -37,7 +38,7 @@
 					<select name="departure">
 						<option value="${bus_road_getBoard.departure}" selected>${bus_road_getBoard.departure}</option>
 					<c:forEach var="dto" items="${bus_station_list}">
-						<c:if test="${bus_road_getBoard.departure != dto.station_no}">
+						<c:if test="${bus_road_getBoard.departure != dep_dto.station_name}"> <!-- 기존 도착지와 다른 도착지들만 출력 -->
 							<option value="${dto.station_name}">${dto.station_name}</option>
 						</c:if>
 					</c:forEach>
