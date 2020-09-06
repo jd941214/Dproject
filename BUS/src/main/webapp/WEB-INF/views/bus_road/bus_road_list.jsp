@@ -60,6 +60,21 @@
 				</td>
 			</tr>	
 			</c:forEach>
-		</table>	
+		</table>
+	<c:if test="${count>0}">
+	<c:set var="startPage" value="${startPage}"/>
+	<c:set var="endPage" value="${endPage}"/>
+	<c:set var="pageBlock" value="${pageBlock}"/>
+	<c:set var="pageCount" value="${pageCount}"/>
+	<c:if test="${startPage>pageBlock}">
+			[<a href="bus_road_list.do?pageNum=${startPage-1}">이전</a>]		
+	</c:if>
+	<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		[<a href="bus_road_list.do?pageNum=${i}">${i}</a>]
+	</c:forEach>
+		<c:if test="${endPage<pageCount}">
+			[<a href="bus_road_list.do?pageNum=${endPage+1}">다음</a>]		
+		</c:if>
+</c:if>	
 	</div>
 <%@ include file="../bottom.jsp" %> 

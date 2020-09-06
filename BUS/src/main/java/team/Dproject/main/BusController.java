@@ -460,8 +460,29 @@ public class BusController {
 		
 		//노선---------------------------------------------------------------
 		@RequestMapping(value="/bus_road_list.do" )
-		public ModelAndView bus_road_list() {
-			List<Member_BusRoadDTO> listBus_road=busRoadMapper.bus_road_member_list();//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인
+		public ModelAndView bus_road_list(HttpServletRequest req) {
+			//List<Member_BusRoadDTO> listBus_road=busRoadMapper.bus_road_member_list();//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인
+			//page 나누기
+			int pageSize=5;
+			String pageNum=req.getParameter("pageNum");
+			if(pageNum==null){
+				pageNum="1";
+			}
+			int currentPage = Integer.parseInt(pageNum);
+			int startRow = currentPage * pageSize - (pageSize-1);
+			int endRow = currentPage * pageSize;
+			int count = 0;
+			count=busRoadMapper.bus_road_member_count();
+			if(endRow>count){
+				endRow=count;
+			}
+			List<Member_BusRoadDTO> listBus_road = busRoadMapper.bus_road_member_list_count(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
+			int startNum = count-((currentPage-1)*pageSize);
+			int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+			int pageBlock = 5;
+			int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+			int endPage = startPage + pageBlock - 1;
+			if (endPage>pageCount) endPage = pageCount;
 			
 			for(Member_BusRoadDTO mdto : listBus_road){ //출발지 도착지 한글로 표시하는 작업
 				BusStationDTO to=busStationMapper.getBus_station(String.valueOf(mdto.getArrival()));
@@ -475,7 +496,13 @@ public class BusController {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_list");
 			mav.addObject("listBus_road",listBus_road);
-			
+			mav.addObject("count",count);
+			mav.addObject("startNum",startNum);
+			mav.addObject("pageCount",pageCount);
+			mav.addObject("pageBlock",pageBlock);
+			mav.addObject("startPage",startPage);
+			mav.addObject("endPage",endPage);
+		
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.GET)
