@@ -504,45 +504,45 @@ public class BusController {
 			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int 형값 을 string 형으로 변경 작업(출발지 한글로 표시하기위해)
 			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int 형값 을 string 형으로 변경 작업(도착지 한글로 표시위해)
 			dto.setMember_no(mdto.getMember_no());
-			if(bdto.getGrade().equals("일반")){
+			if(bdto.getGrade().equals("일반")){//일반버스일때 가격
 				int price=5000;
 				dto.setPrice(price*tot_time);
-			}else if(bdto.getGrade().equals("우등")){
+			}else if(bdto.getGrade().equals("우등")){//우등버스일때 가격
 				int price=8000;
 				dto.setPrice(price*tot_time);	
 			}
 			int res;
-			if(plus.equals("plural")){
-				int dip_time=Integer.parseInt(req.getParameter("dip_time")); 
-				 res=busRoadMapper.insertBus_road(dto);
+			if(plus.equals("plural")){//복수 노선 만들시
+				int dip_time=Integer.parseInt(req.getParameter("dip_time"));//배차시간 가져오기 
+				 res=busRoadMapper.insertBus_road(dto);//기본적으로 선택된 bus노선 만들어주기
 				 int a_time=dto.getArr_time();
 				 int bus_count=0; //버스갯수
 				
 				 for(int i=a_time; i<=22; i++){//필요한 버스 갯수 
-					 if(a_time>=22){
+					a_time=dto.getTot_time()+dip_time;
+					 if(a_time>=22){//jsp페이지에 출발시간이 22시이후로는 설정못하게 되있어서 출발시간이 22시간 까지만 노선만들기위해
 						 break;
 					 }
-					 a_time=dto.getTot_time()+dip_time;
-					
 					 bus_count++;
 
 				 }
 					 int count=busRoadMapper.bus_no_list_null_count();//사용중이지않은 버스 갯수
 					 
-					 if(count<bus_count){//버스갯수가 부족할떄
+					 if(count<bus_count){//버스갯수가 부족할떄(만들노선보다 노선에사용중인 버스가 많을떄)
 						 //버스추가후 노선생성
 						for(int j=0; j<bus_count; j++){
-							 res=busMapper.insertBus_normal();//일반 버스 생성
+							 res=busMapper.insertBus_normal();//일반 버스 생성(버스가 노선갯수보다 하나더 만들어지게 설계됨)
 							 Bus_BusRoadDTO bbdto1=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
-							 dto.setBus_no(bbdto1.getBus_no());
-							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);
+							 dto.setBus_no(bbdto1.getBus_no());//bus_no 값을 bbdto1 객체에서 받아와 하나씩 넣어줌
+							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);//출발시간 지속적으로 변경
+							
 							 if(dto.getArr_time()>22){
 								 break;
 							 }
 							 res=busRoadMapper.insertBus_road(dto);
 
 						 }
-					 }else if(count>=bus_count){
+					 }else if(count>=bus_count){//버스갯수가 충분할때
 						 for(int j=0; j<bus_count; j++){
 							 Bus_BusRoadDTO bbdto2=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
 							 dto.setBus_no(bbdto2.getBus_no());

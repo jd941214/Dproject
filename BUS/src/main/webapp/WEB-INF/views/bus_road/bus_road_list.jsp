@@ -39,8 +39,13 @@
 				<td>${dto.arrival}</td>
 				<td>${dto.departure}</td>
 				<td>${dto.price}</td>
-				<td>${dto.arr_time}</td>
-				<td>${dto.tot_time+dto.arr_time}</td>
+				<td>${dto.arr_time}시</td>
+				<c:if test="${dto.tot_time+dto.arr_time>24}">
+					<td>${dto.arr_time+dto.tot_time-24}시</td>
+				</c:if>
+				<c:if test="${dto.tot_time+dto.arr_time<=24}">
+					<td>${dto.tot_time+dto.arr_time}시</td>
+				</c:if>
 				<td>
 					<c:if test="${sedto.position==0}"><!-- 슈퍼 관리자 수정삭제 범위(전체) -->
 						<a href="bus_road_update.do?no=${dto.road_no}">수정</a> | 
