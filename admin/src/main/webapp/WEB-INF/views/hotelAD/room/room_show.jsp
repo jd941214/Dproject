@@ -221,11 +221,14 @@
 </script>
 </head>
 <body>
-
+<%
+roomDTO dto=(roomDTO)request.getAttribute("dto"); 
+String img=dto.getFilename();
+if(img!=null){
+%>
 <div id="slider">
 	<ul class="slides">
-		<%roomDTO dto=(roomDTO)request.getAttribute("dto"); 
-		String img=dto.getFilename(); 
+		<%
 		String cla="slide slide";
 		String[] SPimg;
 		if(img!=null){
@@ -255,14 +258,20 @@
 		<div id="slider-nav-nxt">&#10095;</div>
 		<div id="slider-nav-dot-con">
 			<% 
+			if(img!=null){				
 			SPimg=img.split("/");	
+			
 			for(int i=1;i<=SPimg.length;i++){
 				String id="nav-dot"+i; %>
 				<span class="slider-nav-dot" style="background:white" id="<%=id%>"></span>
-			<%}%>
+			<%}
+			}%>
 		</div>
 	</div>
 </div>
+<%}else{ %>
+<div align="center" style=" width:720px; height:200px"><p>이미지 없음</p></div>
+<%} %>
 <div align="center">
 	<table align="center">
 		<tr align="center"><td>방 이름 : <%=dto.getName() %></td></tr>

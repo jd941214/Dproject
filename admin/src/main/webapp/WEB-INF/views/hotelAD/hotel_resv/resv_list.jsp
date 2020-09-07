@@ -4,7 +4,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="team.Dproject.main.model.*"%>
-
 <%
 	Calendar cal = Calendar.getInstance();
 	String strYear = (String) request.getParameter("year");
@@ -15,26 +14,20 @@
 	if (strMonth != null) {
 		month = Integer.parseInt(strMonth);
 	}
-
 	cal.set(year, month, 1);
 	int startDay = cal.getMinimum(java.util.Calendar.DATE);
 	int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 	int start = cal.get(java.util.Calendar.DAY_OF_WEEK);
 	int newLine = 0;
-
 	Calendar todayCal = Calendar.getInstance();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
-
 	int cnt = 0;
 	int cnt2=0;
 	int day=0;
-	int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
-	
+	int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));	
 	List<roomDTO> roomlist = (List) request.getAttribute("roomlist");
-	
 	String[] Bcolor={"#cce8e2","#bbdef2","#f0cfff","#ffdefa","#ffdee6","#fff7de","#f0ffde"};
 	int Bselect=0;
-	
 	int height=70;
 	if(roomlist.size()!=0)
 	height/=roomlist.size();
@@ -44,18 +37,15 @@
 	.roomname:link{
 		color:black;
 	}
-	
 	a{ 
 	text-decoration: none;
 	}
-	
 	.roomname:hover{
 		color:red;
 	}
 	.roomname:visited{
 		color:black;
 	}
-
 	i{ /*예은이가 함*/
 		  transform: scale(1);
 		  -webkit-transform: scale(1);
@@ -72,7 +62,6 @@
 		  -o-transform: scale(1.4);
 	}
 </style>
-
 <%@ include file="../top.jsp"%>
 <DIV width="80%" height="40">
 	<table width="100%" height="40">
@@ -109,9 +98,7 @@
 			</td>
 		</tr>
 	</table>
-
 	<br>
-
 	<table bgcolor="#FFFFFF" align="center">
 		<THEAD>
 			<TR bgcolor="#c0a1ff">
@@ -142,7 +129,6 @@
 				</TD>
 			</TR>
 		</THEAD>
-
 		<TBODY>
 			<TR height="1">
 				<%
@@ -245,31 +231,25 @@
 										%>
 											<%-- <TD height="30" align="center" bgcolor="#a3aeff"><a style="text-decoration: none"> <font size="1"
 												color="#020c57" style="padding: 1px; magin: 1px; font-weight: bold "><%=roomDTO.getName()%>&lt;미&gt;</font></a></TD> --%>
-											
 											<td height="<%=height %>"></td>
 										<%
 											newLine++;
 									}
 									if (end == endDay)
 										continue;
-
 									if (newLine == 7) {
 										newLine = 0;
 										cnt = 0;
 										break;
 									}
-								
 								}
-				%>
-			</tr>
-			<%	Bselect++;
-				}cnt2=0;
-						
+						%>
+					</tr>
+					<%	Bselect++;
+						}cnt2=0;	
 						fir = false;
 					}
-				}
-			%>
-			
+				}%>	
 		</TBODY>
 	</TABLE>
 </DIV>

@@ -8,8 +8,31 @@
 List<busDTO> list=(List)request.getAttribute("bus_list");
 List<bus_stationDTO> list2=(List)request.getAttribute("bus_station_list");
 %>
+<script>
+	function check(){
+		if (f.price.value == "") {
+            alert("가격를 입력하지 않았습니다.")
+            f.price.focus();
+            return;
+        }
+		if (f.arr_time.value == "") {
+            alert("출발시간를 입력하지 않았습니다.")
+            f.arr_time.focus();
+            return;
+        }
+		if (f.tot_time.value == "") {
+            alert("도착시간를 입력하지 않았습니다.")
+            f.tot_time.focus();
+            return;
+        }
+		
+		
+		document.f.submit()
+	}
+</script>
+
 	<div align="center">
-		<form action="ADbus_load_insert.do" method="post">
+		<form name="f" action="ADbus_load_insert.do" method="post">
 			<table width="100%">
 				<tr>
 					<td>버스번호 : 
@@ -61,7 +84,9 @@ List<bus_stationDTO> list2=(List)request.getAttribute("bus_station_list");
 				<tr>
 					<td>도착시간 : <input type="text" name="tot_time"></td>
 				</tr>
-				<tr><td><input type="submit" value="수정"></td></tr>
+				<tr><td><input type="button" value="확인" onclick="javascript:check()">
+				<input type="reset" value="다시쓰기">
+				</tr>
 			</table>
 		</form>
 	</div>

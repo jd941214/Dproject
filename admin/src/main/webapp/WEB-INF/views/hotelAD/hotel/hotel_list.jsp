@@ -12,7 +12,7 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 <div align="center">
 	<table width="100%">
 		<tr align="right">
-			<td colspan="9"><a href="ADhotel_insert.do">추가</a></td>
+			<td colspan="11"><a href="ADhotel_insert.do">추가</a></td>
 		</tr>
 		<tr>
 			<td>호텔번호</td>

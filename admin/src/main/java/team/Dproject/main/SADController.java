@@ -25,11 +25,85 @@ public class SADController {
 	@Autowired
 	private HotelMapper hotelMapper;
 	@Autowired
-	private RoomMapper roomMapper;
-	@Autowired
-	private ResvMapper resvMapper;
-	@Autowired
 	private MemberMapper memberMapper;
+	
+	
+	
+	
+	
+	//================로그인==========================
+	@RequestMapping(value = "/ADmember_login.do")
+	public String MemberLogin(HttpServletRequest req){
+		Cookie[] cks = req.getCookies();
+		String value = null;
+		if (cks != null && cks.length != 0){
+			for(int i=0; i<cks.length; ++i){
+				String name = cks[i].getName();
+				if (name.equals("id")){
+					value = cks[i].getValue();
+					break;				
+				}			
+			}	
+		}
+		req.setAttribute("value", value);
+		return "member_login";	
+	}
+	@RequestMapping(value = "/ADmember_login_ok.do")
+	public String MemberLoginOk(HttpServletRequest req, HttpServletResponse resp){
+		String id = req.getParameter("id");
+		String passwd = req.getParameter("passwd");
+		String saveId = req.getParameter("saveId");
+		int res = memberMapper.memberLogin(id, passwd);
+		String msg = null, url = null;
+		switch(res){
+		case 0 :
+			MemberDTO dto = memberMapper.getMember(id);
+			HttpSession session = req.getSession();
+			Cookie ck = new Cookie("id", id);
+			if(saveId != null){
+				ck.setMaxAge(10*60);		
+			}else{
+				ck.setMaxAge(0);	
+			}
+			resp.addCookie(ck);
+			session.setAttribute("sedto", dto);
+			msg = dto.getName() + "님 로그인완료.";
+			url = "home.do";
+			break;
+			
+		case 1 :
+			msg = "로그인실패";
+			url = "home.do";
+			break;
+			
+		case 2 :
+			msg = "로그인실패";
+			url = "home.do";
+			break;
+		
+		}
+		req.setAttribute("msg", msg);
+		req.setAttribute("url", url);
+		return "message";
+		
+		
+	}
+	@RequestMapping(value = "/ADmember_logout.do")
+	public String MemberLogout(HttpServletRequest req){
+		HttpSession session = req.getSession();
+		session.removeAttribute("sedto");
+		req.setAttribute("msg", "로그아웃.");
+		req.setAttribute("url", "home.do");
+		return "message";
+		
+	}
+	
+	
+	
+	
+	
+	//================로그인==========================
+	
 
 	@RequestMapping(value = "/ADsuperAD.do")
 	public String SuperAD(HttpServletRequest req) {

@@ -2,6 +2,42 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="../top.jsp"%> 
+<script>
+	function check(){
+		if (f.name.value == "") {
+            alert("룸이름를 입력하지 않았습니다.")
+            f.name.focus();
+            return;
+        }
+		if (f.roomsize.value == "") {
+            alert("평수를 입력하지 않았습니다.")
+            f.roomsize.focus();
+            return;
+        }
+		if (f.sleeps.value == "") {
+            alert("인원수를 입력하지 않았습니다.")
+            f.sleeps.focus();
+            return;
+        }
+		if (f.item.value == "") {
+            alert("구비 물품를 입력하지 않았습니다.")
+            f.item.focus();
+            return;
+        }
+		if (f.price.value == "") {
+            alert("가격를 입력하지 않았습니다.")
+            f.price.focus();
+            return;
+        }
+		if (f.rooms.value == "") {
+            alert("방의 수를 입력하지 않았습니다.")
+            f.rooms.focus();
+            return;
+        }
+		
+		document.f.submit()
+	}
+</script>
 
 <div align="center">
 	<form action="ADroom_insert.do" method="post" enctype="multipart/form-data">
@@ -29,8 +65,10 @@
 				<td>방의 수 : <input type="text" name="rooms" size="30"></td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="추가"></td>
+			<td><input type="button" value="추가" onclick="javascript:check()">
+			<input type="reset" value="다시쓰기"></td>
 			</tr>
+
 		</table>
 	</form>
 </div>

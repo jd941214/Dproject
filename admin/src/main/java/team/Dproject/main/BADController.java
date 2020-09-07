@@ -1,6 +1,7 @@
 package team.Dproject.main;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,14 +57,19 @@ public class BADController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		session.setAttribute("MNUM", 0);
 		return "home";
 	}
 	
 
 	
 	@RequestMapping("/home.do")
-	public String home() {
+	public String home(HttpSession session) {
+		MemberDTO dto=(MemberDTO)session.getAttribute("sedto");
+		
+		if(dto!=null){
+			int a=dto.getMember_no();
+			session.setAttribute("MNUM", a);
+		}
 		return "home";
 	}
 	
@@ -209,6 +215,10 @@ public class BADController {
 	@RequestMapping(value="/ADbus_load_list.do" )
 	public ModelAndView bus_load_list() {
 		List<bus_loadDTO> list = bus_loadMapper.listBus_load();
+		for(bus_loadDTO LDTO : list){
+			LDTO.setArrival(bus_stationMapper.getBus_station(LDTO.getArrival()).getStation_name());
+			LDTO.setDeparture(bus_stationMapper.getBus_station(LDTO.getDeparture()).getStation_name());
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_load/bus_load_list");
 		mav.addObject("bus_load_list", list);
@@ -260,6 +270,11 @@ public class BADController {
 	public ModelAndView bus_load_update(HttpServletRequest req) {
 		bus_loadDTO dto = bus_loadMapper.getBus_load(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_load/bus_load_update", "bus", dto);
+		List<busDTO> list = busMapper.listBus();
+		List<bus_stationDTO> list2 = bus_stationMapper.listBus_station();
+		mav.addObject("bus_list", list);
+		mav.addObject("bus_station_list", list2);
+		mav.addObject("LDTO", dto);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_update.do",method = RequestMethod.POST)
@@ -284,13 +299,21 @@ public class BADController {
 	@RequestMapping(value="/ADbus_resv_list.do" )
 	public ModelAndView bus_resv_list() {
 		List<bus_resvDTO> list = bus_resvMapper.listBus_resv();
+		List<bus_loadDTO> llist = new ArrayList();
 		for(bus_resvDTO dto : list){
+			bus_loadDTO LDTO=bus_loadMapper.getBus_load(String.valueOf(dto.getRoad_no()));
+			LDTO.setArrival(bus_stationMapper.getBus_station(LDTO.getArrival()).getStation_name());
+			LDTO.setDeparture(bus_stationMapper.getBus_station(LDTO.getDeparture()).getStation_name());
+			llist.add(LDTO);
+			
 			bus_loadDTO price=bus_loadMapper.getBus_load(String.valueOf(dto.getRoad_no()));
 			dto.setPrice(price.getPrice());
 		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_resv/bus_resv_list");
 		mav.addObject("list", list);
+		mav.addObject("llist",llist);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.GET)
@@ -315,8 +338,6 @@ public class BADController {
 	}
 	@RequestMapping(value="/ADbus_resv_insert.do",method = RequestMethod.POST)
 	public String bus_resv_insertOK(HttpServletRequest req, bus_resvDTO dto, HttpSession session)  {
-		Integer MNUM=(Integer)session.getAttribute("MNUM");
-		dto.setMember_no(MNUM);
 		int res=bus_resvMapper.insertBus_resv(dto);
 		String msg = null, url = null;
 		if (res > 0) {
@@ -348,7 +369,15 @@ public class BADController {
 	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_resv_update(HttpServletRequest req) {
 		bus_resvDTO dto = bus_resvMapper.getBus_resv(req.getParameter("no"));
-		ModelAndView mav = new ModelAndView("busAD/bus_resv/bus_resv_update", "bus", dto);
+		List<MemberDTO> mlist=memberMapper.memberList();
+		List<bus_loadDTO> llist = bus_loadMapper.listBus_load();
+		for(bus_loadDTO LDTO : llist){
+			LDTO.setArrival(bus_stationMapper.getBus_station(String.valueOf(LDTO.getArrival())).getStation_name());
+			LDTO.setDeparture(bus_stationMapper.getBus_station(String.valueOf(LDTO.getDeparture())).getStation_name());
+		}
+		ModelAndView mav = new ModelAndView("busAD/bus_resv/bus_resv_update", "rdto", dto);
+		mav.addObject("mlist", mlist);
+		mav.addObject("llist", llist);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.POST)
@@ -366,4 +395,6 @@ public class BADController {
 		req.setAttribute("url", url);
 		return "message";
 	}
+	
+	
 }

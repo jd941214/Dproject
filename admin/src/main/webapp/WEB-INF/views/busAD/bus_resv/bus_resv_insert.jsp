@@ -6,11 +6,37 @@
 <%@page import="team.Dproject.main.model.*"%>
 <%
 List<MemberDTO> mlist=(List)request.getAttribute("mlist");
-
 bus_loadDTO bdto=(bus_loadDTO)request.getAttribute("dto");
 %>
+<script>
+	function check(){
+		if (f.seat.value == "") {
+            alert("자리를 입력하지 않았습니다.")
+            f.seat.focus();
+            return;
+        }
+		if (f.use_point.value == "") {
+            alert("사용포인트를 입력하지 않았습니다.")
+            f.use_point.focus();
+            return;
+        }
+		if (f.save_point.value == "") {
+            alert("적립포인트를 입력하지 않았습니다.")
+            f.save_point.focus();
+            return;
+        }
+		if (f.resv_date.value == "") {
+            alert("날짜를 입력하지 않았습니다.")
+            f.resv_date.focus();
+            return;
+        }
+		
+		
+		document.f.submit()
+	}
+</script>
 	<div align="center">
-		<form action="ADbus_resv_insert.do" method="post">
+		<form name="f" action="ADbus_resv_insert.do" method="post">
 			<table align="center">
 				<tr>
 					<td>회원 번호 : 
@@ -40,7 +66,9 @@ bus_loadDTO bdto=(bus_loadDTO)request.getAttribute("dto");
 				<tr>
 					<td>날짜 : <input type="text" name="resv_date" value="${bus.resv_date}"></td>
 				</tr>
-				<tr><td><input type="submit" value="입력"></td></tr>
+				<tr><td><input type="button" value="입력" onclick="javascript:check()">
+				<input type="reset" value="다시쓰기"></td></tr>
+
 			</table>
 		</form>
 	</div>
