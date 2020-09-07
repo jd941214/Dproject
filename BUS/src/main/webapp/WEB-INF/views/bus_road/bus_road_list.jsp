@@ -61,6 +61,7 @@
 			</tr>	
 			</c:forEach>
 		</table>
+	<!-- 페이지 이전? 다음? -->
 	<c:if test="${count>0}">
 	<c:set var="startPage" value="${startPage}"/>
 	<c:set var="endPage" value="${endPage}"/>
@@ -75,6 +76,6 @@
 		<c:if test="${endPage<pageCount}">
 			[<a href="bus_road_list.do?pageNum=${endPage+1}">다음</a>]		
 		</c:if>
-</c:if>	
+	</c:if>	
 	</div>
 <%@ include file="../bottom.jsp" %> 

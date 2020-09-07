@@ -1,32 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<script>
-  $.datepicker.setDefaults({
-    dateFormat: 'yy년 mm월 dd일',
-    prevText: '이전 달',
-    nextText: '다음 달',
-    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-    dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-    dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-    showMonthAfterYear: true,
-    yearSuffix: '년'
-  });
-
-  $(function() {
-    $("#arr_date, #dep_date,#one_date").datepicker();
-  });
-	
-  
-
-</script>
-
-
+ 
 <%@ include file="../top.jsp"%>
+
 <div align="center">
 	<form action="bus_resv_user_dispatch.do">
 	<div style="border:1px solid gray; width:50%; float:left;">
@@ -57,7 +33,7 @@
 				<td colspan="2"><c:if test="${not empty dep_dto.station_name}"><input type="hidden" name="departure" value="${depnoDTO.station_no}">${dep_dto.station_name}</c:if></td>
 			</tr>
 			<tr>
-				<td colspan="4" width="50%">편도날짜:<input type="text" id="one_date" name="one_date"></td>
+				<td colspan="4" width="50%">편도날짜:<input id="onedate"type="text" name="one_date"></td>
 			</tr>
 			<tr align="left">
 				<td>등급</td>

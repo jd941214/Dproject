@@ -6,6 +6,9 @@
    <select id="listBus"  resultType="BusDTO">
     	select * from bus order by bus_no
     </select>
+    <select id="bus_count" resultType="int"><!-- 행의개수 파악 -->
+		select count(*) from bus
+	</select>
     <insert id="insertBus" parameterType="BusDTO">
     	insert into bus values(bus_seq.nextval,#{grade},#{seat})
     </insert>
@@ -21,4 +24,8 @@
     <update id="updateBus" parameterType="BusDTO">
     	update bus set grade=#{grade}, seat=#{seat} where bus_no=#{bus_no}
     </update>
+    <select id="bus_list_count" parameterType="java.util.Map" resultType="BusDTO">
+    	select * from (select rownum rn,A.* from (select * from bus order by bus_no)A) where rn between #{start} and #{end} 
+    </select>
+    
 </mapper>

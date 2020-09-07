@@ -263,11 +263,37 @@ public class BusController {
 		
 		//버스---------------------------------------------------------------
 		@RequestMapping(value="/bus_list.do" )
-		public ModelAndView bus_list() {
-			List<BusDTO> list = busMapper.listBus();
+		public ModelAndView bus_list(HttpServletRequest req) {
+			int pageSize=5;
+			String pageNum=req.getParameter("pageNum");
+			if(pageNum==null){
+				pageNum="1";
+			}
+			int currentPage = Integer.parseInt(pageNum);
+			int startRow = currentPage * pageSize - (pageSize-1);
+			int endRow = currentPage * pageSize;
+			int count = 0;
+			count=busMapper.bus_count();
+			if(endRow>count){
+				endRow=count;
+			}
+			List<BusDTO> bus_list = busMapper.bus_list_count(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
+			int startNum = count-((currentPage-1)*pageSize);
+			int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+			int pageBlock = 5;
+			int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+			int endPage = startPage + pageBlock - 1;
+			if (endPage>pageCount) endPage = pageCount;
+			//List<BusDTO> list = busMapper.listBus();
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus/bus_list");
-			mav.addObject("bus_list", list);
+			mav.addObject("bus_list", bus_list);
+			mav.addObject("count",count);
+			mav.addObject("startNum",startNum);
+			mav.addObject("pageCount",pageCount);
+			mav.addObject("pageBlock",pageBlock);
+			mav.addObject("startPage",startPage);
+			mav.addObject("endPage",endPage);
 			return mav;
 		}
 		@RequestMapping(value="/bus_insert.do",method = RequestMethod.GET)
