@@ -88,8 +88,16 @@ public class BusResvMapper {
 		   map.put("road_no",dto.getRoad_no());
 		   map.put("seat",dto.getSeat());
 		   map.put("resv_date",dto.getResv_date());
+		   map.put("member_no",dto.getMember_no());
 		   
 		   return sqlSession.insert("insertBus_resv_user",map);
+	   }
+	   
+	   public List<BusResvDTO> list_seat_resv_user(String resv_date,int road_no){//예약좌석 선택 못하게하기
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("resv_date",resv_date);
+		   map.put("road_no",road_no);
+		   return sqlSession.selectList("list_seat_resv_user",map);
 	   }
 	    
 }

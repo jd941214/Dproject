@@ -2,8 +2,8 @@ package team.Dproject.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -929,7 +929,7 @@ public class BusController {
 				if(mode.equals("oneway")){
 					List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv(arrival,departure,grade);
 					
-					if(grade.equals("전체")){//grade 가 전체 일
+					if(grade.equals("전체")){//grade 가 전체 일때
 					dispatch_list=busResvMapper.listDispatch_resv_all(arrival, departure);
 					}
 					
@@ -987,12 +987,36 @@ public class BusController {
 		public  ModelAndView bus_resv_user_seat(Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
 			Bus_BusRoadDTO seat_dto= busResvMapper.resv_user_seat_select(road_no);
+			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(one_date,road_no);//예약된 좌석 체크위한 리스트
+			String seats="";
+			for(BusResvDTO rdto:resv_list){
+				seats +=rdto.getSeat()+"/";
+				
+			}
+			String seat_array[] =seats.split("/");
+			int seat_number[]=new int[seat_array.length];
+			int seat_number2[]=new int[seat_array.length];
+			
+			for(int i=0; i<seat_array.length; i++){
+				seat_number[i]=Integer.parseInt(seat_array[i]);
+			}
+			for(int i=0; i<seat_array.length; i++){
+				seat_number2[i]=seat_number[i];
+				
+			}
+			int seat_size=seat_array.length;
+			
+			
+			
 			dto.setArrival(arrival);
 			dto.setDeparture(departure);
 			
 			mav.addObject("seat_dto",seat_dto);
 			mav.addObject("one_date",one_date);
 			mav.addObject("dto",dto);
+			mav.addObject("seat_number",seat_number);
+			mav.addObject("seat_number2",seat_number2);
+			mav.addObject("seat_size",seat_size);
 			mav.setViewName("bus_resv_user/bus_resv_user_seat");
 			return mav;
 		}
@@ -1024,6 +1048,8 @@ public class BusController {
 		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no){
 			ModelAndView mav=new ModelAndView();
 			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
+			HttpSession session = req.getSession();
+			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
 			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
 			String[] seats=new String[seat.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
 			int seat_no=seat.length;//좌석수 저장,티켓총가격 구하기위해
@@ -1038,7 +1064,7 @@ public class BusController {
 			dto.setResv_date(one_date);
 			dto.setRoad_no(road_no);
 			dto.setSeat(result_seat);
-			
+			dto.setMember_no(mdto.getMember_no());
 			int res =busResvMapper.insertBus_resv_user(dto);
 			
 			mav.setViewName("bus_resv_user/bus_resv_user_payok");

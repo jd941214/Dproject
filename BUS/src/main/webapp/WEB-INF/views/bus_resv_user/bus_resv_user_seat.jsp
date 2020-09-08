@@ -16,7 +16,7 @@
 	}
 </style>
 <%@ include file="../top.jsp" %>
-
+	
 	<form action="bus_resv_user_pay.do">
 	<div>
 		<div style="border:1px solid gray; width:90%;">
@@ -27,7 +27,11 @@
 			<input type="hidden" name="departure" value="${dto.departure}">
 			<input type="hidden" name="seat_no" value="${seat_no}">
 			
-			
+			<c:forEach var="i" begin="0" end="${seat_size}" step="1">
+				${seat_number[i]}
+			</c:forEach>
+			<br>
+		
 		</div><!-- 출발지 도착지 -->
 		<div style="border:1px solid gray; width:70%; height:590px">
 		

@@ -44,9 +44,12 @@
 	</select>
 	
 	<insert id="insertBus_resv_user" parameterType="java.util.Map">
-		insert into bus_resv values(bus_resv_seq.nextval,1,#{bus_no},#{road_no},#{seat},0,0,#{resv_date})
+		insert into bus_resv values(bus_resv_seq.nextval,#{member_no},#{bus_no},#{road_no},#{seat},0,0,#{resv_date})
 	</insert>
 	
+	<select id="list_seat_resv_user" parameterType="java.util.Map" resultType="BusResvDTO">
+		select *from bus_resv where resv_date=#{resv_date} and road_no=#{road_no}
+	</select>
 	
 	
 </mapper>

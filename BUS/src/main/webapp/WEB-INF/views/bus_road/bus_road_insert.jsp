@@ -4,9 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 	<script type="text/javascript">
 	function check(){
-		
-			
-			if (f.arrival.value==f.departure.value){
+		if (f.arrival.value==f.departure.value){
 				alert("출발지와 도착지가 같을순 없습니다")
 				f.departure.focus()
 				return

@@ -34,8 +34,14 @@
  			<td>${list.departure}</td>
  			<td>${list.grade}</td>
  			<td>${list.price}</td>
- 			<td>${list.arr_time}</td>
- 			<td>${list.tot_time+list.arr_time}</td>
+ 			<td>${list.arr_time}시</td>
+ 			<c:if test="${list.tot_time+list.arr_time>24}">
+ 				<td>${list.tot_time+list.arr_time-24}시</td>
+ 			</c:if>
+ 			<c:if test="${list.tot_time+list.arr_time<=24}">
+ 				<td>${list.tot_time+list.arr_time}시</td>
+ 			</c:if>
+ 			
  			<td>${list.seat}</td>
  			<td><a href="<c:url value="bus_resv_user_seat.do">
  			<c:param name="one_date" value="${one_date}"></c:param>
