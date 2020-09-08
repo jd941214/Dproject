@@ -18,7 +18,7 @@
 			
 			document.f.submit()
 		}
-	
+	 
 	function setDisplay(){ //편도 왕복 선택시 보이고 안보이고
 	    if($('input:radio[id=oneway]').is(':checked')){
 	        $('#two').hide();
@@ -40,8 +40,8 @@
 		<table	border="1">
 			<tr align="center">
 				<td colspan="4" width="400">
-					<input id="oneway" type="radio" name="mode" value="oneway" onclick="setDisplay()">☞편도
-					<input id="twoway" type="radio" name="mode" value="twoway" onclick="setDisplay()">☞☜왕복
+					<input id="oneway" type="radio" name="mode" value="oneway" onchange="setDisplay()">☞편도
+					<input id="twoway" type="radio" name="mode" value="twoway" onchange="setDisplay()">☞☜왕복
 				</td>
 			</tr>
 			<tr align="left">
@@ -65,12 +65,12 @@
 			</tr>
 			
 			<tr id="one">
-				<td  colspan="4" width="50%">편도날짜:<input  type="date" name="one_date"></td>
+				<td  colspan="4" width="100%">날짜선택<input  type="date" name="one_date"></td>
 			</tr>
 			
-			<tr id="two">
-				<td colspan="2" width="50%">가는날:<input type="date" name="arr_date"></td>
-				<td colspan="2" width="50%">오는날:<input type="date"  name="dep_date"></td>
+			<tr align="center" id="two" style="display:none"> 
+				<td colspan="2" width="50%">출발일<input type="date" name="arr_date"></td>
+				<td colspan="2" width="50%">도착일<input type="date"  name="dep_date"></td>
 			</tr>
 			<tr align="left">
 				<td>등급</td>

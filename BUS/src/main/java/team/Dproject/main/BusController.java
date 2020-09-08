@@ -984,40 +984,29 @@ public class BusController {
 		
 		//좌석 선택
 		@RequestMapping(value="bus_resv_user_seat.do")
-		public  ModelAndView bus_resv_user_seat(Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
+		public  ModelAndView bus_resv_user_seat(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
 			Bus_BusRoadDTO seat_dto= busResvMapper.resv_user_seat_select(road_no);
 			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(one_date,road_no);//예약된 좌석 체크위한 리스트
 			String seats="";
+			if(resv_list !=null){
 			for(BusResvDTO rdto:resv_list){
 				seats +=rdto.getSeat()+"/";
 				
+				}
+			}else{
+				seats="0";
 			}
-			String seat_array[] =seats.split("/");
-			int seat_number[]=new int[seat_array.length];
-			int seat_number2[]=new int[seat_array.length];
-			
-			for(int i=0; i<seat_array.length; i++){
-				seat_number[i]=Integer.parseInt(seat_array[i]);
-			}
-			for(int i=0; i<seat_array.length; i++){
-				seat_number2[i]=seat_number[i];
-				
-			}
-			int seat_size=seat_array.length;
-			
-			
-			
 			dto.setArrival(arrival);
 			dto.setDeparture(departure);
 			
-			mav.addObject("seat_dto",seat_dto);
-			mav.addObject("one_date",one_date);
-			mav.addObject("dto",dto);
-			mav.addObject("seat_number",seat_number);
-			mav.addObject("seat_number2",seat_number2);
-			mav.addObject("seat_size",seat_size);
-			mav.setViewName("bus_resv_user/bus_resv_user_seat");
+			 mav.addObject("seat_dto",seat_dto);//자리
+	         mav.addObject("one_date",one_date);
+	         mav.addObject("dto",dto);
+	         
+	         mav.addObject("resv",seats);//예약
+	
+	         mav.setViewName("bus_resv_user/bus_resv_user_seat");
 			return mav;
 		}
 		
