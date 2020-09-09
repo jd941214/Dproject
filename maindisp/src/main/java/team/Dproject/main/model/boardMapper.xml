@@ -7,6 +7,14 @@
 	</select>
 	
 	<insert id="board_insert" parameterType="BoardDTO">
-		insert into main_board values(main_board_seq.nextval, 0, #{location_no}, #{title}, #{content}, #{filename}, #{filesize}, #{ip}, 0, sysdate, #{re_group}, #{re_step}, #{re_level})
+		insert into main_board values(main_board_seq.nextval, 1, #{location_no}, #{title}, #{content}, #{filename}, #{filesize}, #{ip}, 0, sysdate, #{re_group}, #{re_step}, #{re_level})
 	</insert>
+	
+	<select id="getBoard" parameterType="int" resultType="BoardDTO">
+		select * from main_board where main_board_no=#{main_board_no}
+	</select>
+	
+	<select id="getUser" parameterType="String" resultType="MemberDTO">
+		select * from member where member_no=#{member_no}
+	</select>
 </mapper>

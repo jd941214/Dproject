@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.BoardDTO;
+import team.Dproject.main.model.MemberDTO;
 import team.Dproject.main.service.BoardMapper;
 
 /**
@@ -22,16 +25,20 @@ public class HomeController {
 
 	@RequestMapping(value = "/")
 	public String home() {
-		return "index";
+		return "main";
 	}
 	@RequestMapping(value = "/index")
 	public String home2() {
-		return "index";
+		return "main";
 	}
 	
 	@RequestMapping(value="/board_list.do")
 	public String listBoard(HttpServletRequest req) {
 		List<BoardDTO> list = boardMapper.board_list();
+		for(BoardDTO dto :list) {
+			MemberDTO mdto=boardMapper.getUser(Integer.parseInt(dto.getMember_no()));
+			dto.setMember_no(mdto.getName());
+		}
 		req.setAttribute("listBoard", list);
 		return "list";
 
@@ -39,7 +46,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/board_write.do", method=RequestMethod.GET)
 	public String writeForm() {
-		return "writeform";
+		return "writeForm";
 	}
 	
 	@RequestMapping(value="/board_write.do", method=RequestMethod.POST)
@@ -58,6 +65,13 @@ public class HomeController {
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
+	}
+	
+	@RequestMapping(value="/board_content.do")
+	public ModelAndView getBoard(@RequestParam int main_board_no) {
+		BoardDTO dto = boardMapper.getBoard(main_board_no);
+		ModelAndView mav = new ModelAndView("content", "getBoard", dto);
+		return mav;
 	}
 	
 }

@@ -2,7 +2,7 @@ package team.Dproject.main.model;
 
 public class BoardDTO {
 	private int main_board_no;
-	private int member_no;
+	private String member_no;
 	private int location_no;
 	private String title;
 	private String content;
@@ -21,10 +21,10 @@ public class BoardDTO {
 	public void setMain_board_no(int main_board_no) {
 		this.main_board_no = main_board_no;
 	}
-	public int getMember_no() {
+	public String getMember_no() {
 		return member_no;
 	}
-	public void setMember_no(int member_no) {
+	public void setMember_no(String member_no) {
 		this.member_no = member_no;
 	}
 	public int getLocation_no() {

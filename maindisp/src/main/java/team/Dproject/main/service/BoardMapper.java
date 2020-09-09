@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import team.Dproject.main.model.BoardDTO;
+import team.Dproject.main.model.MemberDTO;
 
 @Service
 public class BoardMapper {
@@ -20,5 +21,13 @@ public class BoardMapper {
 	
 	public int board_insert(BoardDTO dto) {
 		return sqlSession.insert("board_insert", dto);
+	}
+	
+	public BoardDTO getBoard(int main_board_no) {
+		return sqlSession.selectOne("getBoard", main_board_no);
+	}
+	
+	public MemberDTO getUser(int member_no) {
+		return sqlSession.selectOne("getUser", member_no);
 	}
 }
