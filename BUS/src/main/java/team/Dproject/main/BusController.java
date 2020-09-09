@@ -924,7 +924,7 @@ public class BusController {
 		//배차조회 list
 		@RequestMapping(value="bus_resv_user_dispatch.do")
 		public ModelAndView bus_user_dispatch(
-				BusRoadDTO dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
+				HttpServletRequest req,BusRoadDTO dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
 			ModelAndView mav = new ModelAndView();
 				if(mode.equals("oneway")){
 					List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv(arrival,departure,grade);
@@ -941,10 +941,7 @@ public class BusController {
 					BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
 					roadDTO.setDeparture(BDTO2.getStation_name());
 				}
-				mav.addObject("one_date",one_date);
-				mav.addObject("mode",mode);
-				mav.addObject("dispatch_list",dispatch_list);
-				mav.setViewName("/bus_resv_user/bus_resv_user_dispatch");
+			
 			
 				}
 				if(mode.equals("twoway")){
@@ -1033,7 +1030,7 @@ public class BusController {
 		
 		//결제완료 (bus_resv 테이블에 저장)
 		@RequestMapping(value="bus_resv_user_payok.do")
-		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point){
+		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point,@RequestParam int price){
 			ModelAndView mav=new ModelAndView();
 			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
 			HttpSession session = req.getSession();
@@ -1054,11 +1051,13 @@ public class BusController {
 			if(use_point ==0){ // 포인트를 사용하지 않았을떄
 				dto.setUse_point(0);
 				dto.setSave_point(save_point);
+				dto.setPrice(price);
 				mdto.setPoint(mdto.getPoint()+dto.getSave_point());
 				res=memberMapper.Member_buspoint_update(mdto); //포인트 사용내역 meber 테이블에 업데이트
 			}else{ //포인트를 사용했을떄(포인트적립x)
 				dto.setUse_point(use_point);
 				dto.setSave_point(0);
+				dto.setPrice(price-dto.getUse_point());
 				mdto.setPoint(mdto.getPoint()-dto.getUse_point());
 				res=memberMapper.Member_buspoint_update(mdto);//포인트 사용내역 meber 테이블에 업데이트
 			}
@@ -1074,7 +1073,7 @@ public class BusController {
 			mav.setViewName("bus_resv_user/bus_resv_user_payok");
 			mav.addObject("rdto",rdto);
 			mav.addObject("seat_no",seat_no);
-			
+			mav.addObject("use_point",use_point);
 			return mav;
 		}
 		

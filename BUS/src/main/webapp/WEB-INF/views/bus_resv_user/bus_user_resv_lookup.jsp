@@ -5,11 +5,7 @@
 <script type="text/javascript">	
 	function check(){
 			
-			if (f.one_date.value==""){
-				alert("날짜를 입력해주세요")
-				f.one_date.focus()
-				return
-			}
+			
 			if (f.grade.value==""){
 				alert("등급을 선택해주세요")
 				f.grade.focus()

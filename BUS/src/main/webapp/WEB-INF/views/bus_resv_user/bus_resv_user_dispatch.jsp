@@ -2,16 +2,17 @@
     pageEncoding="UTF-8"%>
  <%@ include file="../top.jsp" %>
  
- 
+ <c:if test="${mode eq 'oneway'}">
  <div>
  	<form action="#">
+ 	
  	<table border="1">
- 	<c:if test="${mode eq 'oneway'}">
- 	<tr>
+ 	
+ 	<tr align="center">
  		<td colspan="9">${one_date}</td>
  		
  	</tr>
- 	<tr>
+ 	<tr align="center">
  		<th>노선번호</th>
  		<th>출발지</th>
  		<th>도착지</th>
@@ -28,7 +29,7 @@
  	</tr>
  	</c:if>
  	<c:forEach var="list" items="${dispatch_list}">
- 		<tr>
+ 		<tr align="center">
  			<td>${list.road_no}</td>
  			<td>${list.arrival}</td>
  			<td>${list.departure}</td>
@@ -51,20 +52,38 @@
  			</c:param></c:url>">예약</a></td>
  		</tr>
  	</c:forEach>
- 	</c:if>
+ 	
  	
  	</table>
+ 	
  	</form>
  </div>
+ 	<!-- 페이지 이전? 다음? -->
+ 	<c:if test="${count>0}">
+	<c:set var="startPage" value="${startPage}"/>
+	<c:set var="endPage" value="${endPage}"/>
+	<c:set var="pageBlock" value="${pageBlock}"/>
+	<c:set var="pageCount" value="${pageCount}"/>
+	<c:if test="${startPage>pageBlock}">
+			[<a href="bus_resv_user_dispatch.do?pageNum=${startPage-1}">이전</a>]		
+	</c:if>
+	<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		[<a href="bus_resv_user_dispatch.do?pageNum=${i}">${i}</a>]
+	</c:forEach>
+		<c:if test="${endPage<pageCount}">
+			[<a href="bus_resv_user_dispatch.do?pageNum=${endPage+1}">다음</a>]		
+		</c:if>
+	</c:if>
+ </c:if>
 
 <c:if test="${mode eq 'twoway'}">
  <form action="#">
-	 <div align="center" style="display: inline-block; border:solid 1px blue;">
+	 <div align="center" style="display: inline-block;">
  		<table border="1">
- 			<tr>
+ 			<tr align="center">
  				<td colspan="9">${arr_date}</td>
  			</tr>
- 			<tr>
+ 			<tr align="center">
  				<th>노선번호</th>
  				<th>출발지</th>
  				<th>도착지</th>
@@ -81,14 +100,19 @@
  			</tr>
  			</c:if>
  			<c:forEach var="arr_list" items="${arr_dispatch_list}">
- 				<tr>
+ 				<tr align="center">
 		 			<td>${arr_list.road_no}</td>
 		 			<td>${arr_list.arrival}</td>
 		 			<td>${arr_list.departure}</td>
 		 			<td>${arr_list.grade}</td>
 		 			<td>${arr_list.price}</td>
-		 			<td>${arr_list.arr_time}</td>
-		 			<td>${arr_list.tot_time + arr_list.arr_time}</td>
+		 			<td>${arr_list.arr_time}시</td>
+		 			<c:if test="${arr_list.tot_time+arr_list.arr_time>24}">
+		 				<td>${arr_list.tot_time_arr_list.arr_time-24}시</td>
+		 			</c:if>
+		 			<c:if test="${arr_list.tot_time+arr_list.arr_time<=24}">
+		 				<td>${arr_list.tot_time + arr_list.arr_time}시</td>
+		 			</c:if>
 		 			<td>${arr_list.seat}</td>
 		 			<td>예약</td>
  				</tr>
@@ -101,10 +125,10 @@
 <form>
  	<div align="center" style="display: inline-block">
  		<table border="1">
- 			<tr>
+ 			<tr align="center">
  				<td colspan="9">${dep_date}</td>
  			</tr>
- 			<tr>
+ 			<tr align="center">
  				<th>노선번호</th>
  				<th>출발지</th>
  				<th>도착지</th>
@@ -116,19 +140,24 @@
  				<th>예약</th>
  			</tr>
  			<c:if test="${empty dep_dispatch_list}">
- 			<tr>
+ 			<tr align="center">
  				<td colspan="9">해당되는 배차정보가 없습니다</td>
  			</tr>
  			</c:if>
  			<c:forEach var="dep_list" items="${dep_dispatch_list}">
- 				<tr>
+ 				<tr align="center">
 		 			<td>${dep_list.road_no}</td>
 		 			<td>${dep_list.arrival}</td>
 		 			<td>${dep_list.departure}</td>
 		 			<td>${dep_list.grade}</td>
-		 			<td>${dep_list.price}</td>
-		 			<td>${dep_list.arr_time}</td>
-		 			<td>${dep_list.tot_time+dep_list.arr_time}</td>
+		 			<td>${dep_list.price}원</td>
+		 			<td>${dep_list.arr_time}시</td>
+		 			<c:if test="${dep_list.tot_time+dep_list.arr_time>24}">
+		 				<td>${dep_list.tot_time+dep_list.arr_time-24}시</td>
+		 			</c:if>
+		 			<c:if test="${dep_list.tot_time+dep_list.arr_time<=24}">
+		 				<td>${dep_list.tot_time+dep_list.arr_time}시</td>
+		 			</c:if>
 		 			<td>${dep_list.seat}</td>
 		 			<td>예약</td>
  				</tr>
