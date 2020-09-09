@@ -2,15 +2,13 @@
     pageEncoding="UTF-8"%>
  <%@ include file="../top.jsp" %>
  
- <c:if test="${mode eq 'oneway'}">
- <div>
- 	<form action="#">
- 	
+  <div>
+ 	<c:if test="${mode eq 'oneway'}">
  	<table border="1">
  	
  	<tr align="center">
  		<td colspan="9">${one_date}</td>
- 		
+
  	</tr>
  	<tr align="center">
  		<th>노선번호</th>
@@ -24,7 +22,7 @@
  		<th>예약</th>
  	</tr>
  	<c:if test="${empty dispatch_list}">
- 	<tr>
+ 	<tr align="center">
  		<td colspan="9">해당되는 배차정보가 없습니다</td>
  	</tr>
  	</c:if>
@@ -42,7 +40,6 @@
  			<c:if test="${list.tot_time+list.arr_time<=24}">
  				<td>${list.tot_time+list.arr_time}시</td>
  			</c:if>
- 			
  			<td>${list.seat}</td>
  			<td><a href="<c:url value="bus_resv_user_seat.do">
  			<c:param name="one_date" value="${one_date}"></c:param>
@@ -53,28 +50,29 @@
  		</tr>
  	</c:forEach>
  	
- 	
+
  	</table>
- 	
- 	</form>
- </div>
- 	<!-- 페이지 이전? 다음? -->
  	<c:if test="${count>0}">
 	<c:set var="startPage" value="${startPage}"/>
 	<c:set var="endPage" value="${endPage}"/>
 	<c:set var="pageBlock" value="${pageBlock}"/>
 	<c:set var="pageCount" value="${pageCount}"/>
 	<c:if test="${startPage>pageBlock}">
-			[<a href="bus_resv_user_dispatch.do?pageNum=${startPage-1}">이전</a>]		
+			[<a href="bus_resv_user_dispatch.do?pageNum=${startPage-1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=${one_date}&arr_date=&dep_date=&grade=${grade}">이전</a>]		
 	</c:if>
 	<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
-		[<a href="bus_resv_user_dispatch.do?pageNum=${i}">${i}</a>]
+		[<a href="bus_resv_user_dispatch.do?pageNum=${i}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=${one_date}&arr_date=&dep_date=&grade=${grade}">${i}</a>]
 	</c:forEach>
 		<c:if test="${endPage<pageCount}">
-			[<a href="bus_resv_user_dispatch.do?pageNum=${endPage+1}">다음</a>]		
+			[<a href="bus_resv_user_dispatch.do?pageNum=${endPage+1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=${one_date}&arr_date=&dep_date=&grade=${grade}">다음</a>]		
 		</c:if>
 	</c:if>
- </c:if>
+ 	</c:if>
+ 	<!-- 페이지 이전? 다음? -->
+ 	
+ 	
+ </div>
+ 	
 
 <c:if test="${mode eq 'twoway'}">
  <form action="#">

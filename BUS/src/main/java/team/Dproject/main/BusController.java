@@ -926,24 +926,65 @@ public class BusController {
 		public ModelAndView bus_user_dispatch(
 				HttpServletRequest req,BusRoadDTO dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
 			ModelAndView mav = new ModelAndView();
-				if(mode.equals("oneway")){
-					List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv(arrival,departure,grade);
-					
-					if(grade.equals("전체")){//grade 가 전체 일때
-					dispatch_list=busResvMapper.listDispatch_resv_all(arrival, departure);
+			if(mode.equals("oneway")){//편도 선택 했을떄
+				int pageSize=5;
+				String pageNum=req.getParameter("pageNum");
+				if(pageNum==null){
+					pageNum="1";
+				}
+				int currentPage = Integer.parseInt(pageNum);
+				int startRow = currentPage * pageSize - (pageSize-1);
+				int endRow = currentPage * pageSize;
+				int count = 0;
+				count=busResvMapper.bus_busroad_resv_count(arrival,departure,grade);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지,등급과 일치하는 행들 카운트
+				if(endRow>count){
+					endRow=count;
+				}
+				List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv_count(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
+				
+				if(grade.equals("전체")){//grade 가 전체 일때
+					currentPage = Integer.parseInt(pageNum);
+					startRow = currentPage * pageSize - (pageSize-1);
+					endRow = currentPage * pageSize;
+					count = 0;
+					dispatch_list=busResvMapper.listdispatch_resv_all_count(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
+					count=busResvMapper.bus_busroad_resv_all_count(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
+						if(endRow>count){
+							endRow=count;
+						}
 					}
-					
-				for(Bus_BusRoadDTO roadDTO : dispatch_list){
-					String arr=roadDTO.getArrival();
-					BusStationDTO BDTO=busStationMapper.getBus_station(arr);
-					roadDTO.setArrival(BDTO.getStation_name());
-					String dep=roadDTO.getDeparture();
-					BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
-					roadDTO.setDeparture(BDTO2.getStation_name());
-				}
+				int startNum = count-((currentPage-1)*pageSize);
+				int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+				int pageBlock = 5;
+				int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+				int endPage = startPage + pageBlock - 1;
+				if (endPage>pageCount) endPage = pageCount;
+				
 			
-			
-				}
+				
+			for(Bus_BusRoadDTO roadDTO : dispatch_list){//숫자화 된 출발지 도착지를 한글로 변환
+				String arr=roadDTO.getArrival(); //숫자화된 출발지를 저장(dto arrival 이 string 으로 되어있음)
+				BusStationDTO BDTO=busStationMapper.getBus_station(arr);//station_no 값을 이용해 해당하는 station_name 찾기
+				roadDTO.setArrival(BDTO.getStation_name());//dto에 출발지 한글로저장
+				String dep=roadDTO.getDeparture();
+				BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
+				roadDTO.setDeparture(BDTO2.getStation_name());
+			}
+			mav.addObject("mode",mode);
+			mav.addObject("arrival",arrival);//페이지이동을위해 넘겨줌
+			mav.addObject("departure",departure);//페이지이동을위해 넘겨줌
+			mav.addObject("grade",grade);//페이지이동을위해 넘겨줌
+			mav.addObject("one_date",one_date);
+			mav.addObject("dispatch_list",dispatch_list);
+			mav.addObject("count",count);
+			mav.addObject("startNum",startNum);
+			mav.addObject("pageCount",pageCount);
+			mav.addObject("pageBlock",pageBlock);
+			mav.addObject("startPage",startPage);
+			mav.addObject("endPage",endPage);
+			mav.setViewName("/bus_resv_user/bus_resv_user_dispatch");
+		
+			}
 				if(mode.equals("twoway")){
 					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper.listdispatch_resv(arrival, departure, grade);
 					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper.listDispatch_resv_reverse(arrival, departure, grade);

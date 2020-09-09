@@ -38,8 +38,33 @@ public class BusResvMapper {
 		   map.put("arrival",arrival);
 		   map.put("departure",departure);
 		   map.put("grade",grade);
+	
 		   
 		   return sqlSession.selectList("listDispatch_resv",map);
+	   }
+	   public List<Bus_BusRoadDTO> listdispatch_resv_count(int arrival,int departure,String grade,int start,int end){//list 5개씩출력 우등,일반 버스중 하나
+		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
+		   
+		  
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("grade",grade);
+		   map.put("start",start);
+		   map.put("end",end);
+		   
+		   return sqlSession.selectList("listDispatch_resv_count",map);
+	   }
+	   
+	   public List<Bus_BusRoadDTO> listdispatch_resv_all_count(int arrival,int departure,int start,int end){//list 5개씩 출력 모든종류 버스
+		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
+		   
+		  
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("start",start);
+		   map.put("end",end);
+		   
+		   return sqlSession.selectList("listDispatch_resv_all_count",map);
 	   }
 	   
 
@@ -101,6 +126,21 @@ public class BusResvMapper {
 		   map.put("resv_date",resv_date);
 		   map.put("road_no",road_no);
 		   return sqlSession.selectList("list_seat_resv_user",map);
+	   }
+	   
+	   public int bus_busroad_resv_count(int arrival,int departure,String grade){//조인한 테이블 출발지,도착지,버스 등급 일치 한행 카운트
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("grade", grade);
+		   return sqlSession.selectOne("bus_busroad_resv_count",map);
+	   }
+	   public int bus_busroad_resv_all_count(int arrival,int departure){//조인한 테이블 출발지,도착지 일치 한행 카운트
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   
+		   return sqlSession.selectOne("bus_busroad_resv_all_count",map);
 	   }
 	   
 	    
