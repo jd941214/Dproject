@@ -1003,7 +1003,6 @@ public class BusController {
 			 mav.addObject("seat_dto",seat_dto);//자리
 	         mav.addObject("one_date",one_date);
 	         mav.addObject("dto",dto);
-	         
 	         mav.addObject("resv",seats);//예약
 	
 	         mav.setViewName("bus_resv_user/bus_resv_user_seat");
@@ -1034,7 +1033,7 @@ public class BusController {
 		
 		//결제완료 (bus_resv 테이블에 저장)
 		@RequestMapping(value="bus_resv_user_payok.do")
-		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no){
+		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point){
 			ModelAndView mav=new ModelAndView();
 			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
 			HttpSession session = req.getSession();
@@ -1042,6 +1041,7 @@ public class BusController {
 			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
 			String[] seats=new String[seat.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
 			int seat_no=seat.length;//좌석수 저장,티켓총가격 구하기위해
+			
 			//좌석번호 구하기
 			for(int i=0; i<seat.length; i++){
 				dto.setSeat(seat[i]);
@@ -1049,12 +1049,27 @@ public class BusController {
 			}
 			String result_seat = String.join("/",seats); //seats 배열의 자리 번호를 '/' 기준으로 나누어서 저장
 			
+			
+			int res=0;
+			if(use_point ==0){ // 포인트를 사용하지 않았을떄
+				dto.setUse_point(0);
+				dto.setSave_point(save_point);
+				mdto.setPoint(mdto.getPoint()+dto.getSave_point());
+				res=memberMapper.Member_buspoint_update(mdto); //포인트 사용내역 meber 테이블에 업데이트
+			}else{ //포인트를 사용했을떄(포인트적립x)
+				dto.setUse_point(use_point);
+				dto.setSave_point(0);
+				mdto.setPoint(mdto.getPoint()-dto.getUse_point());
+				res=memberMapper.Member_buspoint_update(mdto);//포인트 사용내역 meber 테이블에 업데이트
+			}
+			
 			dto.setBus_no(rdto.getBus_no());
 			dto.setResv_date(one_date);
 			dto.setRoad_no(road_no);
 			dto.setSeat(result_seat);
 			dto.setMember_no(mdto.getMember_no());
-			int res =busResvMapper.insertBus_resv_user(dto);
+			
+			res =busResvMapper.insertBus_resv_user(dto);
 			
 			mav.setViewName("bus_resv_user/bus_resv_user_payok");
 			mav.addObject("rdto",rdto);

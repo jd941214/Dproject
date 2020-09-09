@@ -124,6 +124,8 @@ public class MemberMapper {
 		
 	}
 
-
+	public int Member_buspoint_update(MemberDTO dto){
+		return sqlSession.update("Member_buspoint_update",dto);
+	}
 	
 }

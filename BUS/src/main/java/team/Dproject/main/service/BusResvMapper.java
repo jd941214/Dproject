@@ -89,6 +89,8 @@ public class BusResvMapper {
 		   map.put("seat",dto.getSeat());
 		   map.put("resv_date",dto.getResv_date());
 		   map.put("member_no",dto.getMember_no());
+		   map.put("use_point",dto.getUse_point());
+		   map.put("save_point",dto.getSave_point());
 		   
 		   return sqlSession.insert("insertBus_resv_user",map);
 	   }

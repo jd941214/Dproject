@@ -41,11 +41,6 @@
          <%
          String str="";
          String str2="disabled";
-         for(int i=0;i<resvlist.length;i++){
-            %>
-            <%=resvlist[i] %>
-            <%
-         }
          %>
          <br>
       
