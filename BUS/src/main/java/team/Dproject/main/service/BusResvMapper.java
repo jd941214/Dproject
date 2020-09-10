@@ -54,6 +54,20 @@ public class BusResvMapper {
 		   
 		   return sqlSession.selectList("listDispatch_resv_count",map);
 	   }
+	   public List<Bus_BusRoadDTO> listdispatch_resv_reverse_count(int arrival,int departure,String grade,int start,int end){//list 5개씩출력 우등,일반 버스중 하나(출발지 도착지 반대로 표시)
+		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
+		   
+		  
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("grade",grade);
+		   map.put("start",start);
+		   map.put("end",end);
+		   
+		   return sqlSession.selectList("listDispatch_resv_reverse_count",map);
+	   }
+	   
+	   
 	   
 	   public List<Bus_BusRoadDTO> listdispatch_resv_all_count(int arrival,int departure,int start,int end){//list 5개씩 출력 모든종류 버스
 		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
@@ -65,6 +79,18 @@ public class BusResvMapper {
 		   map.put("end",end);
 		   
 		   return sqlSession.selectList("listDispatch_resv_all_count",map);
+	   }
+	   
+	   public List<Bus_BusRoadDTO> listdispatch_resv_reverse_all_count(int arrival,int departure,int start,int end){//list 5개씩 출력 모든종류 버스(출발지,도착지 반대로)
+		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
+		   
+		  
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("start",start);
+		   map.put("end",end);
+		   
+		   return sqlSession.selectList("listDispatch_resv_all_reverse_count",map);
 	   }
 	   
 
@@ -135,6 +161,20 @@ public class BusResvMapper {
 		   map.put("grade", grade);
 		   return sqlSession.selectOne("bus_busroad_resv_count",map);
 	   }
+	   public int bus_busroad_resv_resverse_count(int arrival,int departure,String grade){//조인한 테이블 출발지,도착지,버스 등급 일치 한행 카운트(출발지 도착지 순서 변경)
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   map.put("grade", grade);
+		   return sqlSession.selectOne("bus_busroad_resv_resverse_count",map);
+	   }
+	   public int bus_busroad_resv_resverse_all_count(int arrival,int departure){
+		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		   map.put("arrival",arrival);
+		   map.put("departure",departure);
+		   return sqlSession.selectOne("bus_busroad_resv_resverse_all_count",map);
+	   }
+	   
 	   public int bus_busroad_resv_all_count(int arrival,int departure){//조인한 테이블 출발지,도착지 일치 한행 카운트
 		   java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
 		   map.put("arrival",arrival);

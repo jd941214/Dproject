@@ -75,7 +75,7 @@
  	
 
 <c:if test="${mode eq 'twoway'}">
- <form action="#">
+
 	 <div align="center" style="display: inline-block;">
  		<table border="1">
  			<tr align="center">
@@ -106,7 +106,7 @@
 		 			<td>${arr_list.price}</td>
 		 			<td>${arr_list.arr_time}시</td>
 		 			<c:if test="${arr_list.tot_time+arr_list.arr_time>24}">
-		 				<td>${arr_list.tot_time_arr_list.arr_time-24}시</td>
+		 				<td>${arr_list.tot_time+arr_list.arr_time-24}시</td>
 		 			</c:if>
 		 			<c:if test="${arr_list.tot_time+arr_list.arr_time<=24}">
 		 				<td>${arr_list.tot_time + arr_list.arr_time}시</td>
@@ -117,10 +117,25 @@
  			</c:forEach>
  			
  		</table>
+	 <c:if test="${count>0}">
+	<c:set var="startPage" value="${startPage}"/>
+	<c:set var="endPage" value="${endPage}"/>
+	<c:set var="pageBlock" value="${pageBlock}"/>
+	<c:set var="pageCount" value="${pageCount}"/>
+	<c:if test="${startPage>pageBlock}">
+			[<a href="bus_resv_user_dispatch.do?pageNum=${startPage-1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">이전</a>]		
+	</c:if>
+	<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		[<a href="bus_resv_user_dispatch.do?pageNum=${i}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">${i}</a>]
+	</c:forEach>
+		<c:if test="${endPage<pageCount}">
+			[<a href="bus_resv_user_dispatch.do?pageNum=${endPage+1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">다음</a>]		
+		</c:if>
+	</c:if>
 	 </div>
- </form>
+ 
 
-<form>
+
  	<div align="center" style="display: inline-block">
  		<table border="1">
  			<tr align="center">
@@ -161,7 +176,22 @@
  				</tr>
  			</c:forEach>
  		</table>
+ 	<c:if test="${count2>0}">
+	<c:set var="startPage2" value="${startPage2}"/>
+	<c:set var="endPage2" value="${endPage2}"/>
+	<c:set var="pageBlock2" value="${pageBlock2}"/>
+	<c:set var="pageCount2" value="${pageCount2}"/>
+	<c:if test="${startPage>pageBlock}">
+			[<a href="bus_resv_user_dispatch.do?pageNum2=${startPage2-1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">이전</a>]		
+	</c:if>
+	<c:forEach var="j" begin="${startPage2}" end="${endPage2}" step="1">
+		[<a href="bus_resv_user_dispatch.do?pageNum2=${j}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">${j}</a>]
+	</c:forEach>
+		<c:if test="${endPage2<pageCount2}">
+			[<a href="bus_resv_user_dispatch.do?pageNum2=${endPage2+1}&mode=${mode}&arrival=${arrival}&departure=${departure}&one_date=&arr_date=${arr_date}&dep_date=${dep_date}&grade=${grade}">다음</a>]		
+		</c:if>
+	</c:if>
  	</div>
-</form> 	
+ 	
  </c:if>
  <%@ include file="../bottom.jsp" %>

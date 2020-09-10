@@ -5,7 +5,7 @@
 <script type="text/javascript">	
 	function check(){
 			
-			
+			//출발지,도착지,편도일시,왕복일시 유효성 검사 해야함 아직 안함
 			if (f.grade.value==""){
 				alert("등급을 선택해주세요")
 				f.grade.focus()

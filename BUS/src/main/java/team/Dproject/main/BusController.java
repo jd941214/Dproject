@@ -986,13 +986,67 @@ public class BusController {
 		
 			}
 				if(mode.equals("twoway")){
-					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper.listdispatch_resv(arrival, departure, grade);
-					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper.listDispatch_resv_reverse(arrival, departure, grade);
-					if(grade.equals("전체")){//grade 가 전체 일
-						arr_dispatch_list=busResvMapper.listDispatch_resv_all(arrival, departure);
-						dep_dispatch_list=busResvMapper.listDispatch_resv_all_reverse(arrival, departure);
-						}
+					int pageSize=5;
+					int pageSize2=5;
+					String pageNum=req.getParameter("pageNum");
+					String pageNum2=req.getParameter("pageNum2");
 					
+					if(pageNum==null){
+						pageNum="1";
+					}
+					if(pageNum2==null){
+						pageNum2="1";
+					}
+					int currentPage = Integer.parseInt(pageNum);
+					int startRow = currentPage * pageSize - (pageSize-1);
+					int endRow = currentPage * pageSize;
+					int count = 0;
+					
+					int currentPage2 = Integer.parseInt(pageNum2);
+					int startRow2 = currentPage2 * pageSize2 - (pageSize2-1);
+					int endRow2 = currentPage2 * pageSize2;
+					int count2 = 0;
+					
+					count =busResvMapper.bus_busroad_resv_count(arrival, departure, grade);
+					count2=busResvMapper.bus_busroad_resv_resverse_count(arrival, departure,grade);
+					if(endRow>count){
+						endRow=count;
+					}
+					if(endRow>count2){
+						endRow=count2;
+					}
+					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper.listdispatch_resv_count(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
+					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper.listdispatch_resv_reverse_count(arrival, departure, grade,startRow2,endRow2);
+					if(grade.equals("전체")){//grade 가 전체 일떄
+						currentPage = Integer.parseInt(pageNum);
+						startRow = currentPage * pageSize - (pageSize-1);
+						endRow = currentPage * pageSize;
+						count = 0;
+						
+						currentPage2 = Integer.parseInt(pageNum2);
+						startRow2 = currentPage2 * pageSize2 - (pageSize2-1);
+						endRow2 = currentPage2 * pageSize2;
+						count2=0;
+						
+						arr_dispatch_list=busResvMapper.listdispatch_resv_all_count(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
+						count=busResvMapper.bus_busroad_resv_all_count(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
+						dep_dispatch_list=busResvMapper.listdispatch_resv_reverse_all_count(arrival, departure, startRow2, endRow2);
+						count2=busResvMapper.bus_busroad_resv_resverse_all_count(arrival, departure);
+						}
+						int startNum = count-((currentPage-1)*pageSize);
+						int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+						int pageBlock = 5;
+						int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+						int endPage = startPage + pageBlock - 1;
+						if (endPage>pageCount) endPage = pageCount;
+						
+						int startNum2 = count2-((currentPage2-1)*pageSize2);
+						int pageCount2 = count2/pageSize2 + (count2%pageSize2 == 0 ? 0 : 1);
+						int pageBlock2 = 5;
+						int startPage2 = (currentPage2-1)/pageBlock2 * pageBlock2 + 1;
+						int endPage2 = startPage2 + pageBlock2 - 1;
+						if (endPage2>pageCount2) endPage2 = pageCount2;
+						
 					for(Bus_BusRoadDTO arrDTO : arr_dispatch_list){
 						String arr=arrDTO.getArrival();
 						BusStationDTO BDTO=busStationMapper.getBus_station(arr);
@@ -1012,8 +1066,23 @@ public class BusController {
 					mav.addObject("arr_date",arr_date);
 					mav.addObject("dep_date",dep_date);
 					mav.addObject("mode",mode);
+					mav.addObject("arrival",arrival);
+					mav.addObject("departure",departure);
+					mav.addObject("grade",grade);
 					mav.addObject("arr_dispatch_list",arr_dispatch_list);
 					mav.addObject("dep_dispatch_list",dep_dispatch_list);
+					mav.addObject("count",count);
+					mav.addObject("startNum",startNum);
+					mav.addObject("pageCount",pageCount);
+					mav.addObject("pageBlock",pageBlock);
+					mav.addObject("startPage",startPage);
+					mav.addObject("endPage",endPage);
+					mav.addObject("count2",count2);
+					mav.addObject("startNum2",startNum2);
+					mav.addObject("pageCount2",pageCount2);
+					mav.addObject("pageBlock2",pageBlock2);
+					mav.addObject("startPage2",startPage2);
+					mav.addObject("endPage2",endPage2);
 					mav.setViewName("/bus_resv_user/bus_resv_user_dispatch");
 					
 				}
