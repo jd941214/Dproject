@@ -18,7 +18,7 @@
                   	  <option value="">What are you finding?</option>
                       <option value="지하철">Subway</option>
                       <option value="식당">Restaurant</option>
-                      <option value="즐길거리">Fun</option>
+                      <option value="호텔">Hotel</option>
                       <option value="카페">Cafe</option>
                       <option value="관광명소">Attraction</option>
                     </select>
