@@ -43,7 +43,7 @@ public class HomeController {
 		List<BoardDTO> list = boardMapper.board_list();
 		for(BoardDTO dto :list) {
 			MemberDTO mdto=boardMapper.getUser(Integer.parseInt(dto.getMember_no()));
-			dto.setMember_no(mdto.getName());
+			dto.setMember_no(mdto.getId());
 		}
 		req.setAttribute("listBoard", list);
 		return "list";
@@ -81,6 +81,7 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView("content", "getBoard", dto);
 		return mav;
 	}
+	
 	
 	@RequestMapping(value="/search.do")
 	public String search() {

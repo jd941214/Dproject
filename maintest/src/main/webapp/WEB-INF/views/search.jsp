@@ -21,7 +21,7 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-    <meta chars et="utf-8">
+    <meta charset="utf-8">
     <style>
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:10px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
@@ -65,6 +65,7 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
 <%
 	String mapcate = request.getParameter("map-category");
 	String maploc = request.getParameter("map-location");
+	String pname = request.getParameter("pname");
 	
 	/* int location = Integer.parseInt(request.getParameter("map-location"));
 	double x=0;
@@ -121,7 +122,7 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
 	}else if(location==7){
 		maploc="인천";
 	} */
-	mapcate=maploc+" "+mapcate;
+	String mapcate2=maploc+" "+mapcate;
 %>
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scolled sleep scrolled awake" id="ftco-navbar">
     <div class="container">
@@ -150,7 +151,7 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
       </div> 
   </nav>
 <div align="left" style="width:80%; margin:90px auto 2px auto;">
-	<h3 style="font-family: 'Do Hyeon', sans-serif;"><%=mapcate %> 검색 결과</h3>
+	<h3 style="font-family: 'Do Hyeon', sans-serif;"><%=mapcate2 %> 검색 결과</h3>
 </div>
 <div>
 <div class="map_wrap">
@@ -160,7 +161,9 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="<%=mapcate%>" id="keyword" size="15" style="display:none;">  
+                    <input type="text" value="<%=mapcate2%>" id="keyword" size="15" style="display:none;"> 
+                    <input type="text" value="<%=mapcate%>" id="mapcate" size="15" style="display:none;">
+                    <input type="text" value="<%=maploc%>" id="maploc" size="15" style="display:none;">
                     <button type="submit" style="display:none;"></button> 
                 </form>
             </div>
@@ -173,6 +176,7 @@ String clientSecret = "KEENDJMC9a";// 애플리케이션 클라이언트 시크�
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a0d77b87f2ec786a69a1ed0c16587f57&libraries=services"></script>
 <script>
+
 // 마커를 담을 배열입니다
 var markers = [];
 
@@ -194,6 +198,9 @@ var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 // 키워드로 장소를 검색합니다
 searchPlaces();
 
+var mapcate = document.getElementById('mapcate').value;
+var maploc = document.getElementById('maploc').value;
+
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
 
@@ -205,7 +212,7 @@ function searchPlaces() {
     }
 
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    ps.keywordSearch( keyword, placesSearchCB); 
+    ps.keywordSearch(keyword, placesSearchCB); 
 }
 
 // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -296,7 +303,8 @@ function getListItem(index, places) {
     var el = document.createElement('li'),
     itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                 '<div class="info">' +
-                '   <h6>' + places.place_name + '</h6>';
+                '<a href="search.do?map-category='+mapcate+'&map-location='+maploc+'&pname='+places.place_name+
+                		'"><h6>' + places.place_name + '</h6></a>';
 	
     if (places.road_address_name) {
         itemStr += '    <span>' + places.road_address_name + '</span>' +
@@ -311,10 +319,11 @@ function getListItem(index, places) {
     el.innerHTML = itemStr;
     el.className = 'item';
 
-    return el;
+    var Pname=places.place_name;
+    
+    return el;    
 }
 
-var Pname=places.place_name;
 
 // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 function addMarker(position, idx, title) {
@@ -392,15 +401,13 @@ function removeAllChildNods(el) {
     }
 }
 </script>
-<% 
-    String keyword="<script>document.writeln(Pname)</script>";
-%>
+<div align="center" style="margin-top:500px; position:absolute;">
 <% 
 int cnt=0;
 int display = 5; // 검색결과갯수. 최대100개  
 try { 
-	String text = URLEncoder.encode(keyword, "UTF-8"); 
-	String apiURL = "https://openapi.naver.com/v1/search/webkr.json?query=" + text+"&display="+display; 
+	String text = URLEncoder.encode(pname, "UTF-8"); 
+	String apiURL = "https://openapi.naver.com/v1/search/webkr.json?query=" +text+"&display="+display; 
 	URL url = new URL(apiURL); 
 	HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -417,22 +424,33 @@ try {
 	sb = new StringBuffer(); 
 	String line; 
 	while ((line = br.readLine()) != null) { 
-	if(cnt==0){
+		if(cnt==0){
 		%><div><%
-	}
-	%><%=line%><br><% 
+		}
+		
+		if(cnt==0||cnt==5){
+			
+		}else{%>
+		
+		<%=line %><br>
+		
+		<% 
 			sb.append(line + "\n");
+		}
 			cnt++;
-	if(cnt>5){
-		cnt=0;
+		
+		if(cnt>5){
 		%></div><%
-	}
+		cnt=0;
+		}
 	} 
 	br.close(); 
 	con.disconnect();
+
 } catch (Exception e) { 
 	System.out.println(e);
 } 
-%> 
+%>
+</div>
 </body>
 </html>

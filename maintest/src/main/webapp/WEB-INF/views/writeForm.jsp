@@ -36,32 +36,43 @@
 
 <div align="center" width="80%">
 	<form name="f" action="board_write.do" method="post" onsubmit="return check()">
-		<fieldset align="center" style="margin-top:100px;">
-			<legend>새로운 게시글 작성</legend>
-			<label>TITLE</label>
-			<input type="text" name="title" class="box">
+		<div align="center" style="margin-top:100px;">
+		
+			<label class="forumLoc">
+				<div class="labelText" align="left">LOCATION</div>
+				<select name="location_no" style="padding:3px 10px 3.6px 10px;margin-right:14px;">
+					<option value="" selected>지역선택</option>
+					<option value="0">서울</option>
+					<option value="1">경기</option>
+					<option value="2">대전</option>
+					<option value="3">대구</option>
+					<option value="4">부산</option>
+					<option value="5">울산</option>
+					<option value="6">강원</option>
+					<option value="7">인천</option>
+				</select>
+			</label>
+			
+			<label class="forumTitle">
+				<div class="labelText" align="left">TITLE</div>
+				<input type="text" name="title" class="box" size="90" maxlength="120">
+			</label>
+			
+			<label class="forumContent">
+				<div class="labelText" align="left">CONTENT</div>
+				<textarea name="content" rows="10" cols="105" class="box" placeholder="  내용을 입력해주세요"></textarea>
+			</label>
 			<br>
-			<label>지역 선택</label>
-			<select name="location_no">
-				<option value="0">서울</option>
-				<option value="1">경기</option>
-				<option value="2">대전</option>
-				<option value="3">대구</option>
-				<option value="4">부산</option>
-				<option value="5">울산</option>
-				<option value="6">강원</option>
-				<option value="7">인천</option>
-			</select>
-			<br>
-			<label>CONTENT</label>
-			<textarea name="content" rows="12" cols="60" class="box"></textarea>
-			<br>
-			<label>FILE</label>
-			<input type="file" name="filename" class="box">
-			<br>
+			
+			<label class="forumFile" style="margin-right:460px;">
+				<div class="labelText" align="left">FILE</div>
+				<input type="file" name="filename" class="box" size="90">
+			</label>
+			
+			<hr style="width:60%;border:1px solid #dddddd;">
 			<input type="reset" value="CANCEL">
 			<input type="submit" value="SUMBIT">
-		</fieldset>
+		</div>
 	</form>
 </div>
     

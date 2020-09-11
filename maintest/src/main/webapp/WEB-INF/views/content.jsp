@@ -1,22 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="top.jsp"%>
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css"/>
-</head>
-
+<%@ include file="head.jsp" %>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scolled sleep scrolled awake" id="ftco-navbar">
     <div class="container">
       <a class="navbar-brand" href="index">DProject</a>
       <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a href="index" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="about" class="nav-link">Bus</a></li>
-          <li class="nav-item"><a href="hotel" class="nav-link">Hotels</a></li>
-          <li class="nav-item"><a href="restaurant" class="nav-link">Restaurant</a></li>
-          <li class="nav-item active"><a href="board_list.do" class="nav-link">Forum</a></li>
+          <li class="nav-item"><a href="index" class="nav-link-1">Home</a></li>
+          <li class="nav-item"><a href="about" class="nav-link-1">Bus</a></li>
+          <li class="nav-item"><a href="hotel" class="nav-link-1">Hotels</a></li>
+          <li class="nav-item"><a href="restaurant" class="nav-link-1">Restaurant</a></li>
+          <li class="nav-item active"><a href="board_list.do" class="nav-link-1">Forum</a></li>
          </ul>
       </div>
       
@@ -24,34 +20,70 @@
       	<ul class="navbar-nav">
       	<li class="nav-item cta"><a href="contact" class="nav-link"><span>Login</span></a>
       		<ul class="submenu">
-      			<li><a href="blog.html" class="submenu-1-first" style="color:white">My Page</a></li>
-      			<li><a href="blog_details.html" class="submenu-1-second" style="color:white">Wish List</a></li>
-                <li><a href="blog_details.html" class="submenu-1-third" style="color:white">Sign Up</a></li>
+      			<li><a href="blog.html" class="submenu-1-first" style="color:black">My Page</a></li>
+      			<li><a href="blog_details.html" class="submenu-1-second" style="color:black">Wish List</a></li>
+                <li><a href="blog_details.html" class="submenu-1-third" style="color:black">Sign Up</a></li>
       		</ul>
       	</li>
       	</ul>
       </div>
-      </div>
+      </div> 
   </nav>
-<div align="center">
-	<form name="f" method="post">
-		<fieldset style="width:600;">
-			<div>
-				<span><img src="${pageContext.request.contextPath}/resources/images/usericon.png" width="30" height="30"></span>
-				<span>
-					글쓴이 ID
-				</span>
-			</div>
-			<div>
-				<textarea rows="5" cols="60" readOnly>${getBoard.content}</textarea>
-			</div>
-			<div>
-				<span><i class="fas fa-chevron-left" style="font-size:1.5em;"></i></span>
-				<span><i class="fas fa-bars" style="font-size:1.5em;"></i></span>
-				<span><i class="fas fa-chevron-right" style="font-size:1.5em;"></i></span>
-			</div>
-		</fieldset>
-	</form>
+<!-- END nav -->
+
+<div>
+
+	<div style="margin-top:100px;width:60%;" align="left">
+		<span><img src="${pageContext.request.contextPath}/resources/images/usericon.png" width="30" height="25"></span>
+		<span>
+			글쓴이 아이디를 어떻게 가져오지?
+		</span>
+	</div>
+	
+	<div>
+	
+	</div>
+	
+	<div style="margin-top:10px;width:60%">
+		<textarea rows="5" cols="90" readOnly>${getBoard.content}</textarea>
+	</div>
+	
+	<div>
+		<span><i class="fas fa-chevron-left" style="font-size:1.5em;"></i></span>
+		<span><i class="fas fa-bars" style="font-size:1.5em;"></i></span>
+		<span><i class="fas fa-chevron-right" style="font-size:1.5em;"></i></span>
+	</div>
+	
 </div>
-</body>
+
+
 <%@ include file="footer.jsp"%>
+<!-- loader -->
+  <div id="ftco-loader" class="show fullscreen">
+  <svg class="circular" width="48px" height="48px">
+  <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+  <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#c94dff"/>
+  </svg>
+  </div>
+
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/popper.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.easing.1.3.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.waypoints.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.stellar.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/jquery.timepicker.min.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
+  <script src="${pageContext.request.contextPath}/resources/js/main2.js"></script>
+    
+    
+  </body>
+</html>
