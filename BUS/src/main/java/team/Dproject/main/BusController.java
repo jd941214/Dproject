@@ -2,7 +2,6 @@ package team.Dproject.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.BusDTO;
 import team.Dproject.main.model.BusResvDTO;
+import team.Dproject.main.model.BusResv_BusRoadDTO;
 import team.Dproject.main.model.BusRoadDTO;
 import team.Dproject.main.model.BusStationDTO;
 import team.Dproject.main.model.Bus_BusRoadDTO;
@@ -711,7 +711,7 @@ public class BusController {
 		}
 		@RequestMapping("bus_resv_delete.do")
 		public String bus_resv_delete(HttpServletRequest req) {
-			int res=busResvMapper.deletetBus_resv(req.getParameter("no"));
+			int res=busResvMapper.deletetBus_resv(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "예약삭제 성공";
@@ -1375,4 +1375,60 @@ public class BusController {
 			session.removeAttribute("seat_reverse");
 			return mav;
 		}
-	}
+		//예약리스트 페이지
+		@RequestMapping(value="bus_resv_user_resvlist.do")
+		public ModelAndView bus_resv_user_resvlist(HttpServletRequest req){
+			ModelAndView mav = new ModelAndView();
+			HttpSession session=req.getSession();
+			String msg="";
+			String url="";
+			if(session.getAttribute("sedto")==null){//로그인 유효성검사
+				msg = "해당서비스는 로그인이 필요합니다.로그인페이지로 이동";
+				url = "member_login.do";
+				mav.addObject("msg",msg);
+				mav.addObject("url",url);
+				mav.setViewName("message");
+				return mav;
+			}else{
+				session.getAttribute("sedto");
+				MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");
+				List<BusResv_BusRoadDTO> resv_list = busResvMapper.resvlist(mdto.getMember_no());
+				for(BusResv_BusRoadDTO dto : resv_list){
+					BusStationDTO to = busStationMapper.getBus_station(String.valueOf(dto.getArrival()));
+					dto.setArrival(to.getStation_name());
+					BusStationDTO to2=busStationMapper.getBus_station(String.valueOf(dto.getDeparture()));
+					dto.setDeparture(to2.getStation_name());
+				}
+			
+				mav.addObject("resv_list",resv_list);
+				mav.setViewName("bus_resv_user/bus_resv_user_resvlist");
+				return mav;
+			}
+		}
+		
+		//환불하기
+		@RequestMapping(value="bus_resv_user_refund.do")
+		public ModelAndView bus_resv_user_refund(@RequestParam int bus_resv_no,@RequestParam int use_point,@RequestParam int save_point){
+			ModelAndView mav = new ModelAndView();
+			int res=busResvMapper.deletetBus_resv(bus_resv_no);
+			String msg="";
+			String url="";
+			if (res > 0) {
+				
+				msg = "환불성공";
+				url = "bus_resv_user_resvlist.do";
+				mav.addObject("msg",msg);
+				mav.addObject("url",url);
+				mav.setViewName("message");
+				return mav;
+			} else {
+				msg = "환불실패";
+				url = "bus_resv_user_resvlist.do";
+				mav.addObject("msg",msg);
+				mav.addObject("url",url);
+				mav.setViewName("message");
+				return mav;
+			}
+			
+		}
+		}

@@ -1,7 +1,7 @@
 package team.Dproject.main.model;
 
 public class BusResv_BusRoadDTO {
-	private int resv_no;
+	private int bus_resv_no;
 	private int member_no;
 	private int bus_no;
 	private int road_no;
@@ -15,11 +15,12 @@ public class BusResv_BusRoadDTO {
 	private int arr_time;
 	private int tot_time;
 	
-	public int getResv_no() {
-		return resv_no;
+	
+	public int getBus_resv_no() {
+		return bus_resv_no;
 	}
-	public void setResv_no(int resv_no) {
-		this.resv_no = resv_no;
+	public void setBus_resv_no(int bus_resv_no) {
+		this.bus_resv_no = bus_resv_no;
 	}
 	public int getMember_no() {
 		return member_no;

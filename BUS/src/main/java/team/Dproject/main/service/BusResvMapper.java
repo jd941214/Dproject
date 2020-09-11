@@ -21,7 +21,7 @@ public class BusResvMapper {
 	   public int insertBus_resv(BusResvDTO dto){
 		      return sqlSession.insert("insertBus_resv",dto);
 	   }
-	   public int deletetBus_resv(String no){
+	   public int deletetBus_resv(int no){
 		      return sqlSession.insert("deleteBus_resv",no);
 	   }
 	   public BusResvDTO getBus_resv(String no){

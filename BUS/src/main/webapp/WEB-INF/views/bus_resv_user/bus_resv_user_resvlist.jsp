@@ -24,6 +24,7 @@
 			<c:if test="${not empty resv_list}">
 			<c:forEach var="dto" items="${resv_list}">			
 			<tr align="center">
+				
 				<td>${dto.road_no}</td>
 				<td>${dto.bus_no}</td>
 				<td>${dto.arrival}</td>
@@ -38,7 +39,7 @@
 				<td>${dto.seat}</td>
 				<td>${dto.price}</td>
 				<td>${dto.resv_date}</td>
-				<td>환불</td>
+				<td><a href="bus_resv_user_refund.do?bus_resv_no=${dto.bus_resv_no}&use_point=${dto.use_point}&save_point=${dto.save_point}">환불</a></td>
 			</tr>	
 			</c:forEach>
 			</c:if>
