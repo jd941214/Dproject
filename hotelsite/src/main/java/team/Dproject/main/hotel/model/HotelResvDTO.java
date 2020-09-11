@@ -4,7 +4,7 @@ public class HotelResvDTO {
 	private int hotel_resv_no;
 	private int member_no;
 	private int hotel_no;
-	private int room_no;
+	private String room_no;
 	private int use_point;
 	private int save_point;
 	private String resv_date;
@@ -28,10 +28,10 @@ public class HotelResvDTO {
 	public void setHotel_no(int hotel_no) {
 		this.hotel_no = hotel_no;
 	}
-	public int getRoom_no() {
+	public String getRoom_no() {
 		return room_no;
 	}
-	public void setRoom_no(int room_no) {
+	public void setRoom_no(String room_no) {
 		this.room_no = room_no;
 	}
 	public int getUse_point() {

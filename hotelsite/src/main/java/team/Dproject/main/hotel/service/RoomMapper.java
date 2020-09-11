@@ -21,11 +21,12 @@ public class RoomMapper {
 	public List<RoomDTO> listRoom(){
 		return sqlSession.selectList("listRoom"); 
 	}
+	// 호텔별 룸 리스트 불러오기
 	public List<RoomDTO> listRoom2(int hotel_no){
 		return sqlSession.selectList("listRoom2",hotel_no); 
 	}
 	
-	public RoomDTO getRoom(int room_no){
+	public RoomDTO getRoom(String room_no){
 		return sqlSession.selectOne("getRoom", room_no);
 	}
 	
@@ -37,4 +38,10 @@ public class RoomMapper {
 		return sqlSession.insert("updateRoom", dto);
 	}
 	
+	public int seqUP(){
+		return sqlSession.insert("seqUP");
+	}
+	public int seqGET(){
+		return sqlSession.selectOne("seqGET");
+	}
 }

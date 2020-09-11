@@ -18,7 +18,7 @@ public class HotelMapper {
 		return sqlSession.selectList("listHotel"); 
 	}
 	
-	public int insertBoard(HotelDTO dto){
+	public int insertHotel(HotelDTO dto){
 		return sqlSession.insert("insertHotel", dto);
 	}
 	

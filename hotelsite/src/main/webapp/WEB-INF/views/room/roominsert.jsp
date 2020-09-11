@@ -30,19 +30,15 @@
 		<td><textarea rows="6" cols="30" name="item"></textarea></td>
 		</tr>
 		<tr>
-		<td>사진이름</td>
-		<td><input type="text" name="filename"></td>
-		</tr>
-		<tr>
 		<td>룸 사진</td>
 		<td>
 		<!-- <input multiple="multiple" type="file" name="file"> -->
-		<input type="file" name="rfile">
-		<input type="file" name="rfile">
-		<input type="file" name="rfile">
-		<input type="file" name="rfile">
-		<input type="file" name="rfile">
+		<input multiple="multiple" type="file" name="filename" />
 		</td>
+		</tr>
+		<tr>
+		<td>룸 수</td>
+		<td><input type="text" name="rooms"></td>
 		</tr>
 		<tr>
 		<td colspan="2" align="right"><input type="submit" value="전송"></td>

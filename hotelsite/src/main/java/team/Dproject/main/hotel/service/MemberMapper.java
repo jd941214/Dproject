@@ -23,7 +23,7 @@ public class MemberMapper {
 	}
 	
 	public int insertMember(MemberDTO dto, int sex){
-		dto.setPosition(0);
+		dto.setPosition(3);
 		dto.setPoint(0);
 		dto.setSex(sex);
 		int res = sqlSession.insert("insertMember",dto);

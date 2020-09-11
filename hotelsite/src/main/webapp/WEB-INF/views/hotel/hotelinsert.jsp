@@ -42,7 +42,7 @@
 		</tr>
 		<tr>
 		<td>호텔사진</td>
-		<td><input type="file" name="filename"></td>
+		<td><input multiple="multiple" type="file" name="filename"></td>
 		</tr>
 		<tr>
 		<td colspan="2" align="right"><input type="submit" value="전송"></td>

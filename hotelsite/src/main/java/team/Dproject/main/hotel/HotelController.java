@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.hotel.model.HotelDTO;
 import team.Dproject.main.hotel.model.MemberDTO;
-import team.Dproject.main.hotel.model.RFileDTO;
 import team.Dproject.main.hotel.model.RoomDTO;
 import team.Dproject.main.hotel.service.HotelMapper;
 import team.Dproject.main.hotel.service.HotelResvMapper;
@@ -84,6 +83,10 @@ public class HotelController {
 	public String main(){
 		return "home";
 	}
+	
+	/*
+	회원 컨트롤
+	*/
 	
 	@RequestMapping(value="/membercheck", method=RequestMethod.GET)
 	public ModelAndView member(){
@@ -223,6 +226,10 @@ public class HotelController {
 		
 	}
 	
+	/*
+	호텔 컨트롤
+	*/
+	
 	@RequestMapping("/hotelcheck")
 	public String hotelcheck(){
 		return "hotel/hotelmain";
@@ -235,28 +242,32 @@ public class HotelController {
 	
 	@RequestMapping("/hotelinsertok")
 	public String hotelinsertok(HttpServletRequest req, 
-			@ModelAttribute HotelDTO dto, BindingResult rs) {
+			@ModelAttribute HotelDTO dto, BindingResult rs,MultipartHttpServletRequest mtfRequest) {
 		if (rs.hasErrors()){
 			dto.setHotel_no(0);
 		}
-		
+		List<MultipartFile> fileList = mtfRequest.getFiles("filename");
+
 		String filename = "";
-		int filesize = 0;
-		MultipartHttpServletRequest mr = 
-									(MultipartHttpServletRequest)req;
-		MultipartFile file = mr.getFile("filename");
-		File target = new File(upLoadPath, file.getOriginalFilename());
-		if (file.getSize() > 0){
-			try{
-				file.transferTo(target);
-			}catch(IOException e){}
-			filename = file.getOriginalFilename();
-			filesize = (int)file.getSize();
+		int filesize = 0; 	
+		for (MultipartFile mf : fileList) {
+			String tempname = mf.getOriginalFilename();
+			long tempsize = mf.getSize(); 	
+			try {
+				mf.transferTo(new File(upLoadPath, mf.getOriginalFilename()));
+				filename+=tempname+"/";
+				filesize+=tempsize;
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
+		int res = hotelMapper.insertHotel(dto);
 		
-		int res = hotelMapper.insertBoard(dto);
+		
 		return "redirect:hotelmember";
 	}
 	
@@ -306,11 +317,6 @@ public class HotelController {
 		return "message";
 	}
 	
-	@RequestMapping("/hotel_resv")
-	public String hotel_resvselect(){
-		return "hotel_resv/hotel_resv";
-	}
-	
 	@RequestMapping("/hotelcontent")
 	public String hotelcontent(HttpServletRequest req){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
@@ -318,6 +324,13 @@ public class HotelController {
 		int member_num = dto.getMember_num();
 		MemberDTO mdto = memberMapper.getMember(member_num);
 		String name = mdto.getName();
+		//filename split사용해서 끊어서 보내기
+		/*String hotelfile = dto.getFilename();
+		String regex="/";
+		String [] filearr = hotelfile.split(regex);
+		
+		req.setAttribute("filearr", filearr);*/
+		
 		req.setAttribute("hoteloner", name);
 		req.setAttribute("getHotel", dto);
 		return "hotel/hotelcontent";
@@ -335,6 +348,10 @@ public class HotelController {
 		return "hotel/hoteldelete";
 	}
 	
+	/*
+	룸 컨트롤
+	*/
+	
 	@RequestMapping("/roominsert")
 	public String roominsert(HttpServletRequest req){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
@@ -343,61 +360,42 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/roominsertok")
-	public String roominsertok(MultipartHttpServletRequest mtreq,HttpServletRequest req,
-			@ModelAttribute RoomDTO dto, BindingResult rs,@ModelAttribute RFileDTO rdto){
+	public String roominsertok(HttpServletRequest req,
+			@ModelAttribute RoomDTO dto, BindingResult rs,MultipartHttpServletRequest mtfRequest){
 		if(rs.hasErrors()){
 			dto.setHotel_no(0);
-			dto.setRoom_no(0);
+			/*dto.setRoom_no(0);*/
 		}
-		/*List<MultipartFile> fileList = mtreq.getFiles("file");
-		String filename = mtreq.getParameter("filename");
-		int filesize = 0;
-		
-		for (MultipartFile mf : fileList) {
-            String originFileName = mf.getOriginalFilename(); // 원본 파일 명
-            filesize = (int) mf.getSize(); // 파일 사이즈
-
-            String safeFile = upLoadPath + System.currentTimeMillis() + originFileName;
-            
-            try {
-                mf.transferTo(new File(safeFile));
-            } catch (IllegalStateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }*/
-		
-		/*String filename = "";
-		
-		MultipartFile file = mtreq.getFile("filename");
-		File target = new File(upLoadPath, file.getOriginalFilename());
-		if (file.getSize() > 0){
-			try{
-				file.transferTo(target);
-			}catch(IOException e){}
-			filename = file.getOriginalFilename();
-			filesize = (int)file.getSize();
-		}*/
-		
-		int filesize = 0;
-		dto.setFilename(req.getParameter("filename"));
-		dto.setFilesize(filesize);
+		List<MultipartFile> fileList = mtfRequest.getFiles("filename");
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
-		int res = roomMapper.insertRoom(dto, hotel_no);
+		roomMapper.seqUP();
+		String seq = String.valueOf(roomMapper.seqGET());
+
+		String filename = "";
+		int filesize = 0; 	
+		for (MultipartFile mf : fileList) {
+			String tempname = mf.getOriginalFilename();
+			long tempsize = mf.getSize(); 	
+			try {
+				mf.transferTo(new File(upLoadPath, mf.getOriginalFilename()));
+				filename+=tempname+"/";
+				filesize+=tempsize;
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
-		List<MultipartFile> files = mtreq.getFiles("rfile");
-		rdto.setRfile(files);
-		rdto.setRoom_no(dto.getRoom_no());
-		
-		
-		
+		for (int i = 1; i <= dto.getRooms(); i++) {
+			dto.setFilename(filename);
+			dto.setFilesize(filesize);
+			dto.setRoom_no(seq + "-" + i);
+			int res = roomMapper.insertRoom(dto,hotel_no);
+		}
 		if(dto.getHotel_no()==hotel_no){
 			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
 			req.setAttribute("roomList", list);
-			req.setAttribute("rfile", rdto);
 		}
 		
 
@@ -405,7 +403,7 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/roomlist")
-	public String roomlist(HttpServletRequest req, RoomDTO dto){
+	public String roomlist(HttpServletRequest req, @ModelAttribute RoomDTO dto){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		if(dto.getHotel_no()==hotel_no){
 			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
@@ -416,25 +414,95 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/roomcontent")
-	public String roomcontent(HttpServletRequest req,@ModelAttribute RFileDTO rdto){
-		int room_no = Integer.parseInt(req.getParameter("room_no"));
+	public String roomcontent(HttpServletRequest req){
+		String room_no = req.getParameter("room_no");
 		RoomDTO dto = roomMapper.getRoom(room_no);
-		List<MultipartFile> files = null;
-		if(room_no==rdto.getRoom_no()){
-			files = rdto.getRfile();
-		}
-		req.setAttribute("Rfiles", files);
+		//룸 사진 여러장 가져오기
+		String roomfile = dto.getFilename();
+		String regex="/";
+		String [] filearr = roomfile.split(regex);
+		
+		req.setAttribute("filearr", filearr);
 		req.setAttribute("getRoom", dto);
 		
 		return "room/roomcontent";
 	}
 	
+	/*
+	호텔 예약 컨트롤
+	*/
+	
+	@RequestMapping("/hotel_resv")
+	public String hotel_resvselect(){
+		return "hotel_resv/hotel_resv";
+	}
+	
 	@RequestMapping("/hotel_resvlist")
-	public String hotel_resvlist(HttpServletRequest req, HotelDTO dto){
+	public String hotel_resvlist(HttpServletRequest req,@ModelAttribute HotelDTO dto,@ModelAttribute RoomDTO rdto){
 		String address = req.getParameter("address");
 		List<HotelDTO> list = hotelMapper.listHotel1(address);
+		int arrhotel_no[];
+		int hotel_no=0;
+		
+		//호텔 리스트 메인 사진 한장 가져오기
+		for(HotelDTO hdto : list){
+			hotel_no = hdto.getHotel_no();
+			String name=hdto.getFilename();
+			String[] arrname=name.split("/");
+			dto.setFilename(arrname[0]);
+		}
+		
+		/*for(HotelDTO hdto : list){
+		for(int i = 0;i<list.size();i++){
+			int j=0;
+			hotel_no = hdto.getHotel_no();
+			if(arrhotel_no[i]!=hdto.getHotel_no()){
+				j+=1;
+				arrhotel_no[j]=hdto.getHotel_no();
+			}
+		 }
+		}
+		
+		for(int i = 0;i<arrhotel_no.length;i++){
+			System.out.println(arrhotel_no[i]);
+		}*/
+		//hotel에 맞는 room 가져오기
+		List<RoomDTO> rlist = roomMapper.listRoom2(hotel_no);
+		for(RoomDTO rdto1 : rlist){
+			if(rdto1.getHotel_no()==hotel_no){
+				if(rdto1.getSleeps()==Integer.parseInt(req.getParameter("sleeps"))){
+				rdto.setSleeps(rdto1.getSleeps());
+				rdto.setPrice(rdto1.getPrice());
+				rdto.setName(rdto1.getName());
+				rdto.setRoom_no(rdto1.getRoom_no());
+				
+				req.setAttribute("rdto", rdto);
+				}
+			}
+		}
+		
+		req.setAttribute("start_resv_date", req.getParameter("start_resv_date"));
+		req.setAttribute("end_resv_date", req.getParameter("end_resv_date"));
 		req.setAttribute("hotelList", list);
 		return "hotel_resv/hotel_resvlist";
+	}
+	
+	@RequestMapping("/hotel_resvcontent")
+	public String hotel_resvcontent(HttpServletRequest req){
+		/*HttpSession session = req.getSession();*/
+		
+		req.setAttribute("hotel_no", req.getParameter("hotel_no"));
+		req.setAttribute("room_no", req.getParameter("room_no"));
+		return "hotel_resv/hotel_resvcontent";
+	}
+	
+	@RequestMapping("/hotel_resvroomcontent")
+	public String hotel_resvroomcontent(HttpServletRequest req,@ModelAttribute RoomDTO rdto){
+		
+		rdto=roomMapper.getRoom(req.getParameter("room_no"));
+		
+		req.setAttribute("rdto", rdto);
+		return "hotel_resv/hotel_resvroomcontent";
 	}
 }
 
