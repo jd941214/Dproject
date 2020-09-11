@@ -44,6 +44,7 @@
  			<td><a href="<c:url value="bus_resv_user_seat.do">
  			<c:param name="one_date" value="${one_date}"></c:param>
  			<c:param name="road_no" value="${list.road_no}"></c:param>
+ 			<c:param name="mode" value="${mode}"></c:param>
  			<c:param name="arrival" value="${list.arrival}"></c:param>
  			<c:param name="departure" value="${list.departure}">
  			</c:param></c:url>">예약</a></td>
@@ -112,7 +113,18 @@
 		 				<td>${arr_list.tot_time + arr_list.arr_time}시</td>
 		 			</c:if>
 		 			<td>${arr_list.seat}</td>
-		 			<td>예약</td>
+		 			<td><a href="<c:url value="bus_resv_user_arr_seat.do">
+ 						<c:param name="arr_date" value="${arr_date}"></c:param>
+ 						<c:param name="dep_date" value="${dep_date}"></c:param>
+ 						<c:param name="one_date" value=""></c:param>
+ 						<c:param name="mode" value="${mode}"></c:param>
+ 						<c:param name="road_no" value="${arr_list.road_no}"></c:param>
+ 						<c:param name="arrival_name" value="${arr_list.arrival}"></c:param>
+ 						<c:param name="departure_name" value="${arr_list.departure}"></c:param>
+ 						<c:param name="arrival" value="${arrival}"></c:param>
+ 						<c:param name="departure" value="${departure}"></c:param>
+ 						<c:param name="grade" value="${grade}"></c:param>
+ 						</c:url>">예약</a></td>
  				</tr>
  			</c:forEach>
  			
@@ -172,7 +184,18 @@
 		 				<td>${dep_list.tot_time+dep_list.arr_time}시</td>
 		 			</c:if>
 		 			<td>${dep_list.seat}</td>
-		 			<td>예약</td>
+		 			<td><a href="<c:url value="bus_resv_user_dep_seat.do">
+ 						<c:param name="arr_date" value="${arr_date}"></c:param>
+ 						<c:param name="dep_date" value="${dep_date}"></c:param>
+ 						<c:param name="one_date" value=""></c:param>
+ 						<c:param name="mode" value="${mode}"></c:param>
+ 						<c:param name="road_no" value="${dep_list.road_no}"></c:param>
+ 						<c:param name="arrival_name" value="${dep_list.arrival}"></c:param>
+ 						<c:param name="departure_name" value="${dep_list.departure}"></c:param>
+ 						<c:param name="arrival" value="${arrival}"></c:param>
+ 						<c:param name="departure" value="${departure}"></c:param>
+ 						<c:param name="grade" value="${grade}"></c:param>
+ 						</c:url>">예약</a></td>
  				</tr>
  			</c:forEach>
  		</table>

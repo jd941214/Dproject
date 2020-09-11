@@ -1,14 +1,13 @@
 package team.Dproject.main.service;
 
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import team.Dproject.main.model.BusResvDTO;
+import team.Dproject.main.model.BusResv_BusRoadDTO;
 import team.Dproject.main.model.Bus_BusRoadDTO;
 
 @Service
@@ -41,6 +40,10 @@ public class BusResvMapper {
 	
 		   
 		   return sqlSession.selectList("listDispatch_resv",map);
+	   }
+	   public List<BusResv_BusRoadDTO> listmypage(int member_no){
+		   
+		   return sqlSession.selectList("listmypage",member_no);
 	   }
 	   public List<Bus_BusRoadDTO> listdispatch_resv_count(int arrival,int departure,String grade,int start,int end){//list 5개씩출력 우등,일반 버스중 하나
 		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();

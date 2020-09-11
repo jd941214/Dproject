@@ -1063,6 +1063,19 @@ public class BusController {
 						BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
 						depDTO.setDeparture(BDTO2.getStation_name());
 					}
+					HttpSession session=req.getSession();
+					if(session.getAttribute("arr_seat_dto")!=null){//왕복 노선 할때 출발일 부터 설정할때 선택한 좌석값 저장
+						String[] seat=req.getParameterValues("seat");
+						int seat_no=seat.length;
+						session.setAttribute("seat",seat);
+						session.setAttribute("seat_no",seat_no);
+					}
+					if(session.getAttribute("dep_seat_dto")!=null){//왕복 노선 할때 도착일 부터 설정할때 선택한 좌석값 저장
+						String[] seat_reverse=req.getParameterValues("seat_reverse");
+						int seat_no_reverse=seat_reverse.length;
+						session.setAttribute("seat_reverse",seat_reverse);
+						session.setAttribute("seat_no_reverse",seat_no_reverse);
+					}
 					mav.addObject("arr_date",arr_date);
 					mav.addObject("dep_date",dep_date);
 					mav.addObject("mode",mode);
@@ -1088,15 +1101,17 @@ public class BusController {
 				}
 				return mav;
 		}
-		
-		//좌석 선택
+	
+		//좌석 선택(편도)
 		@RequestMapping(value="bus_resv_user_seat.do")
-		public  ModelAndView bus_resv_user_seat(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
+		public  ModelAndView bus_resv_user_seat(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String mode,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
+			
+			String one_date=req.getParameter("one_date");
 			Bus_BusRoadDTO seat_dto= busResvMapper.resv_user_seat_select(road_no);
 			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(one_date,road_no);//예약된 좌석 체크위한 리스트
 			String seats="";
-			if(resv_list !=null){
+				if(resv_list !=null){
 			for(BusResvDTO rdto:resv_list){
 				seats +=rdto.getSeat()+"/";
 				
@@ -1111,12 +1126,96 @@ public class BusController {
 	         mav.addObject("one_date",one_date);
 	         mav.addObject("dto",dto);
 	         mav.addObject("resv",seats);//예약
-	
+	         mav.addObject("mode",mode);
 	         mav.setViewName("bus_resv_user/bus_resv_user_seat");
+	         return mav;
+			
+			
+			
+		}
+		//좌석선택(왕복-가는날)
+		@RequestMapping(value="bus_resv_user_arr_seat.do")
+		public ModelAndView bus_resv_user_arr_seat(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String mode,@RequestParam int road_no,@RequestParam String arrival_name,@RequestParam String departure_name,@RequestParam int departure,@RequestParam int arrival,@RequestParam String grade){
+			ModelAndView mav= new ModelAndView();
+			
+			String arr_date=req.getParameter("arr_date");
+			String dep_date=req.getParameter("dep_date");
+			Bus_BusRoadDTO arr_seat_dto= busResvMapper.resv_user_seat_select(road_no);
+			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(arr_date,road_no);//예약된 좌석 체크위한 리스트
+			
+			String seats="";
+				if(resv_list !=null){
+			for(BusResvDTO rdto:resv_list){
+				seats +=rdto.getSeat()+"/";
+				
+				}
+			}else{
+				seats="0";
+			}
+			arr_seat_dto.setArrival(arrival_name);
+			arr_seat_dto.setDeparture(departure_name);
+			HttpSession session=req.getSession();
+			session.setAttribute("arr_seat_dto",arr_seat_dto);
+			session.setAttribute("arr_date",arr_date);
+			session.setAttribute("dep_date",dep_date);
+			session.setAttribute("resv",seats);
+			session.setAttribute("dep_date",dep_date);
+			session.setAttribute("arrival",arrival);
+			session.setAttribute("departure",departure);
+			session.setAttribute("grade",grade);
+			session.setAttribute("road_no",road_no);
+			/*
+			 mav.addObject("arr_seat_dto",arr_seat_dto);//자리
+	         mav.addObject("arr_date",arr_date);
+	         mav.addObject("dto",dto);
+	         mav.addObject("resv",seats);//예약
+			*/
+			
+			mav.setViewName("bus_resv_user/bus_resv_user_arr_seat");
+			
+			return mav;
+		}
+		//좌석선택(왕복-오는날)
+		@RequestMapping(value="bus_resv_user_dep_seat.do")
+		public ModelAndView bus_resv_user_dep_seat(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String mode,@RequestParam int road_no,@RequestParam String arrival_name,@RequestParam String departure_name,@RequestParam int departure,@RequestParam int arrival,@RequestParam String grade){
+			ModelAndView mav= new ModelAndView();
+			String arr_date=req.getParameter("arr_date");
+			String dep_date=req.getParameter("dep_date");
+			Bus_BusRoadDTO dep_seat_dto= busResvMapper.resv_user_seat_select(road_no);
+			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(dep_date,road_no);//예약된 좌석 체크위한 리스트
+			
+			String seats="";
+				if(resv_list !=null){
+			for(BusResvDTO rdto:resv_list){
+				seats +=rdto.getSeat()+"/";
+				
+				}
+			}else{
+				seats="0";
+			}
+			dep_seat_dto.setArrival(arrival_name);
+			dep_seat_dto.setDeparture(departure_name);
+			HttpSession session=req.getSession();
+			session.setAttribute("dep_seat_dto",dep_seat_dto);
+			session.setAttribute("arr_date",arr_date);
+			session.setAttribute("dep_date",dep_date);
+			session.setAttribute("resv_reverse",seats);
+			session.setAttribute("dep_date",dep_date);
+			session.setAttribute("arrival",arrival);
+			session.setAttribute("departure",departure);
+			session.setAttribute("grade",grade);
+			session.setAttribute("road_no_reverse",road_no);
+			/*
+			 mav.addObject("dep_seat_dto",dep_seat_dto);//자리
+	         mav.addObject("dep_date",dep_date);
+	         mav.addObject("dto",dto);
+	         mav.addObject("resv",seats);//예약
+			*/
+			mav.setViewName("bus_resv_user/bus_resv_user_dep_seat");
 			return mav;
 		}
 		
-		//결제 페이지
+		//결제 페이지(편도)
 		@RequestMapping(value="bus_resv_user_pay.do")
 		public ModelAndView bus_resv_user_pay(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
@@ -1137,8 +1236,34 @@ public class BusController {
 			mav.setViewName("bus_resv_user/bus_resv_user_pay");
 			return mav;
 		}
+		//결제페이지(왕복)
+		@RequestMapping(value="bus_resv_user_total_pay.do")
+		public ModelAndView bus_resv_user_total_pay(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
+			ModelAndView mav = new ModelAndView();
+			HttpSession session=req.getSession();
+			
+			if(session.getAttribute("dep_seat_dto")==null || session.getAttribute("arr_seat_dto")==null){
+				
+				mav.setViewName("bus_resv_user/bus_resv_user_dispatch");
+			}else{
+				if(session.getAttribute("seat_no")!=null){//출발일부터 할떄 조건
+					String[] seat_reverse=req.getParameterValues("seat_reverse");
+					int seat_no_reverse=seat_reverse.length;
+					session.setAttribute("seat_reverse",seat_reverse);
+					session.setAttribute("seat_no_reverse",seat_no_reverse);
+					mav.setViewName("bus_resv_user/bus_resv_user_total_pay");
+				}else if(session.getAttribute("seat_no_reverse")!=null){//도착일부터 할떄 조건
+					String[] seat=req.getParameterValues("seat");
+					int seat_no=seat.length;
+					session.setAttribute("seat",seat);
+					session.setAttribute("seat_no",seat_no);
+					mav.setViewName("bus_resv_user/bus_resv_user_total_pay");
+				}
+			}
+			return mav;
+		}
 		
-		//결제완료 (bus_resv 테이블에 저장)
+		//결제완료 (편도 bus_resv 테이블에 저장)
 		@RequestMapping(value="bus_resv_user_payok.do")
 		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point,@RequestParam int price){
 			ModelAndView mav=new ModelAndView();
@@ -1186,5 +1311,68 @@ public class BusController {
 			mav.addObject("use_point",use_point);
 			return mav;
 		}
-		
+		//결제완료 (왕복 bus_resv 테이블에 저장)
+		@RequestMapping(value="bus_resv_user_total_payok.do")
+		public ModelAndView bus_resv_user_total_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String arr_date,@RequestParam String dep_date,@RequestParam int road_no,@RequestParam int road_no_reverse,@RequestParam int price,@RequestParam int arr_price,@RequestParam int dep_price){
+			ModelAndView mav = new ModelAndView();
+			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
+			Bus_BusRoadDTO rdto_reverse=busResvMapper.resv_user_seat_select(road_no_reverse);
+			HttpSession session = req.getSession();
+			
+			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
+			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
+			String[] seats=new String[seat.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
+			int seat_no=seat.length;//좌석수 저장,티켓총가격 구하기위해
+			
+			String[] seat_reverse = req.getParameterValues("seat_reverse");//좌석수 배열에 저장
+			String[] seats_reverse=new String[seat_reverse.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
+			int seat_no_reverse=seat_reverse.length;//좌석수 저장,티켓총가격 구하기위해
+			
+			//좌석번호 구하기
+			for(int i=0; i<seat.length; i++){
+				dto.setSeat(seat[i]);
+				seats[i]=dto.getSeat();
+			}
+			String result_seat = String.join("/",seats); //seats 배열의 자리 번호를 '/' 기준으로 나누어서 저장
+			
+			//좌석번호 구하기
+			for(int j=0; j<seat_reverse.length; j++){
+				dto.setSeat(seat_reverse[j]);
+				seats_reverse[j]=dto.getSeat();
+			}
+			String result_seat_reverse = String.join("/",seat_reverse); //seats 배열의 자리 번호를 '/' 기준으로 나누어서 저장
+			
+			int res=0;
+
+			dto.setUse_point(0);
+			dto.setSave_point(0);
+			dto.setPrice(arr_price);
+			dto.setBus_no(rdto.getBus_no());
+			dto.setResv_date(dep_date);
+			dto.setRoad_no(road_no);
+			dto.setSeat(result_seat);
+			dto.setMember_no(mdto.getMember_no());
+			
+			res =busResvMapper.insertBus_resv_user(dto);
+			
+			dto.setUse_point(0);
+			dto.setSave_point(0);
+			dto.setPrice(dep_price);
+			dto.setBus_no(rdto_reverse.getBus_no());
+			dto.setResv_date(dep_date);
+			dto.setRoad_no(road_no_reverse);
+			dto.setSeat(result_seat_reverse);
+			dto.setMember_no(mdto.getMember_no());
+			
+			res =busResvMapper.insertBus_resv_user(dto);
+			
+			mav.addObject("price",arr_price+dep_price);
+			mav.setViewName("bus_resv_user/bus_resv_user_total_payok");
+			
+			session.removeAttribute("arr_seat_dto");
+			session.removeAttribute("dep_session_dto");
+			session.removeAttribute("seat");
+			session.removeAttribute("seat_reverse");
+			return mav;
+		}
 	}

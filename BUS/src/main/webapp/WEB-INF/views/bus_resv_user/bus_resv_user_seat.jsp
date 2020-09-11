@@ -24,6 +24,8 @@
 </style>
 <%@ include file="../top.jsp" %>
 <%
+	
+   
    Bus_BusRoadDTO bdto=(Bus_BusRoadDTO)request.getAttribute("seat_dto");
    String seats=(String)request.getAttribute("resv");
    String resvlist[] =seats.split("/");
@@ -96,6 +98,7 @@
       </div>
    </div>
    </form>
+
 
 
 <%@ include file="../bottom.jsp"%>
