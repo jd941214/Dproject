@@ -25,12 +25,13 @@
   $(function() {
     $("#start_resv_date, #end_resv_date").datepicker();
   });
-
+	
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+<div align="right">
 	<c:choose>
 		<c:when test="${empty sedto}">
 			<input type="button" value="로그인"
@@ -41,13 +42,14 @@
 				onClick="location.href = 'memberlogout'" />
 		</c:otherwise>
 	</c:choose>
+	</div>
 	<div>
-	<div algin="left">
+	<div align="center">
 		<form action="hotel_resvlist">
 			<table border="1">
 				<tr>
 					<th><label>지역</label></th>
-					<td><select name="address">
+					<td> <select name="address">
 							<option value="%서울%" selected>서울</option>
 							<option value="%경기%">경기</option>
 							<option value="%대전%">대전</option>
@@ -57,18 +59,19 @@
 							<option value="%강원%">강원</option>
 							<option value="%인천%">인천</option>
 					</select></td>
-				</tr>
-				<tr>
 					<th><label>체크 인</label></th>
-					<td><input type="text" name="start_resv_date"
-						id="start_resv_date"></td>
-					<th><label>체크 아웃</label></th>
-					<td><input type="text" name="end_resv_date" id="end_resv_date">
+					<td> 
+					<input type="text" name="start_resv_date" id="start_resv_date" value="${start_resv_date}">
 					</td>
-				</tr>
-				<tr>
+					<th> 
+					<label>체크 아웃</label>
+					</th>
+					<td> 
+					<input type="text" name="end_resv_date" id="end_resv_date" value="${end_resv_date}">
+					</td>
 					<th><label>객실</label></th>
-					<td><select name="roomsu">
+					<td> 
+						<select name="roomsu">
 							<option value="1" selected>1개</option>
 							<option value="2">2개</option>
 							<option value="3">3개</option>
@@ -80,8 +83,8 @@
 							<option value="9">9개</option>
 							<option value="10">10개</option>
 					</select></td>
-					<th><label>성인</label></th>
-					<td><select name="adult">
+					<th><label>인원</label></th>
+					<td><select name="sleeps">
 							<option value="1">1명</option>
 							<option value="2" selected>2명</option>
 							<option value="3">3명</option>
@@ -93,7 +96,7 @@
 							<option value="9">9명</option>
 							<option value="10">10명</option>
 					</select></td>
-					<th><label>아동</label></th>
+					<!-- <th><label>아동</label></th>
 					<td><select name="children">
 							<option value="0" selected>0명</option>
 							<option value="1">1명</option>
@@ -105,26 +108,23 @@
 							<option value="7">7명</option>
 							<option value="8">8명</option>
 							<option value="9">9명</option>
-					</select></td>
-				<tr>
+					</select></td> -->
 					<th><label>&nbsp;</label></th>
 					<td>
-						<button type="submit">검색</button>
-					</td>
-				</tr>
+						<button type="submit">검색</button></td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	<div align="center">
-		<table border="1" width="800">
+		<table border="1">
 			<tr bgcolor="green">
 				<th>사진</th>
-				<th width="40%">호텔이름</th>
+				<th>호텔이름</th>
 				<th>주소</th>
 				<th>연락처</th>
 				<th>성급</th>
-				<th>파일</th>
+				<th>객실</th>
 			</tr>
 			<c:if test="${empty hotelList}">
 				<tr>
@@ -135,14 +135,17 @@
 				<tr>
 					<td><img width="100px" height="70px"
 						src="c:/hotelimg/${dto.filename}" /></td>
-					<td><a href="hotel_resvcontent?hotel_no=${dto.hotel_no}">
+					<td><a href="hotel_resvcontent?hotel_no=${dto.hotel_no}&room_no=${rdto.room_no}">
 							${dto.name} </a></td>
 					<td>${dto.address}</td>
 					<td>${dto.hp1}-${dto.hp2}-${dto.hp3}</td>
 					<td>${dto.star}</td>
-					<td><a href="hotel_resvcontent?hotel_no=${dto.hotel_no}">
-							<input type="button" value="객실선택">
-					</a></td>
+					<td>
+					${rdto.name} - ${rdto.sleeps}명<br>
+					${rdto.price}원<br>
+					<a href="hotel_resvcontent?hotel_no=${dto.hotel_no}&room_no=${rdto.room_no}">
+							<input type="button" value="객실선택"></a>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>

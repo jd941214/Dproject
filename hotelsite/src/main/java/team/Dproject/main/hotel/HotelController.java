@@ -317,11 +317,6 @@ public class HotelController {
 		return "message";
 	}
 	
-	@RequestMapping("/hotel_resv")
-	public String hotel_resvselect(){
-		return "hotel_resv/hotel_resv";
-	}
-	
 	@RequestMapping("/hotelcontent")
 	public String hotelcontent(HttpServletRequest req){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
@@ -408,7 +403,7 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/roomlist")
-	public String roomlist(HttpServletRequest req, RoomDTO dto){
+	public String roomlist(HttpServletRequest req, @ModelAttribute RoomDTO dto){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		if(dto.getHotel_no()==hotel_no){
 			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
@@ -437,16 +432,57 @@ public class HotelController {
 	호텔 예약 컨트롤
 	*/
 	
+	@RequestMapping("/hotel_resv")
+	public String hotel_resvselect(){
+		return "hotel_resv/hotel_resv";
+	}
+	
 	@RequestMapping("/hotel_resvlist")
-	public String hotel_resvlist(HttpServletRequest req){
+	public String hotel_resvlist(HttpServletRequest req,@ModelAttribute HotelDTO dto,@ModelAttribute RoomDTO rdto){
 		String address = req.getParameter("address");
 		List<HotelDTO> list = hotelMapper.listHotel1(address);
+		int arrhotel_no[];
+		int hotel_no=0;
+		
 		//호텔 리스트 메인 사진 한장 가져오기
-		for(HotelDTO dto : list){
-			String name=dto.getFilename();
+		for(HotelDTO hdto : list){
+			hotel_no = hdto.getHotel_no();
+			String name=hdto.getFilename();
 			String[] arrname=name.split("/");
 			dto.setFilename(arrname[0]);
 		}
+		
+		/*for(HotelDTO hdto : list){
+		for(int i = 0;i<list.size();i++){
+			int j=0;
+			hotel_no = hdto.getHotel_no();
+			if(arrhotel_no[i]!=hdto.getHotel_no()){
+				j+=1;
+				arrhotel_no[j]=hdto.getHotel_no();
+			}
+		 }
+		}
+		
+		for(int i = 0;i<arrhotel_no.length;i++){
+			System.out.println(arrhotel_no[i]);
+		}*/
+		//hotel에 맞는 room 가져오기
+		List<RoomDTO> rlist = roomMapper.listRoom2(hotel_no);
+		for(RoomDTO rdto1 : rlist){
+			if(rdto1.getHotel_no()==hotel_no){
+				if(rdto1.getSleeps()==Integer.parseInt(req.getParameter("sleeps"))){
+				rdto.setSleeps(rdto1.getSleeps());
+				rdto.setPrice(rdto1.getPrice());
+				rdto.setName(rdto1.getName());
+				rdto.setRoom_no(rdto1.getRoom_no());
+				
+				req.setAttribute("rdto", rdto);
+				}
+			}
+		}
+		
+		req.setAttribute("start_resv_date", req.getParameter("start_resv_date"));
+		req.setAttribute("end_resv_date", req.getParameter("end_resv_date"));
 		req.setAttribute("hotelList", list);
 		return "hotel_resv/hotel_resvlist";
 	}
@@ -455,7 +491,18 @@ public class HotelController {
 	public String hotel_resvcontent(HttpServletRequest req){
 		/*HttpSession session = req.getSession();*/
 		
+		req.setAttribute("hotel_no", req.getParameter("hotel_no"));
+		req.setAttribute("room_no", req.getParameter("room_no"));
 		return "hotel_resv/hotel_resvcontent";
+	}
+	
+	@RequestMapping("/hotel_resvroomcontent")
+	public String hotel_resvroomcontent(HttpServletRequest req,@ModelAttribute RoomDTO rdto){
+		
+		rdto=roomMapper.getRoom(req.getParameter("room_no"));
+		
+		req.setAttribute("rdto", rdto);
+		return "hotel_resv/hotel_resvroomcontent";
 	}
 }
 

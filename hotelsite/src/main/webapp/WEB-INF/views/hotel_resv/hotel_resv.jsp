@@ -8,7 +8,7 @@
 	href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<script>
+<!-- <script>
   $.datepicker.setDefaults({
     dateFormat: 'yy.mm.dd',
     prevText: '이전 달',
@@ -26,7 +26,7 @@
     $("#start_resv_date, #end_resv_date").datepicker();
   });
 
-</script>
+</script> -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>호텔검색</title>
@@ -62,13 +62,13 @@
 					</select></td>
 					<th><label>체크 인</label></th>
 					<td> 
-					<input type="text" name="start_resv_date" id="start_resv_date">
+					<input type="date" name="start_resv_date" >
 					</td>
 					<th> 
 					<label>체크 아웃</label>
 					</th>
 					<td> 
-					<input type="text" name="end_resv_date" id="end_resv_date">
+					<input type="date" name="end_resv_date">
 					</td>
 					<th><label>객실</label></th>
 					<td> 
@@ -84,8 +84,8 @@
 							<option value="9">9개</option>
 							<option value="10">10개</option>
 					</select></td>
-					<th><label>성인</label></th>
-					<td><select name="adult">
+					<th><label>인원</label></th>
+					<td><select name="sleeps">
 							<option value="1">1명</option>
 							<option value="2" selected>2명</option>
 							<option value="3">3명</option>
@@ -97,7 +97,7 @@
 							<option value="9">9명</option>
 							<option value="10">10명</option>
 					</select></td>
-					<th><label>아동</label></th>
+					<!-- <th><label>아동</label></th>
 					<td><select name="children">
 							<option value="0" selected>0명</option>
 							<option value="1">1명</option>
@@ -109,7 +109,7 @@
 							<option value="7">7명</option>
 							<option value="8">8명</option>
 							<option value="9">9명</option>
-					</select></td>
+					</select></td> -->
 					<th><label>&nbsp;</label></th>
 					<td>
 						<button type="submit">검색</button></td>

@@ -6,7 +6,7 @@
 	<insert id="insertRoom" parameterType="roomDTO">
 		insert into room values(#{room_no},
 		#{hotel_no}, #{name}, #{roomsize}, #{sleeps}, 
-		#{item}, #{filename}, #{filesize}, #{price}, #{rooms})
+		#{item}, #{filename}, #{filesize},  #{rooms}, #{price})
 	</insert>
 	<select id="listRoom" resultType="roomDTO">
 		select * from room order by room_no desc
