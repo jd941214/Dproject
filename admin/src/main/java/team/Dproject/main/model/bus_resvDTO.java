@@ -9,6 +9,13 @@ public class bus_resvDTO {
 	private int use_point; 
 	private int save_point; 
 	private String resv_date;
+	private int price;
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
 	public int getResv_no() {
 		return resv_no;
 	}

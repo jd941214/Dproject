@@ -7,7 +7,7 @@
 		select * from bus_station order by station_no
 	</select>
 	<insert id="insertBus_station" parameterType="bus_stationDTO">
-		insert into bus_station values(bus_station_seq.nextval,#{station_name},#{address})
+		insert into bus_station values(bus_station_seq.nextval,#{station_name},#{address},#{filename},#{filesize})
 	</insert>
 	<delete id="deleteBus_station" parameterType="String">
 		delete from bus_station where station_no=#{no}
@@ -16,6 +16,6 @@
 		select * from bus_station where station_no=#{no}
 	</select>
 	<update id="updateBus_station" parameterType="bus_stationDTO">
-		update bus_station set station_name=#{station_name}, address=#{address} where station_no=#{station_no}
+		update bus_station set station_name=#{station_name}, address=#{address}, filename=#{filename}, filesize=#{filesize} where station_no=#{station_no}
 	</update>
 </mapper>

@@ -4,7 +4,23 @@ public class bus_stationDTO {
 	private int station_no;
 	private String station_name;
 	private String address;
+	private String filename;
+	private int filesize;
+	
+	
 
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public int getFilesize() {
+		return filesize;
+	}
+	public void setFilesize(int filesize) {
+		this.filesize = filesize;
+	}
 	public int getStation_no() {
 		return station_no;
 	}

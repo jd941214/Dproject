@@ -18,6 +18,8 @@
     <update id="updateBus" parameterType="busDTO">
     	update bus set grade=#{grade}, seat=#{seat} where bus_no=#{bus_no}
     </update>
+ 
+
 
     
 </mapper>

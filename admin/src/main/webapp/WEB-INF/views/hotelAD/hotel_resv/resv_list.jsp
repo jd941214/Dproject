@@ -4,7 +4,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="team.Dproject.main.model.*"%>
-
 <%
 	Calendar cal = Calendar.getInstance();
 	String strYear = (String) request.getParameter("year");
@@ -15,45 +14,38 @@
 	if (strMonth != null) {
 		month = Integer.parseInt(strMonth);
 	}
-
 	cal.set(year, month, 1);
 	int startDay = cal.getMinimum(java.util.Calendar.DATE);
 	int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 	int start = cal.get(java.util.Calendar.DAY_OF_WEEK);
 	int newLine = 0;
-
 	Calendar todayCal = Calendar.getInstance();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
-
 	int cnt = 0;
 	int cnt2=0;
 	int day=0;
-	int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
-	
+	int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));	
 	List<roomDTO> roomlist = (List) request.getAttribute("roomlist");
-	
 	String[] Bcolor={"#cce8e2","#bbdef2","#f0cfff","#ffdefa","#ffdee6","#fff7de","#f0ffde"};
 	int Bselect=0;
-	
 	int height=70;
+	if(roomlist.size()!=0)
 	height/=roomlist.size();
+	int resv_no=0;
 %> 
 <style>
 	.roomname:link{
 		color:black;
 	}
-	
 	a{ 
 	text-decoration: none;
 	}
-	
 	.roomname:hover{
 		color:red;
 	}
 	.roomname:visited{
 		color:black;
 	}
-
 	i{ /*예은이가 함*/
 		  transform: scale(1);
 		  -webkit-transform: scale(1);
@@ -70,7 +62,6 @@
 		  -o-transform: scale(1.4);
 	}
 </style>
-
 <%@ include file="../top.jsp"%>
 <DIV width="80%" height="40">
 	<table width="100%" height="40">
@@ -85,7 +76,7 @@
 							<%
 								if (month > 0) {
 							%> <a
-							href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&amp;?year=<%=year%>&amp;month=<%=month - 1%>">
+							href="ADresv_list.do?hnum=<%=request.getAttribute("hnum")%>&amp;?year=<%=year%>&amp;month=<%=month - 1%>">
 								<i class="fas fa-angle-left"></i></a> <%
 							 	} else {
 							 %> <%
@@ -93,7 +84,7 @@
 							 %> &nbsp;&nbsp; <%=year%>년 <%=month + 1%>월 &nbsp;&nbsp;<%
 							 	if (month < 11) {
 							 %> 		 
-							<a href="resv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"target="_self">
+							<a href="ADresv_list.do?hnum=<%=request.getAttribute("hnum")%>&?year=<%=year%>&amp;month=<%=month + 1%>"target="_self">
 							<i class="fas fa-angle-right"></i>
 							</a> 
 							<%
@@ -107,9 +98,7 @@
 			</td>
 		</tr>
 	</table>
-
 	<br>
-
 	<table bgcolor="#FFFFFF" align="center">
 		<THEAD>
 			<TR bgcolor="#c0a1ff">
@@ -140,14 +129,13 @@
 				</TD>
 			</TR>
 		</THEAD>
-
 		<TBODY>
 			<TR height="1">
 				<%
 					boolean fir = true;
 					//처음 빈공란 표시
 					for (int index = 1; index < start; index++) {
-						%><TD height="<%=height %>">&nbsp;</TD><%
+						%><TD height="1">&nbsp;</TD><%
 						newLine++;
 					}
 					for (int index = 1; index <= endDay; index++) {
@@ -158,10 +146,7 @@
 							color = "#055db5";
 						} else {
 							color = "#707070";
-						}
-						;
-
-						
+						}				
 						String backColor = "#fdf7ff";
 
 						out.println("<TD valign='top' align='left' height='1px' bgcolor='" + backColor + "' nowrap>");
@@ -189,6 +174,7 @@
 							boolean check = false;
 			
 							for (roomDTO roomDTO : roomlist) {
+								if(Bselect>6) Bselect=0;
 								int l = index ;
 								if (fir) {
 									for (int a = 1; a < start; a++) {
@@ -217,8 +203,9 @@
 									for (resvDTO resvDTO : resvlist) {										
 										temp=Integer.parseInt(resvDTO.getEnd_resv_date());
 										if (resvDTO.getStart_resv_date().equals(sUseDate)
-												&& resvDTO.getRoom_no() == roomDTO.getRoom_no()) {
+												&& resvDTO.getRoom_no().equals( roomDTO.getRoom_no())) {  
 											check = true;
+											resv_no=resvDTO.getHotel_resv_no();
 											break;
 										}
 										check = false;
@@ -229,8 +216,8 @@
 										%>
 											<TD height="<%=height%>" align="center" bgcolor="<%=Bcolor[Bselect]%>" style="border-radius:30px;" >
 											<font size="1" color="black" style="padding: 1px; margin: 1px; font-weight: bold ">
-											<a href="resv_show" class="roomname">
-											<%=roomDTO.getName()%> 방
+											<a href="ADresv_show.do?hotel_resv_no=<%=resv_no %>" class="roomname">
+											<%=roomDTO.getName()%> 방(<%=roomDTO.getRoom_no() %>)
 											</a>
 											</font>
 											</TD>
@@ -241,31 +228,25 @@
 										%>
 											<%-- <TD height="30" align="center" bgcolor="#a3aeff"><a style="text-decoration: none"> <font size="1"
 												color="#020c57" style="padding: 1px; magin: 1px; font-weight: bold "><%=roomDTO.getName()%>&lt;미&gt;</font></a></TD> --%>
-											
 											<td height="<%=height %>"></td>
 										<%
 											newLine++;
 									}
 									if (end == endDay)
 										continue;
-
 									if (newLine == 7) {
 										newLine = 0;
 										cnt = 0;
 										break;
 									}
-								
 								}
-				%>
-			</tr>
-			<%	Bselect++;
-				}cnt2=0;
-						
+						%>
+					</tr>
+					<%	Bselect++;
+						}cnt2=0;	
 						fir = false;
 					}
-				}
-			%>
-			
+				}%>	
 		</TBODY>
 	</TABLE>
 </DIV>

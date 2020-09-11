@@ -6,6 +6,9 @@
     <select id="listHotel"  resultType="hotelDTO" parameterType="String">
     	select * from hotel where member_num=#{mnum} order by hotel_no
     </select>
+    <select id="listHotel2"  resultType="hotelDTO" >
+    	select * from hotel order by hotel_no
+    </select>
     <insert id="insertHotel" parameterType="hotelDTO">
     	insert into hotel values(hotel_seq.nextval,#{name},#{address},#{hp1},#{hp2},#{hp3},#{member_num},#{hotel_info},#{star},#{filename},#{filesize})
     </insert>

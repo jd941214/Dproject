@@ -5,10 +5,10 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
+	 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -29,7 +29,7 @@
 	</beans:bean>
 	
 	<beans:bean id="upLoadPath" class="java.lang.String">
-		<beans:constructor-arg value="c://img" />
+		<beans:constructor-arg value="C:\Users\ookkj\git\Dproject_sumin\admin\src\main\webapp\resources\img" />
 	</beans:bean>
 	
 	

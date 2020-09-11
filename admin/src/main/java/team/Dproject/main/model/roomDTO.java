@@ -1,29 +1,44 @@
 package team.Dproject.main.model;
 
 public class roomDTO {
-	private int room_no;
+	private String room_no;
 	private int hotel_no;
 	private String name;
 	private int roomsize;
+	private int sleeps;
+	private String item;
+	private String filename;
+	private int filesize;
+	private int rooms;
+	private int price;
+	
+	
 	public int getRoomsize() {
 		return roomsize;
 	}
 	public void setRoomsize(int roomsize) {
 		this.roomsize = roomsize;
 	}
-	private int sleeps;
-	private String item;
-	private String filename;
-	private int filesize;
 	
-	
-	
-	public int getRoom_no() {
+	public String getRoom_no() {
 		return room_no;
 	}
-	public void setRoom_no(int room_no) {
+	public int getRooms() {
+		return rooms;
+	}
+	public void setRooms(int rooms) {
+		this.rooms = rooms;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public void setRoom_no(String room_no) {
 		this.room_no = room_no;
 	}
+	
 	public int getHotel_no() {
 		return hotel_no;
 	}

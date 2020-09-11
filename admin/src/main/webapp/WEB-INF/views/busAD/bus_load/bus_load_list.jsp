@@ -6,7 +6,7 @@
 		<table width="100%">
 			<tr align="right">
 				<td colspan="8">
-					<a href="bus_load_insert.do">추가</a>
+					<a href="ADbus_load_insert.do">추가</a>
 				</td>
 			</tr>
 			<tr>
@@ -35,8 +35,9 @@
 				<td>${dto.arr_time}</td>
 				<td>${dto.tot_time}</td>
 				<td>
-					<a href="bus_load_update.do?no=${dto.road_no}">수정</a> | 
-					<a href="bus_load_delete.do?no=${dto.road_no}">삭제</a>
+					<a href="ADbus_resv_insert.do?no=${dto.road_no}">예약하기</a> | 
+					<a href="ADbus_load_update.do?no=${dto.road_no}">수정</a> | 
+					<a href="ADbus_load_delete.do?no=${dto.road_no}">삭제</a>
 				</td>
 			</tr>	
 			</c:forEach>

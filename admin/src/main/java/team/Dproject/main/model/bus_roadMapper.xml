@@ -7,7 +7,7 @@
     	select * from bus_road order by road_no
     </select>
     <insert id="insertBus_load" parameterType="bus_loadDTO">
-    	insert into bus_road values(bus_road_seq.nextval,#{bus_no},0,#{arrival},#{departure},#{price},#{arr_time},#{tot_time})
+    	insert into bus_road values(bus_road_seq.nextval,#{bus_no},${member_no},#{arrival},#{departure},#{price},#{arr_time},#{tot_time})
     </insert>
     <delete id="deleteBus_load" parameterType="String">
     	delete from bus_road where road_no=#{no}
@@ -18,4 +18,4 @@
     <update id="updateBus_load" parameterType="bus_loadDTO">
     	update bus_road set bus_no=#{bus_no}, member_no=#{member_no}, arrival=#{arrival}, departure=#{departure}, price=#{price}, arr_time=#{arr_time}, tot_time=#{tot_time} where road_no=#{road_no}
     </update>
-</mapper>
+</mapper> 

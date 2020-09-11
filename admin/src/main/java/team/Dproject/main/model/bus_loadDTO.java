@@ -5,8 +5,8 @@ public class bus_loadDTO {
 	private int bus_no;
 	private int station_no;
 	private int member_no;
-	private int arrival;
-	private int departure;
+	private String arrival;
+	private String departure;
 	private int price;
 	private int arr_time;
 	private int tot_time;
@@ -37,16 +37,16 @@ public class bus_loadDTO {
 	public void setMember_no(int member_no) {
 		this.member_no = member_no;
 	}
-	public int getArrival() {
+	public String getArrival() {
 		return arrival;
 	}
-	public void setArrival(int arrival) {
+	public void setArrival(String arrival) {
 		this.arrival = arrival;
 	}
-	public int getDeparture() {
+	public String getDeparture() {
 		return departure;
 	}
-	public void setDeparture(int departure) {
+	public void setDeparture(String departure) {
 		this.departure = departure;
 	}
 	public int getPrice() {
