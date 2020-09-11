@@ -16,6 +16,9 @@ public class HotelMapper {
 	public List<hotelDTO> listHotel(String mnum) {
 		return sqlSession.selectList("listHotel",mnum);
 	}
+	public List<hotelDTO> listHotel() {
+		return sqlSession.selectList("listHotel2");
+	}
 
 	public int insertHotel(hotelDTO dto) {
 		return sqlSession.insert("insertHotel", dto);

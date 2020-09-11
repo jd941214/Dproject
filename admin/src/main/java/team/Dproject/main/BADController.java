@@ -1,11 +1,14 @@
 package team.Dproject.main;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,8 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.MemberDTO;
@@ -23,6 +30,7 @@ import team.Dproject.main.model.busDTO;
 import team.Dproject.main.model.bus_loadDTO;
 import team.Dproject.main.model.bus_resvDTO;
 import team.Dproject.main.model.bus_stationDTO;
+import team.Dproject.main.model.hotelDTO;
 import team.Dproject.main.service.BusMapper;
 import team.Dproject.main.service.Bus_loadMapper;
 import team.Dproject.main.service.Bus_resvMapper;
@@ -47,6 +55,9 @@ public class BADController {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	@Resource(name = "upLoadPath")
+	private String upLoadPath;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -60,16 +71,9 @@ public class BADController {
 		return "home";
 	}
 	
-
 	
 	@RequestMapping("/home.do")
-	public String home(HttpSession session) {
-		MemberDTO dto=(MemberDTO)session.getAttribute("sedto");
-		
-		if(dto!=null){
-			int a=dto.getMember_no();
-			session.setAttribute("MNUM", a);
-		}
+	public String home(HttpSession session) {	
 		return "home";
 	}
 	
@@ -158,21 +162,41 @@ public class BADController {
 	public String bus_station_insert() {
 		return "busAD/bus_station/bus_station_insert";
 	}
+	
+	
 	@RequestMapping(value="/ADbus_station_insert.do",method = RequestMethod.POST)
-	public String bus_station_insertOK(HttpServletRequest req, bus_stationDTO dto)  {
-		int res=bus_stationMapper.insertBus_station(dto);
+	public String hotel_insertOK(HttpServletRequest req, @ModelAttribute bus_stationDTO dto, BindingResult result, HttpSession session) {
+		String filename = "";
+		int filesize = 0;
+		MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
+		MultipartFile file = mr.getFile("filename");
+		File target = new File(upLoadPath, file.getOriginalFilename());
+		if (file.getSize() > 0) {
+			try {
+				file.transferTo(target);
+			} catch (IOException e) {
+			}
+			filename = file.getOriginalFilename();
+			filesize = (int) file.getSize();
+		}
+		dto.setFilename(filename);
+		dto.setFilesize(filesize);
+
+		int res = bus_stationMapper.insertBus_station(dto);
 		String msg = null, url = null;
 		if (res > 0) {
-			msg = "터미널등록 성공";
+			msg = "터미널추가 성공";
 			url = "ADbus_station_list.do";
 		} else {
-			msg = "터미널등록 실패";
+			msg = "터미널추가 실패";
 			url = "ADbus_station_list.do";
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
+	
+	
 	@RequestMapping("ADbus_station_delete.do")
 	public String bus_station_delete(HttpServletRequest req) {
 		int res=bus_stationMapper.deletetBus_station(req.getParameter("no"));
@@ -226,12 +250,14 @@ public class BADController {
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.GET)
 	public ModelAndView bus_load_insert() {
+		List<bus_loadDTO> llist = bus_loadMapper.listBus_load();
 		List<busDTO> list = busMapper.listBus();
 		List<bus_stationDTO> list2 = bus_stationMapper.listBus_station();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_load/bus_load_insert");
 		mav.addObject("bus_list", list);
 		mav.addObject("bus_station_list", list2);
+		mav.addObject("llist", llist);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.POST)

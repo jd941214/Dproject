@@ -20,13 +20,16 @@
 </script>
 
 	<div align="center">
-		<form name="f" action="ADbus_station_insert.do" method="post">
+		<form name="f" action="ADbus_station_insert.do" method="post" enctype="multipart/form-data">
 			<table width="100%">
 				<tr>
 					<td>터미널이름 : <input type="text" name="station_name"></td>
 				</tr>
 				<tr>
 					<td>터미널주소 : <input type="text" name="address"></td>
+				</tr>
+				<tr>
+					<td>터미널 이미지 : <input type="file" name="filename" size="30"></td>
 				</tr>
 				<tr>
 					<td><input type="button" value="추가" onclick="javascript:check()">

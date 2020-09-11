@@ -67,6 +67,7 @@ public class SADController {
 			}
 			resp.addCookie(ck);
 			session.setAttribute("sedto", dto);
+			session.setAttribute("MNUM", dto.getMember_no());
 			msg = dto.getName() + "님 로그인완료.";
 			url = "home.do";
 			break;
@@ -92,6 +93,7 @@ public class SADController {
 	public String MemberLogout(HttpServletRequest req){
 		HttpSession session = req.getSession();
 		session.removeAttribute("sedto");
+		session.removeAttribute("MNUM");
 		req.setAttribute("msg", "로그아웃.");
 		req.setAttribute("url", "home.do");
 		return "message";

@@ -135,7 +135,7 @@
 					boolean fir = true;
 					//처음 빈공란 표시
 					for (int index = 1; index < start; index++) {
-						%><TD height="<%=height %>">&nbsp;</TD><%
+						%><TD height="1">&nbsp;</TD><%
 						newLine++;
 					}
 					for (int index = 1; index <= endDay; index++) {
@@ -146,10 +146,7 @@
 							color = "#055db5";
 						} else {
 							color = "#707070";
-						}
-						;
-
-						
+						}				
 						String backColor = "#fdf7ff";
 
 						out.println("<TD valign='top' align='left' height='1px' bgcolor='" + backColor + "' nowrap>");

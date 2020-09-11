@@ -40,7 +40,7 @@
 </script>
 
 <div align="center">
-	<form action="ADroom_insert.do" method="post" enctype="multipart/form-data">
+	<form name="f" action="ADroom_insert.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="hotel_no" value="<%=request.getParameter("hnum")%>">
 		<table width="100%">
 			<tr>

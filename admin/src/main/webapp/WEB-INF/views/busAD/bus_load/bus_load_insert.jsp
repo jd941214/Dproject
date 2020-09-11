@@ -7,6 +7,8 @@
 <%
 List<busDTO> list=(List)request.getAttribute("bus_list");
 List<bus_stationDTO> list2=(List)request.getAttribute("bus_station_list");
+List<bus_loadDTO> llist=(List)request.getAttribute("llist");
+boolean b=true;
 %>
 <script>
 	function check(){
@@ -39,11 +41,19 @@ List<bus_stationDTO> list2=(List)request.getAttribute("bus_station_list");
 						<select name="bus_no">
 						<%
 							for(busDTO dto : list){
-							%>
+								boolean a=false;
+								for(bus_loadDTO ldto : llist){
+									if(dto.getBus_no()==ldto.getBus_no()){
+										a=true;
+									}
+								}
+								if(!a){b=false;%>
 								<option value="<%=dto.getBus_no()%>"><%=dto.getBus_no() %></option>
-							<%
-							}
-						%>
+								<%}%>
+						<%	}
+							if(b){%>
+								<option>버스없음</option>
+						<%	}%>
 						</select>
 					</td>
 				</tr>

@@ -59,7 +59,7 @@
 			<tr>
 				<td>호텔이미지 : <input type="file" name="filename" size="30"></td>
 			</tr>
-			<tr><td><input type="button" value="수정" onclick="javascript:check()">
+			<tr><td><input type="button" value="추가" onclick="javascript:check()">
 				<input type="reset" value="다시쓰기"></td></tr>
 
 		</table>

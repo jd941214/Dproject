@@ -20,15 +20,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.MemberDTO;
 import team.Dproject.main.model.hotelDTO;
+import team.Dproject.main.model.hotel_boardDTO;
 import team.Dproject.main.model.resvDTO;
 import team.Dproject.main.model.roomDTO;
 import team.Dproject.main.service.HotelMapper;
+import team.Dproject.main.service.Hotel_boardMapper;
 import team.Dproject.main.service.MemberMapper;
 import team.Dproject.main.service.ResvMapper;
 import team.Dproject.main.service.RoomMapper;
@@ -47,6 +50,8 @@ public class HADController {
 	private ResvMapper resvMapper;
 	@Autowired
 	private MemberMapper memberMapper;
+	@Autowired
+	private Hotel_boardMapper hotel_boardMapper;
 
 	private int memNUM;
 
@@ -57,6 +62,212 @@ public class HADController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 
+	
+	//======================================================================================
+	
+	@RequestMapping(value="/hotel_board_list.do")
+	public ModelAndView listBoard(HttpServletRequest req) {
+		String no=req.getParameter("hotel_no");
+		hotelDTO hdto=hotelMapper.getHotel(no);
+		int hotel_no=Integer.parseInt(no);
+		int pageSize=5;
+		String pageNum=req.getParameter("pageNum");
+		if(pageNum==null){
+			pageNum="1";
+		}
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = currentPage * pageSize - (pageSize-1);
+		int endRow = currentPage * pageSize;
+		int count = 0;
+		count=hotel_boardMapper.hotel_board_count();
+		if(endRow>count){
+			endRow=count;
+		}
+		List<hotel_boardDTO> list = hotel_boardMapper.listHotel_board(startRow,endRow,hotel_no);
+		for(hotel_boardDTO dto :list) {
+			MemberDTO mdto=memberMapper.getMember2(String.valueOf(dto.getMember_no()));
+			dto.setMember_no(mdto.getName()); 
+			dto.setRe_step(hotel_boardMapper.hotel_board_count2(dto.getRe_group()));
+		}
+		int startNum = count-((currentPage-1)*pageSize);
+		int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+		int pageBlock = 5;
+		int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1;
+		if (endPage>pageCount) endPage = pageCount;
+		//List<BusDTO> list = busMapper.listBus();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("hotel_board/list");
+		mav.addObject("listBoard", list);
+		mav.addObject("hdto", hdto);
+		mav.addObject("count",count);
+		mav.addObject("startNum",startNum);
+		mav.addObject("pageCount",pageCount);
+		mav.addObject("pageBlock",pageBlock);
+		mav.addObject("startPage",startPage);
+		mav.addObject("endPage",endPage);
+		return mav;
+	}
+	
+	@RequestMapping(value="/hotel_board_write.do", method=RequestMethod.GET)
+	public String writeForm() {
+		return "hotel_board/writeForm";
+	}
+	
+	@RequestMapping(value="/hotel_board_write.do", method=RequestMethod.POST)
+	public String insertBoard(MultipartHttpServletRequest mtfRequest,HttpServletRequest req, hotel_boardDTO dto,HttpSession session) {
+		List<MultipartFile> fileList = mtfRequest.getFiles("file");
+		int member_no=(Integer)session.getAttribute("MNUM");
+		dto.setMember_no(String.valueOf(member_no));
+		int count=hotel_boardMapper.hotel_board_count();
+		if (dto.getHotel_board_no() == 0){
+			if(count!=0){
+				int max = hotel_boardMapper.hotel_board_MAX();
+				dto.setRe_group(max+1);
+			}else{
+				dto.setRe_group(1);
+			}
+		}else {
+			hotel_boardMapper.hotel_board_re_UP(dto.getRe_step(), dto.getRe_group());
+			dto.setRe_step(dto.getRe_step() + 1);
+			dto.setRe_level(dto.getRe_level() + 1);
+		}
+		
+		String filename = "";
+		int filesize = 0; 	
+		for (MultipartFile mf : fileList) {
+			String tempname = mf.getOriginalFilename();
+			long tempsize = mf.getSize(); 	
+			try {
+				mf.transferTo(new File(upLoadPath, mf.getOriginalFilename()));
+				filename+=tempname+"/";
+				filesize+=tempsize;
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		dto.setFilename(filename);
+		dto.setFilesize(filesize);
+		int res = hotel_boardMapper.insertHotel_board(dto);
+		String msg = null, url = null;
+		if(res>0) {
+			msg = "새 글 작성이 완료되었습니다. 게시글 목록으로 이동합니다.";
+			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no();
+		}else {
+			msg = "새 글 작성이 완료되지 않았습니다. 다시 작성해주세요.";
+			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no();
+		}
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("url", url);
+		return "message";
+	}
+	
+	@RequestMapping(value="/re_insert.do", method=RequestMethod.POST)
+	public String insertBoard2(HttpServletRequest req, hotel_boardDTO dto,HttpSession session) {
+		int member_no=(Integer)session.getAttribute("MNUM");
+		dto.setMember_no(String.valueOf(member_no));
+		int count=hotel_boardMapper.hotel_board_count();
+		if (dto.getHotel_board_no() == 0){
+			if(count!=0){
+				int max = hotel_boardMapper.hotel_board_MAX();
+				dto.setRe_group(max+1);
+			}else{
+				dto.setRe_group(1);
+			}
+		}else {
+			hotel_boardMapper.hotel_board_re_UP(dto.getRe_step(), dto.getRe_group());
+			dto.setRe_step(dto.getRe_step() + 1);
+			dto.setRe_level(dto.getRe_level() + 1);
+		}
+
+		dto.setTitle("1");
+		dto.setFilename("1");
+		dto.setFilesize(0);
+		
+		int res = hotel_boardMapper.insertHotel_board(dto);
+		String msg = null, url = null;
+		if(res>0) {
+			msg = "댓글달기 성공";
+			url = "hotel_content.do?hotel_board_no="+dto.getHotel_board_no()+
+					"&hotel_no="+dto.getHotel_no();
+		}else {
+			msg = "댓글달기 실패";
+			url = "hotel_content.do?hotel_board_no="+dto.getHotel_board_no()+
+					"&hotel_no="+dto.getHotel_no();
+		}
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("url", url);
+		return "message";
+	}
+	
+	@RequestMapping(value="/hotel_content.do")
+	public ModelAndView getBoard(@RequestParam int hotel_board_no ,HttpServletRequest req) {
+		hotel_boardMapper.read_count(hotel_board_no);
+		hotel_boardDTO dto = hotel_boardMapper.getHotel_board(String.valueOf(hotel_board_no));
+		MemberDTO mdto2=memberMapper.getMember2(String.valueOf(dto.getMember_no()));
+		dto.setMember_no(mdto2.getName()); 
+		
+		int pageSize=5;
+		String pageNum=req.getParameter("pageNum");
+		if(pageNum==null){
+			pageNum="1";
+		}
+		int currentPage = Integer.parseInt(pageNum);
+		int startRow = currentPage * pageSize - (pageSize-1);
+		int endRow = currentPage * pageSize;
+		int count = 0;
+		count=hotel_boardMapper.hotel_board_count2(dto.getRe_group());
+		if(endRow>count){
+			endRow=count;
+		}
+		List<hotel_boardDTO> list = hotel_boardMapper.listHotel_board2(startRow, endRow, dto.getRe_group());
+		for(hotel_boardDTO dto2 :list) {
+			MemberDTO mdto=memberMapper.getMember2(String.valueOf(dto2.getMember_no()));
+			dto2.setMember_no(mdto.getName()); 
+		}
+		int startNum = count-((currentPage-1)*pageSize);
+		int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+		int pageBlock = 5;
+		int startPage = (currentPage-1)/pageBlock * pageBlock + 1;
+		int endPage = startPage + pageBlock - 1; 
+		if (endPage>pageCount) endPage = pageCount;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("hotel_board/content");
+		mav.addObject("listBoard", list);
+		mav.addObject("count",count);
+		mav.addObject("startNum",startNum);
+		mav.addObject("pageCount",pageCount);
+		mav.addObject("pageBlock",pageBlock);
+		mav.addObject("startPage",startPage);
+		mav.addObject("endPage",endPage);
+		mav.addObject("getBoard",dto);
+
+		return mav;
+	}
+	
+	
+	
+	
+	
+	//======================================================================================
+	
+	@RequestMapping("/hotel_list.do")
+	public ModelAndView hotel_list1(HttpServletRequest req,HttpSession session) {
+		List<hotelDTO> list = hotelMapper.listHotel();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("hotel_board/hotel_list");
+		mav.addObject("list", list);
+		return mav;
+	}
+	
+	
+	
+	
 	@RequestMapping("/ADhotelAD.do")
 	public String busAD() {
 		return "hotelAD/HAD_main";
@@ -198,7 +409,7 @@ public class HADController {
 			try {
 				mf.transferTo(new File(upLoadPath, mf.getOriginalFilename()));
 				filename+=tempname+"/";
-				filesize+=tempsize;
+				filesize+=tempsize; 
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

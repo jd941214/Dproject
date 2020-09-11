@@ -19,7 +19,7 @@
 	}
 </script>
 	<div align="center">
-		<form name="f" action="ADbus_station_update.do" method="post">
+		<form name="f" action="ADbus_station_update.do" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="station_no" value="${station.station_no}">
 			<table width="100%">
 				<tr>
@@ -27,6 +27,9 @@
 				</tr>
 				<tr>
 					<td>터미널주소 : <input type="text" name="address" value="${station.address}"></td>
+				</tr>
+				<tr>
+					<td>터미널이미지 : <input type="file" name="filename" size="30" value="${dto.filename}"></td>
 				</tr>
 				<tr>
 					<td><input type="button" value="수정" onclick="javascript:check()">

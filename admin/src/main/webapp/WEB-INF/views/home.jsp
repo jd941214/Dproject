@@ -25,6 +25,7 @@
 		<%}else if(Integer.parseInt(MNUM)==3){%>
 			<P>일반회원</P>
 		<%}%>
+		<P><a href="hotel_list.do">호텔게시판</a>
 		<P><a href="ADmember_logout.do">로그아웃</a></P>
 	<%}else{%>
 		<P><a href="ADmember_login.do">로그인</a></P>

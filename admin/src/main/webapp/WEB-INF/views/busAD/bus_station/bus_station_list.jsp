@@ -25,6 +25,14 @@
 				<td>${dto.station_no}</td>
 				<td>${dto.station_name}</td>
 				<td>${dto.address}</td>
+				<c:if test="${dto.filesize != 0}">
+					<td>
+						<img src="${pageContext.request.contextPath}/resources/img/${dto.filename }" width="40">
+					</td>
+				</c:if>
+				<c:if test="${dto.filesize == 0}">
+					<td>이미지없음</td>
+				</c:if>
 				<td>
 					<a href="ADbus_station_update.do?no=${dto.station_no}">수정</a> | 
 					<a href="ADbus_station_delete.do?no=${dto.station_no}">삭제</a>
