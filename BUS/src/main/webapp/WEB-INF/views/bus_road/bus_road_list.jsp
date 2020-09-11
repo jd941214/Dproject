@@ -35,18 +35,47 @@
 			<tr align="center">
 				<td>${dto.road_no}</td>
 				<td>${dto.bus_no}</td>
-				<td>${dto.member_no}</td>
+				<td>${dto.name}</td>
 				<td>${dto.arrival}</td>
 				<td>${dto.departure}</td>
 				<td>${dto.price}</td>
-				<td>${dto.arr_time}</td>
-				<td>${dto.tot_time+dto.arr_time}</td>
+				<td>${dto.arr_time}시</td>
+				<c:if test="${dto.tot_time+dto.arr_time>24}">
+					<td>${dto.arr_time+dto.tot_time-24}시</td>
+				</c:if>
+				<c:if test="${dto.tot_time+dto.arr_time<=24}">
+					<td>${dto.tot_time+dto.arr_time}시</td>
+				</c:if>
 				<td>
-					<a href="bus_road_update.do?no=${dto.road_no}">수정</a> | 
-					<a href="bus_road_delete.do?no=${dto.road_no}">삭제</a>
+					<c:if test="${sedto.position==0}"><!-- 슈퍼 관리자 수정삭제 범위(전체) -->
+						<a href="bus_road_update.do?no=${dto.road_no}">수정</a> | 
+						<a href="bus_road_delete.do?no=${dto.road_no}">삭제</a>
+					</c:if>
+					<c:if test="${sedto.position==1}"><!-- 버스관리자 수정삭제 범위 (버스관리자만)-->
+						<c:if test="${dto.name==sedto.name}">
+							<a href="bus_road_update.do?no=${dto.road_no}">수정</a> | 
+							<a href="bus_road_delete.do?no=${dto.road_no}">삭제</a>
+						</c:if>
+					</c:if>
 				</td>
 			</tr>	
 			</c:forEach>
-		</table>	
+		</table>
+	<!-- 페이지 이전? 다음? -->
+	<c:if test="${count>0}">
+	<c:set var="startPage" value="${startPage}"/>
+	<c:set var="endPage" value="${endPage}"/>
+	<c:set var="pageBlock" value="${pageBlock}"/>
+	<c:set var="pageCount" value="${pageCount}"/>
+	<c:if test="${startPage>pageBlock}">
+			[<a href="bus_road_list.do?pageNum=${startPage-1}">이전</a>]		
+	</c:if>
+	<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		[<a href="bus_road_list.do?pageNum=${i}">${i}</a>]
+	</c:forEach>
+		<c:if test="${endPage<pageCount}">
+			[<a href="bus_road_list.do?pageNum=${endPage+1}">다음</a>]		
+		</c:if>
+	</c:if>	
 	</div>
 <%@ include file="../bottom.jsp" %> 

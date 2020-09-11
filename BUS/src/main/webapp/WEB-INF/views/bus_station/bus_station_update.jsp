@@ -14,12 +14,16 @@
 					<td>터미널이름 : <input type="text" name="station_name" value="${station.station_name}"></td>
 				</tr>
 				<tr>
-					<td>터미널주소 : <input type="text" name="address" value="${station.address}"></td>
+					<td>터미널주소 : <input type="text" name="address" value="${station.address}" size="35"></td>
 				</tr>
 				<tr>
-					<td>파일명: <input type="file" name="filename" value="${station.filename}"></td>
+					<td>수정할 파일명: <input type="file" name="filename"></td>
+	
 				</tr>
-				<tr><td><input type="submit" value="수정"></td></tr>
+				<tr>
+					<td>수정전 파일명:<input type = "text" name = "filename2" value = "${station.filename}" readOnly></td>
+				</tr>
+				<tr align="right"><td><input type="submit" value="수정"></td></tr>
 			</table>
 		</form>
 	</div>
