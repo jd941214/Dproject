@@ -27,7 +27,7 @@
 					<td><a href="member_logout.do">로그아웃</a>/<a href="member_mypage.do">마이페이지</a></td>
 				</c:if>
 				<td><a href="bus_user_resv_lookup.do">배자정보 조회  및 예약</a></td>
-				<td><a href="#">예약내역</a></td>
+				<td><a href="bus_resv_user_resvlist.do">예약내역</a></td>
 				<td><a href="bus_station_info.do">터미널 정보</a></td>
 				
 				<c:if test="${sedto.position==0 || sedto.position==1}">

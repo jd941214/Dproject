@@ -19,8 +19,8 @@
 	<update id="updateBus_resv" parameterType="BusResvDTO">
 		update bus_resv set member_no=#{member_no}, bus_no=#{bus_no}, road_no=#{road_no}, seat=#{seat}, use_point=#{use_point}, save_point=#{save_point}, resv_date=#{resv_date} where resv_no=#{resv_no}
 	</update>
-	<select id="listmypage" parameterType="int" resultType="BusResv_BusRoadDTO"><!-- 마이페이지에 결제한 내용 표시 -->
-		select bus_resv_no,bus_resv.member_no,bus_resv.bus_no,seat,use_point,save_point,resv_date,bus_resv.price,arrival,departure,arr_time,tot_time from bus_resv inner join bus_road on bus_resv.road_no=bus_road.road_no where bus_resv.member_no=#{member_no}
+	<select id="resvlist" parameterType="int" resultType="BusResv_BusRoadDTO"><!-- 예약내역에 결제한 내용표시 -->
+		select bus_resv_no,bus_resv.member_no,bus_resv.bus_no,seat,use_point,save_point,resv_date,bus_resv.price,arrival,departure,arr_time,tot_time,bus_resv.road_no from bus_resv inner join bus_road on bus_resv.road_no=bus_road.road_no where bus_resv.member_no=#{member_no}
 	</select>
 	<select id="listDispatch_resv"  parameterType="java.util.Map" resultType="Bus_BusRoadDTO"><!--listDispatch_resv_count 만 쓰게 되면 삭제 -->
 		select * from bus inner join bus_road on bus.bus_no=bus_road.bus_no where bus_road.arrival=#{arrival} and departure=#{departure} and grade=#{grade}

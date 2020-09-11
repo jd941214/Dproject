@@ -41,9 +41,9 @@ public class BusResvMapper {
 		   
 		   return sqlSession.selectList("listDispatch_resv",map);
 	   }
-	   public List<BusResv_BusRoadDTO> listmypage(int member_no){
+	   public List<BusResv_BusRoadDTO> resvlist(int member_no){
 		   
-		   return sqlSession.selectList("listmypage",member_no);
+		   return sqlSession.selectList("resvlist",member_no);
 	   }
 	   public List<Bus_BusRoadDTO> listdispatch_resv_count(int arrival,int departure,String grade,int start,int end){//list 5개씩출력 우등,일반 버스중 하나
 		   java.util.Map<String,Object> map =new java.util.Hashtable<String,Object>();
