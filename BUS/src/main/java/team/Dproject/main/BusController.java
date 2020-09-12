@@ -1408,19 +1408,34 @@ public class BusController {
 		
 		//환불하기
 		@RequestMapping(value="bus_resv_user_refund.do")
-		public ModelAndView bus_resv_user_refund(@RequestParam int bus_resv_no,@RequestParam int use_point,@RequestParam int save_point){
+		public ModelAndView bus_resv_user_refund(HttpServletRequest req,@RequestParam int bus_resv_no,@RequestParam int use_point,@RequestParam int save_point){
 			ModelAndView mav = new ModelAndView();
 			int res=busResvMapper.deletetBus_resv(bus_resv_no);
 			String msg="";
 			String url="";
 			if (res > 0) {
-				
+				if(use_point>0){
+					HttpSession session = req.getSession();
+					MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");	
+					mdto.setPoint(mdto.getPoint()+use_point);
+					res=memberMapper.Member_buspoint_update(mdto);
+					
+				}else if(save_point>0){
+					HttpSession session = req.getSession();
+					MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");	
+					mdto.setPoint(mdto.getPoint()-save_point);
+					if(mdto.getPoint()-save_point==0){
+						mdto.setPoint(0);
+					}
+					res=memberMapper.Member_buspoint_update(mdto);
+				}
 				msg = "환불성공";
 				url = "bus_resv_user_resvlist.do";
 				mav.addObject("msg",msg);
 				mav.addObject("url",url);
 				mav.setViewName("message");
 				return mav;
+				
 			} else {
 				msg = "환불실패";
 				url = "bus_resv_user_resvlist.do";
