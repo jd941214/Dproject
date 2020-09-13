@@ -1,6 +1,6 @@
 package team.Dproject.main.model;
 
-public class BusRoadDTO {
+public class BusRoadDTO_resv {
 	private int road_no;
 	private int bus_no;
 	private int member_no;

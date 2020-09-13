@@ -21,35 +21,35 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import team.Dproject.main.model.BusDTO;
-import team.Dproject.main.model.BusResvDTO;
+import team.Dproject.main.model.BusDTO_resv;
+import team.Dproject.main.model.BusResvDTO_resv;
 import team.Dproject.main.model.BusResv_BusRoadDTO;
-import team.Dproject.main.model.BusRoadDTO;
-import team.Dproject.main.model.BusStationDTO;
+import team.Dproject.main.model.BusRoadDTO_resv;
+import team.Dproject.main.model.BusStationDTO_resv;
 import team.Dproject.main.model.Bus_BusRoadDTO;
-import team.Dproject.main.model.MemberDTO;
+import team.Dproject.main.model.MemberDTO_resv;
 import team.Dproject.main.model.Member_BusRoadDTO;
-import team.Dproject.main.service.BusMapper;
-import team.Dproject.main.service.BusResvMapper;
-import team.Dproject.main.service.BusRoadMapper;
-import team.Dproject.main.service.BusStaionMapper;
-import team.Dproject.main.service.MemberMapper;
+import team.Dproject.main.service.BusMapper_resv;
+import team.Dproject.main.service.BusResvMapper_resv;
+import team.Dproject.main.service.BusRoadMapper_resv;
+import team.Dproject.main.service.BusStaionMapper_resv;
+import team.Dproject.main.service.MemberMapper_resv;
 
 @Controller
 public class BusController {
 	@Autowired
-	private MemberMapper memberMapper;
+	private MemberMapper_resv memberMapper_resv;
 	@Autowired
-	private BusMapper busMapper;
+	private BusMapper_resv busMapper_resv;
 	@Autowired
-	private BusStaionMapper busStationMapper;
+	private BusStaionMapper_resv busStationMapper_resv;
 	@Autowired
-	private BusRoadMapper busRoadMapper;
+	private BusRoadMapper_resv busRoadMapper_resv;
 	@Autowired
-	private BusResvMapper busResvMapper;
+	private BusResvMapper_resv busResvMapper_resv;
 	@Resource(name="upLoadPath")
 	private String upLoadPath;
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/bus_main.do", method = RequestMethod.GET)
 	
 	public String Main(){
 		
@@ -84,11 +84,11 @@ public class BusController {
 		String id = req.getParameter("id");
 		String passwd = req.getParameter("passwd");
 		String saveId = req.getParameter("saveId");
-		int res = memberMapper.memberLogin(id, passwd);
+		int res = memberMapper_resv.memberLogin_resv(id, passwd);
 		String msg = null, url = null;
 		switch(res){
 		case 0 :
-			MemberDTO dto = memberMapper.getMember(id);
+			MemberDTO_resv dto = memberMapper_resv.getMember_resv(id);
 			HttpSession session = req.getSession();
 			Cookie ck = new Cookie("id", id);
 			if(saveId != null){
@@ -139,14 +139,14 @@ public class BusController {
 		
 	}
 	@RequestMapping(value = "/member_input_ok.do")//회원 가입 완료
-	public String MemberInputOk(HttpServletRequest req, MemberDTO dto){
-		boolean checkMember = memberMapper.checkMember(dto);
+	public String MemberInputOk(HttpServletRequest req, MemberDTO_resv dto){
+		boolean checkMember = memberMapper_resv.checkMember_resv(dto);
 		boolean isId;
 		String msg = null, url = null;
 		if(checkMember){
-			isId = memberMapper.checkId(dto);
+			isId = memberMapper_resv.checkId_resv(dto);
 			if(isId){
-				int res = memberMapper.insertMember(dto);
+				int res = memberMapper_resv.insertMember_resv(dto);
 				if(res > 0){
 					msg = "회원가입성공! 로그인 페이지로 이동합니다.";
 					url = "member_login.do";
@@ -188,13 +188,13 @@ public class BusController {
 		String searchString = req.getParameter("searchString");
 		String ssn1 = req.getParameter("ssn1");
 		String ssn2 = req.getParameter("ssn2");
-		List<MemberDTO> list = null;
+		List<MemberDTO_resv> list = null;
 		if(mode.equals("id")){
-			list = memberMapper.searchMemberId(searchString, ssn1, ssn2);
+			list = memberMapper_resv.searchMemberId_resv(searchString, ssn1, ssn2);
 			
 		}
 		if(mode.equals("passwd")){
-			list = memberMapper.searchMemberPasswd(searchString, ssn1, ssn2);
+			list = memberMapper_resv.searchMemberPasswd_resv(searchString, ssn1, ssn2);
 			
 		}
 		req.setAttribute("searchList", list);
@@ -210,14 +210,14 @@ public class BusController {
 	}
 	
 	@RequestMapping(value = "/member_edit_ok.do")//수정완료
-	public String MemberEditOk(HttpServletRequest req, MemberDTO dto){
+	public String MemberEditOk(HttpServletRequest req, MemberDTO_resv dto){
 		String msg = null, url = null, mode = req.getParameter("mode");
 		if(mode == null){
 			mode = "";
 			
 		}
 		HttpSession session = req.getSession();
-		int res = memberMapper.editMember(dto);
+		int res = memberMapper_resv.editMember_resv(dto);
 		if(res > 0){
 			session.removeAttribute("sedto");
 			session.setAttribute("sedto", dto);
@@ -273,11 +273,11 @@ public class BusController {
 			int startRow = currentPage * pageSize - (pageSize-1);
 			int endRow = currentPage * pageSize;
 			int count = 0;
-			count=busMapper.bus_count();
+			count=busMapper_resv.bus_count_resv();
 			if(endRow>count){
 				endRow=count;
 			}
-			List<BusDTO> bus_list = busMapper.bus_list_count(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
+			List<BusDTO_resv> bus_list = busMapper_resv.bus_list_count_resv(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
 			int startNum = count-((currentPage-1)*pageSize);
 			int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
 			int pageBlock = 5;
@@ -304,8 +304,8 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="/bus_insert.do",method = RequestMethod.POST)
-		public String bus_insertOK(HttpServletRequest req, BusDTO dto)  {
-			int res=busMapper.insertBus(dto);
+		public String bus_insertOK(HttpServletRequest req, BusDTO_resv dto)  {
+			int res=busMapper_resv.insertBus_resv(dto);
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "버스등록 성공";
@@ -320,7 +320,7 @@ public class BusController {
 		}
 		@RequestMapping("bus_delete.do")
 		public String bus_delete(HttpServletRequest req) {
-			int res=busMapper.deletetBus(Integer.parseInt(req.getParameter("no")));
+			int res=busMapper_resv.deletetBus_resv(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "버스삭제 성공";
@@ -335,13 +335,13 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_update.do",method = RequestMethod.GET)
 		public ModelAndView bus_update(HttpServletRequest req) {
-			BusDTO dto = busMapper.getBus(Integer.parseInt(req.getParameter("no")));
+			BusDTO_resv dto = busMapper_resv.getBus_resv(Integer.parseInt(req.getParameter("no")));
 			ModelAndView mav = new ModelAndView("bus/bus_update", "bus", dto);
 			return mav;
 		}
 		@RequestMapping(value="/bus_update.do",method = RequestMethod.POST)
-		public String bus_updateOK(HttpServletRequest req, BusDTO dto)  {
-			int res=busMapper.updateBus(dto); 
+		public String bus_updateOK(HttpServletRequest req, BusDTO_resv dto)  {
+			int res=busMapper_resv.updateBus_resv(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "버스수정 성공";
@@ -358,8 +358,8 @@ public class BusController {
 		@RequestMapping(value = "/member_withdraw.do")//회원 탈퇴
 		public String MemberWithdraw(HttpServletRequest req){
 			HttpSession session = req.getSession();
-			MemberDTO dto = (MemberDTO)session.getAttribute("sedto");
-			int res = memberMapper.deleteMember(dto.getMember_no());
+			MemberDTO_resv dto = (MemberDTO_resv)session.getAttribute("sedto");
+			int res = memberMapper_resv.deleteMember_resv(dto.getMember_no());
 			String msg = null, url = null;
 			if(res > 0){
 				session.removeAttribute("sedto");
@@ -380,7 +380,7 @@ public class BusController {
 		//터미널---------------------------------------------------------------
 		@RequestMapping("/bus_station_list.do")
 		public ModelAndView bus_station_list() {
-			List<BusStationDTO> list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> list = busStationMapper_resv.listBus_station_resv();
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_station/bus_station_list");
 			mav.addObject("bus_station_list", list);
@@ -391,7 +391,7 @@ public class BusController {
 			return "bus_station/bus_station_insert";
 		}
 		@RequestMapping(value="/bus_station_insert.do",method = RequestMethod.POST)
-		public String bus_station_insertOK(HttpServletRequest req,@ModelAttribute BusStationDTO dto,BindingResult result)  {
+		public String bus_station_insertOK(HttpServletRequest req,@ModelAttribute BusStationDTO_resv dto,BindingResult result)  {
 			String filename = "";
 			int filesize = 0;
 			MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
@@ -407,7 +407,7 @@ public class BusController {
 			dto.setFilename(filename);
 			dto.setFilesize(filesize);
 			
-			int res=busStationMapper.insertBus_station(dto);
+			int res=busStationMapper_resv.insertBus_station_resv(dto);
 			
 			String msg = null, url = null;
 			if (res > 0) {
@@ -424,7 +424,7 @@ public class BusController {
 		}
 		@RequestMapping("bus_station_delete.do")
 		public String bus_station_delete(HttpServletRequest req) {
-			int res=busStationMapper.deletetBus_station((req.getParameter("no")));
+			int res=busStationMapper_resv.deletetBus_station_resv((req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "터미널삭제 성공";
@@ -439,12 +439,12 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_station_update.do",method = RequestMethod.GET)
 		public ModelAndView bus_station_update(HttpServletRequest req) {
-			BusStationDTO dto = busStationMapper.getBus_station(req.getParameter("no"));
+			BusStationDTO_resv dto = busStationMapper_resv.getBus_station_resv(req.getParameter("no"));
 			ModelAndView mav = new ModelAndView("bus_station/bus_station_update", "station", dto);
 			return mav;
 		}
 		@RequestMapping(value="/bus_station_update.do",method = RequestMethod.POST)
-		public String bus_station_updateOK(HttpServletRequest req,@ModelAttribute  BusStationDTO dto,BindingResult result)  {
+		public String bus_station_updateOK(HttpServletRequest req,@ModelAttribute  BusStationDTO_resv dto,BindingResult result)  {
 			
 			
 			
@@ -470,7 +470,7 @@ public class BusController {
 			
 			
 			
-			int res=busStationMapper.updateBus_station(dto); 
+			int res=busStationMapper_resv.updateBus_station_resv(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "터미널수정 성공";
@@ -498,11 +498,11 @@ public class BusController {
 			int startRow = currentPage * pageSize - (pageSize-1);
 			int endRow = currentPage * pageSize;
 			int count = 0;
-			count=busRoadMapper.bus_road_member_count();
+			count=busRoadMapper_resv.bus_road_member_count_resv();
 			if(endRow>count){
 				endRow=count;
 			}
-			List<Member_BusRoadDTO> listBus_road = busRoadMapper.bus_road_member_list_count(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
+			List<Member_BusRoadDTO> listBus_road = busRoadMapper_resv.bus_road_member_list_count_resv(startRow, endRow);//노선만든사람 한글로 표시위해 member 테이블 bus_road테이블 조인 후 행의 출력범위 지정
 			int startNum = count-((currentPage-1)*pageSize);
 			int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
 			int pageBlock = 5;
@@ -511,9 +511,9 @@ public class BusController {
 			if (endPage>pageCount) endPage = pageCount;
 			
 			for(Member_BusRoadDTO mdto : listBus_road){ //출발지 도착지 한글로 표시하는 작업
-				BusStationDTO to=busStationMapper.getBus_station(String.valueOf(mdto.getArrival()));
+				BusStationDTO_resv to=busStationMapper_resv.getBus_station_resv(String.valueOf(mdto.getArrival()));
 				mdto.setArrival(to.getStation_name());
-				BusStationDTO to1=busStationMapper.getBus_station(String.valueOf(mdto.getDeparture()));
+				BusStationDTO_resv to1=busStationMapper_resv.getBus_station_resv(String.valueOf(mdto.getDeparture()));
 				mdto.setDeparture(to1.getStation_name());
 				
 			}
@@ -533,8 +533,8 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_insert(HttpServletRequest req) {
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
-			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv(); //station_no 받아오기
+			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper_resv.bus_no_list_null_resv(); // 사용중인 bus_no 제외하고 출력
 			
 			
 			ModelAndView mav = new ModelAndView();
@@ -546,16 +546,16 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_insert.do",method = RequestMethod.POST)
-		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String plus,@RequestParam int bus_no,@RequestParam int tot_time,@RequestParam String arrival,@RequestParam String departure)  {
-			BusDTO bdto = busMapper.getBus(bus_no);
+		public String bus_road_insertOK(HttpServletRequest req, BusRoadDTO_resv dto,@RequestParam String plus,@RequestParam int bus_no,@RequestParam int tot_time,@RequestParam String arrival,@RequestParam String departure)  {
+			BusDTO_resv bdto = busMapper_resv.getBus_resv(bus_no);
 			
 			
 			HttpSession session = req.getSession();
-			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
+			MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
 			
 			
-			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));//int 형값 을 string 형으로 변경 작업(출발지 한글로 표시하기위해)
-			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));//int 형값 을 string 형으로 변경 작업(도착지 한글로 표시위해)
+			dto.setArrival(String.valueOf(busStationMapper_resv.getBus_number_resv(arrival).getStation_no()));//int 형값 을 string 형으로 변경 작업(출발지 한글로 표시하기위해)
+			dto.setDeparture(String.valueOf(busStationMapper_resv.getBus_number_resv(departure).getStation_no()));//int 형값 을 string 형으로 변경 작업(도착지 한글로 표시위해)
 			dto.setMember_no(mdto.getMember_no());
 			if(bdto.getGrade().equals("일반")){//일반버스일때 가격
 				int price=5000;
@@ -567,7 +567,7 @@ public class BusController {
 			int res;
 			if(plus.equals("plural")){//복수 노선 만들시
 				int dip_time=Integer.parseInt(req.getParameter("dip_time"));//배차시간 가져오기 
-				 res=busRoadMapper.insertBus_road(dto);//기본적으로 선택된 bus노선 만들어주기
+				 res=busRoadMapper_resv.insertBus_road_resv(dto);//기본적으로 선택된 bus노선 만들어주기
 				 int a_time=dto.getArr_time();
 				 int bus_count=0; //버스갯수
 				
@@ -579,37 +579,37 @@ public class BusController {
 					 bus_count++;
 
 				 }
-					 int count=busRoadMapper.bus_no_list_null_count();//사용중이지않은 버스 갯수
+					 int count=busRoadMapper_resv.bus_no_list_null_count_resv();//사용중이지않은 버스 갯수
 					 
 					 if(count<bus_count){//버스갯수가 부족할떄(만들노선보다 노선에사용중인 버스가 많을떄)
 						 //버스추가후 노선생성
 						for(int j=0; j<bus_count; j++){
-							 res=busMapper.insertBus_normal();//일반 버스 생성(버스가 노선갯수보다 하나더 만들어지게 설계됨)
-							 Bus_BusRoadDTO bbdto1=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+							 res=busMapper_resv.insertBus_normal_resv();//일반 버스 생성(버스가 노선갯수보다 하나더 만들어지게 설계됨)
+							 Bus_BusRoadDTO bbdto1=busRoadMapper_resv.bus_no_null_rownum_resv();//bus_no 값 하나씩 출력하기 위해서
 							 dto.setBus_no(bbdto1.getBus_no());//bus_no 값을 bbdto1 객체에서 받아와 하나씩 넣어줌
 							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);//출발시간 지속적으로 변경
 							
 							 if(dto.getArr_time()>22){
 								 break;
 							 }
-							 res=busRoadMapper.insertBus_road(dto);
+							 res=busRoadMapper_resv.insertBus_road_resv(dto);
 
 						 }
 					 }else if(count>=bus_count){//버스갯수가 충분할때
 						 for(int j=0; j<bus_count; j++){
-							 Bus_BusRoadDTO bbdto2=busRoadMapper.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+							 Bus_BusRoadDTO bbdto2=busRoadMapper_resv.bus_no_null_rownum_resv();//bus_no 값 하나씩 출력하기 위해서
 							 dto.setBus_no(bbdto2.getBus_no());
 							 dto.setArr_time(dto.getArr_time()+dto.getTot_time()+dip_time);
 							 if(dto.getArr_time()>22){
 								 break;
 							 }
-							 res=busRoadMapper.insertBus_road(dto);
+							 res=busRoadMapper_resv.insertBus_road_resv(dto);
 							
 						 }
 					 }
 				 
 			}else{
-				 res=busRoadMapper.insertBus_road(dto);
+				 res=busRoadMapper_resv.insertBus_road_resv(dto);
 			}
 			String msg = null, url = null;
 			if (res > 0) {
@@ -625,7 +625,7 @@ public class BusController {
 		}
 		@RequestMapping("bus_road_delete.do")
 		public String bus_road_delete(HttpServletRequest req) {
-			int res=busRoadMapper.deletetBus_road(Integer.parseInt(req.getParameter("no")));
+			int res=busRoadMapper_resv.deletetBus_road_resv(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "노선삭제 성공";
@@ -640,14 +640,14 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_road_update.do",method = RequestMethod.GET)
 		public ModelAndView bus_road_update(HttpServletRequest req) {
-			BusRoadDTO dto = busRoadMapper.getBus_road(Integer.parseInt(req.getParameter("no")));//특정 bus_no 값을가지고 있는 항목 
-			BusStationDTO arr_dto=busStationMapper.getBus_station(dto.getArrival());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
-			BusStationDTO dep_dto=busStationMapper.getBus_station(dto.getDeparture());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
+			BusRoadDTO_resv dto = busRoadMapper_resv.getBus_road_resv(Integer.parseInt(req.getParameter("no")));//특정 bus_no 값을가지고 있는 항목 
+			BusStationDTO_resv arr_dto=busStationMapper_resv.getBus_station_resv(dto.getArrival());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
+			BusStationDTO_resv dep_dto=busStationMapper_resv.getBus_station_resv(dto.getDeparture());//넘어온 bus_no 값에대한 station 테이블에 station_no 값에 따른 station_name 찾기
 			dto.setArrival(arr_dto.getStation_name());//넘어온 bus_no 값을 출발지  숫자->한글
 			dto.setDeparture(dep_dto.getStation_name());//넘어온 bus_no 에 대한 도착지 숫자->한글
 			
-			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper.bus_no_list_null(); // 사용중인 bus_no 제외하고 출력
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station(); //station_no 받아오기
+			List<Bus_BusRoadDTO> bus_no_list = busRoadMapper_resv.bus_no_list_null_resv(); // 사용중인 bus_no 제외하고 출력
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv(); //station_no 받아오기
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_road/bus_road_update");
@@ -660,12 +660,12 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="/bus_road_update.do",method = RequestMethod.POST)
-		public ModelAndView bus_road_updateOK(HttpServletRequest req, BusRoadDTO dto,@RequestParam String arrival,@RequestParam String departure)  {
+		public ModelAndView bus_road_updateOK(HttpServletRequest req, BusRoadDTO_resv dto,@RequestParam String arrival,@RequestParam String departure)  {
 			
-			dto.setArrival(String.valueOf(busStationMapper.getBus_number(arrival).getStation_no()));
-			dto.setDeparture(String.valueOf(busStationMapper.getBus_number(departure).getStation_no()));
+			dto.setArrival(String.valueOf(busStationMapper_resv.getBus_number_resv(arrival).getStation_no()));
+			dto.setDeparture(String.valueOf(busStationMapper_resv.getBus_number_resv(departure).getStation_no()));
 			
-			int res=busRoadMapper.updateBus_road(dto); 
+			int res=busRoadMapper_resv.updateBus_road_resv(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "노선수정 성공";
@@ -684,7 +684,7 @@ public class BusController {
 		//예약---------------------------------------------------------------
 		@RequestMapping(value="/bus_resv_list.do" )
 		public ModelAndView bus_resv_list() {
-			List<BusResvDTO> list = busResvMapper.listBus_resv();
+			List<BusResvDTO_resv> list = busResvMapper_resv.listBus_resv_resv();
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_resv/bus_resv_list");
 			mav.addObject("list", list);
@@ -695,8 +695,8 @@ public class BusController {
 			return "bus_resv/bus_resv_insert";
 		}
 		@RequestMapping(value="/bus_resv_insert.do",method = RequestMethod.POST)
-		public String bus_resv_insertOK(HttpServletRequest req, BusResvDTO dto)  {
-			int res=busResvMapper.insertBus_resv(dto);
+		public String bus_resv_insertOK(HttpServletRequest req, BusResvDTO_resv dto)  {
+			int res=busResvMapper_resv.insertBus_resv_resv(dto);
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "예약등록 성공";
@@ -711,7 +711,7 @@ public class BusController {
 		}
 		@RequestMapping("bus_resv_delete.do")
 		public String bus_resv_delete(HttpServletRequest req) {
-			int res=busResvMapper.deletetBus_resv(Integer.parseInt(req.getParameter("no")));
+			int res=busResvMapper_resv.deletetBus_resv_resv(Integer.parseInt(req.getParameter("no")));
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "예약삭제 성공";
@@ -726,13 +726,13 @@ public class BusController {
 		}
 		@RequestMapping(value="/bus_resv_update.do",method = RequestMethod.GET)
 		public ModelAndView bus_resv_update(HttpServletRequest req) {
-			BusResvDTO dto = busResvMapper.getBus_resv(req.getParameter("no"));
+			BusResvDTO_resv dto = busResvMapper_resv.getBus_resv_resv(req.getParameter("no"));
 			ModelAndView mav = new ModelAndView("bus_resv/bus_resv_update", "bus", dto);
 			return mav;
 		}
 		@RequestMapping(value="/bus_resv_update.do",method = RequestMethod.POST)
-		public String bus_resv_updateOK(HttpServletRequest req, BusResvDTO dto)  {
-			int res=busResvMapper.updateBus_resv(dto); 
+		public String bus_resv_updateOK(HttpServletRequest req, BusResvDTO_resv dto)  {
+			int res=busResvMapper_resv.updateBus_resv_resv(dto); 
 			String msg = null, url = null;
 			if (res > 0) {
 				msg = "예약수정 성공";
@@ -752,7 +752,7 @@ public class BusController {
 		
 		@RequestMapping(value="/bus_station_info.do")
 		public ModelAndView bus_station_info(){
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv();
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_station_user/bus_station_info");
@@ -763,7 +763,7 @@ public class BusController {
 		
 		@RequestMapping(value="bus_station_info_detail.do") //버스정류소 디테일 페이지
 		public ModelAndView bus_station_info_detail(@RequestParam String station_no){
-			BusStationDTO dto =busStationMapper.getBus_station(station_no);
+			BusStationDTO_resv dto =busStationMapper_resv.getBus_station_resv(station_no);
 			
 			ModelAndView mav= new ModelAndView();
 			mav.setViewName("bus_station_user/bus_station_info_detail");
@@ -775,7 +775,7 @@ public class BusController {
 		@RequestMapping(value="bus_station_info_map.do") //지도 확대 페이지
 		public ModelAndView bus_station_info_map(){
 			ModelAndView mav =new ModelAndView();
-			
+		
 			mav.setViewName("bus_station_user/bus_station_info_map");
 			
 			return mav;
@@ -795,7 +795,7 @@ public class BusController {
 		
 		@RequestMapping(value="bus_resv_user_arrival.do", method=RequestMethod.GET) //출발지 선택 페이지
 		public ModelAndView bus_resv_user_arrival(){
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv();
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_resv_user/bus_resv_user_arrival");
@@ -803,13 +803,13 @@ public class BusController {
 			return mav;
 		}
 		@RequestMapping(value="bus_resv_user_arrival_select.do")//출발지 선택 하기
-		public ModelAndView bus_resv_user_arrival_select(BusStationDTO dto,@RequestParam String arrival) {
+		public ModelAndView bus_resv_user_arrival_select(BusStationDTO_resv dto,@RequestParam String arrival) {
 		
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv();
 		
 			ModelAndView mav = new ModelAndView();
 					if(arrival != null){
-						dto =busStationMapper.getBus_station(arrival);
+						dto =busStationMapper_resv.getBus_station_resv(arrival);
 						mav.addObject("arr_dto",dto);
 						mav.addObject("bus_station_list",bus_station_list);
 						mav.setViewName("bus_resv_user/bus_resv_user_arrival");
@@ -825,17 +825,17 @@ public class BusController {
 		public ModelAndView bus_Resv_user_arrivalOk(HttpServletRequest req,@RequestParam String arrival){
 			ModelAndView mav = new ModelAndView();
 			
-			BusStationDTO dto = busStationMapper.getBus_station_name(arrival);
+			BusStationDTO_resv dto = busStationMapper_resv.getBus_station_name_resv(arrival);
 			HttpSession session=req.getSession();
 			
 			session.setAttribute("arrDTO", dto);
-			BusStationDTO arr_no_dto =busStationMapper.getBus_number(arrival);
+			BusStationDTO_resv arr_no_dto =busStationMapper_resv.getBus_number_resv(arrival);
 			session.setAttribute("arrnoDTO",arr_no_dto);
 			
 			if(session.getAttribute("depDTO")!=null){
-				BusStationDTO depdto=(BusStationDTO) session.getAttribute("depDTO");
+				BusStationDTO_resv depdto=(BusStationDTO_resv) session.getAttribute("depDTO");
 				mav.addObject("dep_dto",depdto);
-				BusStationDTO dep_no_dto=(BusStationDTO) session.getAttribute("depnoDTO");
+				BusStationDTO_resv dep_no_dto=(BusStationDTO_resv) session.getAttribute("depnoDTO");
 				mav.addObject("depnoDTO",dep_no_dto);
 			}
 			
@@ -849,7 +849,7 @@ public class BusController {
 		
 		@RequestMapping(value="bus_resv_user_departure.do",method=RequestMethod.GET)//도착지 페이지
 		public ModelAndView bus_resv_user_departure_select() {
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv();
 			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("bus_resv_user/bus_resv_user_departure");
@@ -859,13 +859,13 @@ public class BusController {
 				}
 		
 		@RequestMapping(value="bus_resv_user_departure_select.do")//도착지 선택 하기
-		public ModelAndView bus_resv_user_departure_select(BusStationDTO dto,@RequestParam String departure) {
+		public ModelAndView bus_resv_user_departure_select(BusStationDTO_resv dto,@RequestParam String departure) {
 		
-			List<BusStationDTO> bus_station_list = busStationMapper.listBus_station();
+			List<BusStationDTO_resv> bus_station_list = busStationMapper_resv.listBus_station_resv();
 			
 			ModelAndView mav = new ModelAndView();
 					if(departure != null){
-						dto =busStationMapper.getBus_station(departure);
+						dto =busStationMapper_resv.getBus_station_resv(departure);
 						mav.addObject("dep_dto",dto);
 						mav.addObject("bus_station_list",bus_station_list);
 						mav.setViewName("bus_resv_user/bus_resv_user_departure");
@@ -882,17 +882,17 @@ public class BusController {
 		@RequestMapping(value="bus_resv_user_departure.do",method=RequestMethod.POST)
 		public ModelAndView bus_rsev_user_departureOk(HttpServletRequest req ,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
-			BusStationDTO dto = busStationMapper.getBus_station_name(departure);
+			BusStationDTO_resv dto = busStationMapper_resv.getBus_station_name_resv(departure);
 			HttpSession session=req.getSession();
 			session.setAttribute("depDTO", dto);
 			
-			BusStationDTO dep_no_dto =busStationMapper.getBus_number(departure);
+			BusStationDTO_resv dep_no_dto =busStationMapper_resv.getBus_number_resv(departure);
 			session.setAttribute("depnoDTO",dep_no_dto);
 			
 			if(session.getAttribute("arrDTO")!=null){
-				BusStationDTO arrdto=(BusStationDTO) session.getAttribute("arrDTO");
+				BusStationDTO_resv arrdto=(BusStationDTO_resv) session.getAttribute("arrDTO");
 				mav.addObject("arr_dto",arrdto);
-				BusStationDTO arr_no_dto=(BusStationDTO) session.getAttribute("arrnoDTO");
+				BusStationDTO_resv arr_no_dto=(BusStationDTO_resv) session.getAttribute("arrnoDTO");
 				mav.addObject("arrnoDTO",arr_no_dto);
 			}
 			
@@ -906,7 +906,7 @@ public class BusController {
 		public ModelAndView bus_resv_arrival_find(@RequestParam String searchString){
 			ModelAndView mav = new ModelAndView();
 			
-			List<BusStationDTO> list = busStationMapper.find_station(searchString);
+			List<BusStationDTO_resv> list = busStationMapper_resv.find_station_resv(searchString);
 			mav.addObject("find_station",list);
 			mav.setViewName("/bus_resv_user/bus_resv_user_arrival");
 			return mav;
@@ -915,7 +915,7 @@ public class BusController {
 		public ModelAndView bus_resv_departure_find(@RequestParam String searchString){
 			ModelAndView mav= new ModelAndView();
 			
-			List<BusStationDTO> list = busStationMapper.find_station(searchString);
+			List<BusStationDTO_resv> list = busStationMapper_resv.find_station_resv(searchString);
 			mav.addObject("find_station",list);
 			mav.setViewName("/bus_resv_user/bus_resv_user_departure");
 			return mav;
@@ -924,7 +924,7 @@ public class BusController {
 		//배차조회 list
 		@RequestMapping(value="bus_resv_user_dispatch.do")
 		public ModelAndView bus_user_dispatch(
-				HttpServletRequest req,BusRoadDTO dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
+				HttpServletRequest req,BusRoadDTO_resv dto,@RequestParam String mode,@RequestParam int arrival,@RequestParam int departure,@RequestParam String grade,@RequestParam String one_date,@RequestParam String arr_date,@RequestParam String dep_date){
 			ModelAndView mav = new ModelAndView();
 			if(mode.equals("oneway")){//편도 선택 했을떄
 				int pageSize=5;
@@ -936,19 +936,19 @@ public class BusController {
 				int startRow = currentPage * pageSize - (pageSize-1);
 				int endRow = currentPage * pageSize;
 				int count = 0;
-				count=busResvMapper.bus_busroad_resv_count(arrival,departure,grade);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지,등급과 일치하는 행들 카운트
+				count=busResvMapper_resv.bus_busroad_resv_count_resv(arrival,departure,grade);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지,등급과 일치하는 행들 카운트
 				if(endRow>count){
 					endRow=count;
 				}
-				List<Bus_BusRoadDTO> dispatch_list=busResvMapper.listdispatch_resv_count(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
+				List<Bus_BusRoadDTO> dispatch_list=busResvMapper_resv.listdispatch_resv_count_resv(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
 				
 				if(grade.equals("전체")){//grade 가 전체 일때
 					currentPage = Integer.parseInt(pageNum);
 					startRow = currentPage * pageSize - (pageSize-1);
 					endRow = currentPage * pageSize;
 					count = 0;
-					dispatch_list=busResvMapper.listdispatch_resv_all_count(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
-					count=busResvMapper.bus_busroad_resv_all_count(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
+					dispatch_list=busResvMapper_resv.listdispatch_resv_all_count_resv(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
+					count=busResvMapper_resv.bus_busroad_resv_all_count_resv(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
 						if(endRow>count){
 							endRow=count;
 						}
@@ -964,10 +964,10 @@ public class BusController {
 				
 			for(Bus_BusRoadDTO roadDTO : dispatch_list){//숫자화 된 출발지 도착지를 한글로 변환
 				String arr=roadDTO.getArrival(); //숫자화된 출발지를 저장(dto arrival 이 string 으로 되어있음)
-				BusStationDTO BDTO=busStationMapper.getBus_station(arr);//station_no 값을 이용해 해당하는 station_name 찾기
+				BusStationDTO_resv BDTO=busStationMapper_resv.getBus_station_resv(arr);//station_no 값을 이용해 해당하는 station_name 찾기
 				roadDTO.setArrival(BDTO.getStation_name());//dto에 출발지 한글로저장
 				String dep=roadDTO.getDeparture();
-				BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
+				BusStationDTO_resv BDTO2=busStationMapper_resv.getBus_station_resv(dep);
 				roadDTO.setDeparture(BDTO2.getStation_name());
 			}
 			mav.addObject("mode",mode);
@@ -1007,16 +1007,16 @@ public class BusController {
 					int endRow2 = currentPage2 * pageSize2;
 					int count2 = 0;
 					
-					count =busResvMapper.bus_busroad_resv_count(arrival, departure, grade);
-					count2=busResvMapper.bus_busroad_resv_resverse_count(arrival, departure,grade);
+					count =busResvMapper_resv.bus_busroad_resv_count_resv(arrival, departure, grade);
+					count2=busResvMapper_resv.bus_busroad_resv_resverse_count_resv(arrival, departure,grade);
 					if(endRow>count){
 						endRow=count;
 					}
 					if(endRow>count2){
 						endRow=count2;
 					}
-					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper.listdispatch_resv_count(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
-					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper.listdispatch_resv_reverse_count(arrival, departure, grade,startRow2,endRow2);
+					List<Bus_BusRoadDTO> arr_dispatch_list=busResvMapper_resv.listdispatch_resv_count_resv(arrival,departure,grade,startRow,endRow);//출발지,도착지,버스등급에 맞는 리스트를 5개씩출력
+					List<Bus_BusRoadDTO> dep_dispatch_list=busResvMapper_resv.listdispatch_resv_reverse_count_resv(arrival, departure, grade,startRow2,endRow2);
 					if(grade.equals("전체")){//grade 가 전체 일떄
 						currentPage = Integer.parseInt(pageNum);
 						startRow = currentPage * pageSize - (pageSize-1);
@@ -1028,10 +1028,10 @@ public class BusController {
 						endRow2 = currentPage2 * pageSize2;
 						count2=0;
 						
-						arr_dispatch_list=busResvMapper.listdispatch_resv_all_count(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
-						count=busResvMapper.bus_busroad_resv_all_count(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
-						dep_dispatch_list=busResvMapper.listdispatch_resv_reverse_all_count(arrival, departure, startRow2, endRow2);
-						count2=busResvMapper.bus_busroad_resv_resverse_all_count(arrival, departure);
+						arr_dispatch_list=busResvMapper_resv.listdispatch_resv_all_count_resv(arrival, departure, startRow, endRow);//출발지,도착지 에 맞는 리스트를 5개씩 출력
+						count=busResvMapper_resv.bus_busroad_resv_all_count_resv(arrival,departure);//bus테이블과 bus_road 테이블 조인 시 출발지,도착지와 일치하는 행들 카운트
+						dep_dispatch_list=busResvMapper_resv.listdispatch_resv_reverse_all_count_resv(arrival, departure, startRow2, endRow2);
+						count2=busResvMapper_resv.bus_busroad_resv_resverse_all_count_resv(arrival, departure);
 						}
 						int startNum = count-((currentPage-1)*pageSize);
 						int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
@@ -1049,18 +1049,18 @@ public class BusController {
 						
 					for(Bus_BusRoadDTO arrDTO : arr_dispatch_list){
 						String arr=arrDTO.getArrival();
-						BusStationDTO BDTO=busStationMapper.getBus_station(arr);
+						BusStationDTO_resv BDTO=busStationMapper_resv.getBus_station_resv(arr);
 						arrDTO.setArrival(BDTO.getStation_name());
 						String dep=arrDTO.getDeparture();
-						BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
+						BusStationDTO_resv BDTO2=busStationMapper_resv.getBus_station_resv(dep);
 						arrDTO.setDeparture(BDTO2.getStation_name());
 					}
 					for(Bus_BusRoadDTO depDTO : dep_dispatch_list){
 						String arr=depDTO.getArrival();
-						BusStationDTO BDTO=busStationMapper.getBus_station(arr);
+						BusStationDTO_resv BDTO=busStationMapper_resv.getBus_station_resv(arr);
 						depDTO.setArrival(BDTO.getStation_name());
 						String dep=depDTO.getDeparture();
-						BusStationDTO BDTO2=busStationMapper.getBus_station(dep);
+						BusStationDTO_resv BDTO2=busStationMapper_resv.getBus_station_resv(dep);
 						depDTO.setDeparture(BDTO2.getStation_name());
 					}
 					HttpSession session=req.getSession();
@@ -1108,11 +1108,11 @@ public class BusController {
 			ModelAndView mav = new ModelAndView();
 			
 			String one_date=req.getParameter("one_date");
-			Bus_BusRoadDTO seat_dto= busResvMapper.resv_user_seat_select(road_no);
-			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(one_date,road_no);//예약된 좌석 체크위한 리스트
+			Bus_BusRoadDTO seat_dto= busResvMapper_resv.resv_user_seat_select_resv(road_no);
+			List<BusResvDTO_resv> resv_list=busResvMapper_resv.list_seat_resv_user_resv(one_date,road_no);//예약된 좌석 체크위한 리스트
 			String seats="";
 				if(resv_list !=null){
-			for(BusResvDTO rdto:resv_list){
+			for(BusResvDTO_resv rdto:resv_list){
 				seats +=rdto.getSeat()+"/";
 				
 				}
@@ -1140,12 +1140,12 @@ public class BusController {
 			
 			String arr_date=req.getParameter("arr_date");
 			String dep_date=req.getParameter("dep_date");
-			Bus_BusRoadDTO arr_seat_dto= busResvMapper.resv_user_seat_select(road_no);
-			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(arr_date,road_no);//예약된 좌석 체크위한 리스트
+			Bus_BusRoadDTO arr_seat_dto= busResvMapper_resv.resv_user_seat_select_resv(road_no);
+			List<BusResvDTO_resv> resv_list=busResvMapper_resv.list_seat_resv_user_resv(arr_date,road_no);//예약된 좌석 체크위한 리스트
 			
 			String seats="";
 				if(resv_list !=null){
-			for(BusResvDTO rdto:resv_list){
+			for(BusResvDTO_resv rdto:resv_list){
 				seats +=rdto.getSeat()+"/";
 				
 				}
@@ -1181,12 +1181,12 @@ public class BusController {
 			ModelAndView mav= new ModelAndView();
 			String arr_date=req.getParameter("arr_date");
 			String dep_date=req.getParameter("dep_date");
-			Bus_BusRoadDTO dep_seat_dto= busResvMapper.resv_user_seat_select(road_no);
-			List<BusResvDTO> resv_list=busResvMapper.list_seat_resv_user(dep_date,road_no);//예약된 좌석 체크위한 리스트
+			Bus_BusRoadDTO dep_seat_dto= busResvMapper_resv.resv_user_seat_select_resv(road_no);
+			List<BusResvDTO_resv> resv_list=busResvMapper_resv.list_seat_resv_user_resv(dep_date,road_no);//예약된 좌석 체크위한 리스트
 			
 			String seats="";
 				if(resv_list !=null){
-			for(BusResvDTO rdto:resv_list){
+			for(BusResvDTO_resv rdto:resv_list){
 				seats +=rdto.getSeat()+"/";
 				
 				}
@@ -1219,7 +1219,7 @@ public class BusController {
 		@RequestMapping(value="bus_resv_user_pay.do")
 		public ModelAndView bus_resv_user_pay(HttpServletRequest req,Bus_BusRoadDTO dto,@RequestParam String one_date,@RequestParam int road_no,@RequestParam String arrival,@RequestParam String departure){
 			ModelAndView mav = new ModelAndView();
-			Bus_BusRoadDTO resv_dto= busResvMapper.resv_user_seat_select(road_no);
+			Bus_BusRoadDTO resv_dto= busResvMapper_resv.resv_user_seat_select_resv(road_no);
 			dto.setArrival(arrival);
 			dto.setDeparture(departure);
 			
@@ -1265,11 +1265,11 @@ public class BusController {
 		
 		//결제완료 (편도 bus_resv 테이블에 저장)
 		@RequestMapping(value="bus_resv_user_payok.do")
-		public ModelAndView bus_resv_user_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point,@RequestParam int price){
+		public ModelAndView bus_resv_user_payok(BusResvDTO_resv dto,HttpServletRequest req,@RequestParam String one_date,@RequestParam int road_no,@RequestParam int use_point,@RequestParam int save_point,@RequestParam int price){
 			ModelAndView mav=new ModelAndView();
-			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
+			Bus_BusRoadDTO rdto=busResvMapper_resv.resv_user_seat_select_resv(road_no);
 			HttpSession session = req.getSession();
-			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
+			MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
 			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
 			String[] seats=new String[seat.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
 			int seat_no=seat.length;//좌석수 저장,티켓총가격 구하기위해
@@ -1288,13 +1288,13 @@ public class BusController {
 				dto.setSave_point(save_point);
 				dto.setPrice(price);
 				mdto.setPoint(mdto.getPoint()+dto.getSave_point());
-				res=memberMapper.Member_buspoint_update(mdto); //포인트 사용내역 meber 테이블에 업데이트
+				res=memberMapper_resv.Member_buspoint_update_resv(mdto); //포인트 사용내역 meber 테이블에 업데이트
 			}else{ //포인트를 사용했을떄(포인트적립x)
 				dto.setUse_point(use_point);
 				dto.setSave_point(0);
 				dto.setPrice(price-dto.getUse_point());
 				mdto.setPoint(mdto.getPoint()-dto.getUse_point());
-				res=memberMapper.Member_buspoint_update(mdto);//포인트 사용내역 meber 테이블에 업데이트
+				res=memberMapper_resv.Member_buspoint_update_resv(mdto);//포인트 사용내역 meber 테이블에 업데이트
 			}
 			
 			dto.setBus_no(rdto.getBus_no());
@@ -1303,7 +1303,7 @@ public class BusController {
 			dto.setSeat(result_seat);
 			dto.setMember_no(mdto.getMember_no());
 			
-			res =busResvMapper.insertBus_resv_user(dto);
+			res =busResvMapper_resv.insertBus_resv_user_resv(dto);
 			
 			mav.setViewName("bus_resv_user/bus_resv_user_payok");
 			mav.addObject("rdto",rdto);
@@ -1313,13 +1313,13 @@ public class BusController {
 		}
 		//결제완료 (왕복 bus_resv 테이블에 저장)
 		@RequestMapping(value="bus_resv_user_total_payok.do")
-		public ModelAndView bus_resv_user_total_payok(BusResvDTO dto,HttpServletRequest req,@RequestParam String arr_date,@RequestParam String dep_date,@RequestParam int road_no,@RequestParam int road_no_reverse,@RequestParam int price,@RequestParam int arr_price,@RequestParam int dep_price){
+		public ModelAndView bus_resv_user_total_payok(BusResvDTO_resv dto,HttpServletRequest req,@RequestParam String arr_date,@RequestParam String dep_date,@RequestParam int road_no,@RequestParam int road_no_reverse,@RequestParam int price,@RequestParam int arr_price,@RequestParam int dep_price){
 			ModelAndView mav = new ModelAndView();
-			Bus_BusRoadDTO rdto=busResvMapper.resv_user_seat_select(road_no);
-			Bus_BusRoadDTO rdto_reverse=busResvMapper.resv_user_seat_select(road_no_reverse);
+			Bus_BusRoadDTO rdto=busResvMapper_resv.resv_user_seat_select_resv(road_no);
+			Bus_BusRoadDTO rdto_reverse=busResvMapper_resv.resv_user_seat_select_resv(road_no_reverse);
 			HttpSession session = req.getSession();
 			
-			MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
+			MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");//로그인되어있는 회원 정보 불러오기
 			String[] seat = req.getParameterValues("seat");//좌석수 배열에 저장
 			String[] seats=new String[seat.length];//좌석수를 for문 돌릴 setter 메소드 저장 용도
 			int seat_no=seat.length;//좌석수 저장,티켓총가격 구하기위해
@@ -1353,7 +1353,7 @@ public class BusController {
 			dto.setSeat(result_seat);
 			dto.setMember_no(mdto.getMember_no());
 			
-			res =busResvMapper.insertBus_resv_user(dto);
+			res =busResvMapper_resv.insertBus_resv_user_resv(dto);
 			
 			dto.setUse_point(0);
 			dto.setSave_point(0);
@@ -1364,7 +1364,7 @@ public class BusController {
 			dto.setSeat(result_seat_reverse);
 			dto.setMember_no(mdto.getMember_no());
 			
-			res =busResvMapper.insertBus_resv_user(dto);
+			res =busResvMapper_resv.insertBus_resv_user_resv(dto);
 			
 			mav.addObject("price",arr_price+dep_price);
 			mav.setViewName("bus_resv_user/bus_resv_user_total_payok");
@@ -1391,12 +1391,12 @@ public class BusController {
 				return mav;
 			}else{
 				session.getAttribute("sedto");
-				MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");
-				List<BusResv_BusRoadDTO> resv_list = busResvMapper.resvlist(mdto.getMember_no());
+				MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");
+				List<BusResv_BusRoadDTO> resv_list = busResvMapper_resv.resvlist_resv(mdto.getMember_no());
 				for(BusResv_BusRoadDTO dto : resv_list){
-					BusStationDTO to = busStationMapper.getBus_station(String.valueOf(dto.getArrival()));
+					BusStationDTO_resv to = busStationMapper_resv.getBus_station_resv(String.valueOf(dto.getArrival()));
 					dto.setArrival(to.getStation_name());
-					BusStationDTO to2=busStationMapper.getBus_station(String.valueOf(dto.getDeparture()));
+					BusStationDTO_resv to2=busStationMapper_resv.getBus_station_resv(String.valueOf(dto.getDeparture()));
 					dto.setDeparture(to2.getStation_name());
 				}
 			
@@ -1410,24 +1410,20 @@ public class BusController {
 		@RequestMapping(value="bus_resv_user_refund.do")
 		public ModelAndView bus_resv_user_refund(HttpServletRequest req,@RequestParam int bus_resv_no,@RequestParam int use_point,@RequestParam int save_point){
 			ModelAndView mav = new ModelAndView();
-			int res=busResvMapper.deletetBus_resv(bus_resv_no);
+			int res=busResvMapper_resv.deletetBus_resv_resv(bus_resv_no);
+			HttpSession session = req.getSession();
 			String msg="";
 			String url="";
 			if (res > 0) {
 				if(use_point>0){
-					HttpSession session = req.getSession();
-					MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");	
+					MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");	
 					mdto.setPoint(mdto.getPoint()+use_point);
-					res=memberMapper.Member_buspoint_update(mdto);
+					res=memberMapper_resv.Member_buspoint_update_resv(mdto);
 					
 				}else if(save_point>0){
-					HttpSession session = req.getSession();
-					MemberDTO mdto = (MemberDTO)session.getAttribute("sedto");	
+					MemberDTO_resv mdto = (MemberDTO_resv)session.getAttribute("sedto");	
 					mdto.setPoint(mdto.getPoint()-save_point);
-					if(mdto.getPoint()-save_point==0){
-						mdto.setPoint(0);
-					}
-					res=memberMapper.Member_buspoint_update(mdto);
+					res=memberMapper_resv.Member_buspoint_update_resv(mdto);
 				}
 				msg = "환불성공";
 				url = "bus_resv_user_resvlist.do";

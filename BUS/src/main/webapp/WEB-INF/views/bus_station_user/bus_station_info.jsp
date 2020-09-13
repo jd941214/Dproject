@@ -24,7 +24,7 @@
 			<c:if test="${dto.filesize != 0}">
 				<tr align="center" height="70">	
 					<td>
-						<a href="javascript:void(window.open('bus_station_info_map.do?${dto.station_no}', '${dto.station_name}지도','width=500px, height=500px'))">
+						<a href="javascript:void(window.open('bus_station_info_map.do','${dto.station_name}지도','width=500px, height=500px'))">
 							<img src="${Path}" width="200" height="100">
 						</a>
 						

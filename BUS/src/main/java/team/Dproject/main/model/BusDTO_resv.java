@@ -1,6 +1,6 @@
 package team.Dproject.main.model;
 
-public class BusDTO {
+public class BusDTO_resv {
 	private int bus_no;
 	private String grade; 
 	private int seat;

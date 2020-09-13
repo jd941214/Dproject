@@ -2,7 +2,7 @@ package team.Dproject.main.model;
 
 
 
-public class BusResvDTO {
+public class BusResvDTO_resv {
 	private int resv_no;
 	private int member_no;
 	private int bus_no;

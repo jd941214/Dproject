@@ -1,6 +1,6 @@
 package team.Dproject.main.model;
 
-public class MemberDTO {
+public class MemberDTO_resv {
 	private int member_no;
 	private String name;
 	private String id;
