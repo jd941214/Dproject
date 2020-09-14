@@ -1,9 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- memberAll.jsp -->
-<%@ include file="../top.jsp"%>
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+th {
+    text-align: center;
+}
+</style>
+<%@include file="../top2.jsp"%>
 <div align="center">
-	<hr color="green" width="300">
+
 	<c:if test="${mode == 'all'}">
 	<h2>회 원 목 록 보 기</h2>
 	</c:if>
@@ -19,7 +26,7 @@
 		<input type="submit" value="찾기">
 	</form>
 	</c:if>	
-	<hr color="green" width="300">
+
 	<table width="100%" class="outline">
 		<tr>
 			<td colspan="8" align="right">
@@ -63,4 +70,4 @@
 		</c:choose>
 	</table>
 </div>
-<%@ include file="../bottom.jsp"%>
+<%@ include file="../../Basic/bottom.jsp" %>

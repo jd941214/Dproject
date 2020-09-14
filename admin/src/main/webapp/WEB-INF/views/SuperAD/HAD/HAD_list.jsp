@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- memberAll.jsp -->
-<%@ include file="../top.jsp"%>
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div align="center">
-	<hr color="green" width="300">
-	<h2>호텔관리자 목 록 보 기</h2>
-	<hr color="green" width="300">
+<style>
+th {
+    text-align: center;
+}
+</style>
+<div align="center" style="margin-top:62px">
 	<table width="100%" class="outline">
 		<tr>
 			<th class="m3">번호</th>
@@ -15,7 +18,7 @@
 			<th class="m3">전화번호</th>
 			<th class="m3">가입일</th>
 			<th class="m3">회원등급</th>
-			<th class="m3">수정 | 삭제</th>
+			<th class="m3">관리중인 호텔 | 수정 | 삭제</th>
 		</tr>
 		<c:choose>
 			<c:when test="${empty list}">
@@ -44,4 +47,4 @@
 		</c:choose>
 	</table>
 </div>
-<%@ include file="../bottom.jsp"%>
+<%@ include file="../../Basic/bottom.jsp" %>

@@ -3,9 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*"%>
 <%@page import="team.Dproject.main.model.*"%>
-<%@ include file="../top.jsp" %>
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>    
+<%@ include file="../top2.jsp" %>
 <%
-List<busDTO> list=(List)request.getAttribute("bus_list");
+List<BusDTO> list=(List)request.getAttribute("bus_list");
 List<bus_stationDTO> list2=(List)request.getAttribute("bus_station_list");
 List<bus_loadDTO> llist=(List)request.getAttribute("llist");
 boolean b=true;
@@ -33,14 +35,14 @@ boolean b=true;
 	}
 </script>
 
-	<div align="center">
+	<div align="center"style="margin-top:62px"     >
 		<form name="f" action="ADbus_load_insert.do" method="post">
 			<table width="100%">
 				<tr>
 					<td>버스번호 : 
 						<select name="bus_no">
 						<%
-							for(busDTO dto : list){
+							for(BusDTO dto : list){
 								boolean a=false;
 								for(bus_loadDTO ldto : llist){
 									if(dto.getBus_no()==ldto.getBus_no()){
@@ -100,5 +102,4 @@ boolean b=true;
 			</table>
 		</form>
 	</div>
-
-<%@ include file="../bottom.jsp" %> 
+<%@ include file="../../Basic/bottom.jsp" %>

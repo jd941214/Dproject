@@ -3,13 +3,14 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ include file="../top.jsp"%>
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>
 <%
 Calendar cal = Calendar.getInstance();
 int month = cal.get(Calendar.MONTH);
 int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 %>
-<div align="center">
+<div align="center"style="margin-top:62px" >
 	<table width="100%">
 		<tr align="right">
 			<td colspan="9"><a href="ADhotel_insert.do">추가</a></td>
@@ -63,4 +64,4 @@ int endDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 		</c:forEach>
 	</table>
 </div>
-<%@ include file="../bottom.jsp"%>
+<%@ include file="../../Basic/bottom.jsp" %>

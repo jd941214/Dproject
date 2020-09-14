@@ -67,7 +67,7 @@ public class HADController {
 	
 	@RequestMapping(value="/hotel_board_list.do")
 	public ModelAndView listBoard(HttpServletRequest req) {
-		String no=req.getParameter("hotel_no");
+		String no=req.getParameter("hnum");
 		hotelDTO hdto=hotelMapper.getHotel(no);
 		int hotel_no=Integer.parseInt(no);
 		int pageSize=5;
@@ -97,6 +97,7 @@ public class HADController {
 		if (endPage>pageCount) endPage = pageCount;
 		//List<BusDTO> list = busMapper.listBus();
 		ModelAndView mav = new ModelAndView();
+		req.setAttribute("page_name", "Hotel Board");
 		mav.setViewName("hotel_board/list");
 		mav.addObject("listBoard", list);
 		mav.addObject("hdto", hdto);
@@ -110,7 +111,8 @@ public class HADController {
 	}
 	
 	@RequestMapping(value="/hotel_board_write.do", method=RequestMethod.GET)
-	public String writeForm() {
+	public String writeForm(HttpServletRequest req) {
+		req.setAttribute("page_name", "Hotel Board List");
 		return "hotel_board/writeForm";
 	}
 	
@@ -152,13 +154,14 @@ public class HADController {
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
 		int res = hotel_boardMapper.insertHotel_board(dto);
+
 		String msg = null, url = null;
 		if(res>0) {
 			msg = "새 글 작성이 완료되었습니다. 게시글 목록으로 이동합니다.";
-			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no();
+			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no()+"&page_name=Hotel Board";
 		}else {
 			msg = "새 글 작성이 완료되지 않았습니다. 다시 작성해주세요.";
-			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no();
+			url = "hotel_board_list.do?hotel_no="+dto.getHotel_no()+"&page_name=Hotel Board";
 		}
 		
 		req.setAttribute("msg", msg);
@@ -193,11 +196,11 @@ public class HADController {
 		if(res>0) {
 			msg = "댓글달기 성공";
 			url = "hotel_content.do?hotel_board_no="+dto.getHotel_board_no()+
-					"&hotel_no="+dto.getHotel_no();
+					"&hotel_no="+dto.getHotel_no()+"&page_name=Hotel Board";
 		}else {
 			msg = "댓글달기 실패";
 			url = "hotel_content.do?hotel_board_no="+dto.getHotel_board_no()+
-					"&hotel_no="+dto.getHotel_no();
+					"&hotel_no="+dto.getHotel_no()+"&page_name=Hotel Board";
 		}
 		
 		req.setAttribute("msg", msg);
@@ -237,6 +240,7 @@ public class HADController {
 		int endPage = startPage + pageBlock - 1; 
 		if (endPage>pageCount) endPage = pageCount;
 		ModelAndView mav = new ModelAndView();
+		req.setAttribute("page_name", "Hotel Board");
 		mav.setViewName("hotel_board/content");
 		mav.addObject("listBoard", list);
 		mav.addObject("count",count);
@@ -270,7 +274,7 @@ public class HADController {
 	
 	@RequestMapping("/ADhotelAD.do")
 	public String busAD() {
-		return "hotelAD/HAD_main";
+		return "ADhotel_list.do";
 	}
 
 	@RequestMapping("/ADhotel_list.do")
@@ -278,13 +282,26 @@ public class HADController {
 		Integer MNUM=(Integer)session.getAttribute("MNUM");
 		List<hotelDTO> list = hotelMapper.listHotel(String.valueOf(MNUM));
 		ModelAndView mav = new ModelAndView();
+		req.setAttribute("page_name", "Hotel List");
 		mav.setViewName("hotelAD/hotel/hotel_list");
 		mav.addObject("list", list);
 		return mav;
 	}
+	
+	@RequestMapping("/ADhotel_show.do")
+	public ModelAndView hotel_show(HttpServletRequest req,HttpSession session) {
+		String hnum=req.getParameter("hnum"); 
+		hotelDTO dto=hotelMapper.getHotel(req.getParameter("hnum"));
+		ModelAndView mav = new ModelAndView();
+		req.setAttribute("page_name", "Hotel Show");
+		mav.setViewName("hotelAD/hotel/hotel_show");
+		mav.addObject("dto", dto);
+		return mav;
+	}
 
 	@RequestMapping(value = "/ADhotel_insert.do", method = RequestMethod.GET)
-	public String hotel_insert() {
+	public String hotel_insert(HttpServletRequest req) {
+		req.setAttribute("page_name", "Hotel Insert");
 		return "hotelAD/hotel/hotel_insert";
 	}
 
@@ -317,6 +334,7 @@ public class HADController {
 			msg = "호텔추가 실패";
 			url = "ADhotel_list.do" + "?member_num=" + memNUM;
 		}
+		req.setAttribute("page_name", "Hotel List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -333,6 +351,7 @@ public class HADController {
 			msg = "호텔삭제 실패";
 			url = "ADhotel_list.do" + "?member_num=" + memNUM;
 		}
+		req.setAttribute("page_name", "Hotel List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -362,7 +381,7 @@ public class HADController {
 		}
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
-
+		req.setAttribute("page_name", "Hotel List");
 		int res = hotelMapper.updateHotel(dto);
 		return "redirect:ADhotel_list.do" + "?member_num=" + memNUM;
 	}
@@ -382,19 +401,20 @@ public class HADController {
 		}
 		hnum = (String) session.getAttribute("hnum");
 		List<roomDTO> list = roomMapper.listRoom(Integer.parseInt(hnum));
-
+		req.setAttribute("page_name", "Room List");
 		mav.setViewName("hotelAD/room/room_list");
 		mav.addObject("list", list);
 		return mav;
 	}
 
 	@RequestMapping(value = "/ADroom_insert.do", method = RequestMethod.GET)
-	public String room_insert() {
+	public String room_insert(HttpServletRequest req) {
+		req.setAttribute("page_name", "Room Insert");
 		return "hotelAD/room/room_insert";
 	}
 
 	@RequestMapping(value = "/ADroom_insert.do", method = RequestMethod.POST)
-	public String room_insertOK(MultipartHttpServletRequest mtfRequest, HttpSession session, @ModelAttribute roomDTO dto) {
+	public String room_insertOK(MultipartHttpServletRequest mtfRequest, HttpSession session, @ModelAttribute roomDTO dto,HttpServletRequest req) {
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		String hnum = (String) session.getAttribute("hnum");
 		dto.setHotel_no(Integer.parseInt(hnum));
@@ -424,6 +444,7 @@ public class HADController {
 			dto.setHotel_no(Integer.parseInt(hnum));
 			int res = roomMapper.insertRoom(dto);
 		}
+		req.setAttribute("page_name", "Room List");
 		return "redirect:ADroom_list.do?hnum=" + hnum;
 	}
 
@@ -440,6 +461,7 @@ public class HADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Room List");
 		return "message";
 	}
 
@@ -456,6 +478,7 @@ public class HADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Room List");
 		return "message";
 	}
 
@@ -463,11 +486,12 @@ public class HADController {
 	public ModelAndView room_update(HttpServletRequest req) {
 		roomDTO dto = roomMapper.getRoom(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("hotelAD/room/room_update", "dto", dto);
+		req.setAttribute("page_name", "Room Update");
 		return mav;
 	}
 
 	@RequestMapping(value = "/ADroom_update.do", method = RequestMethod.POST)
-	public String room_updateOK(MultipartHttpServletRequest mtfRequest, HttpSession session,
+	public String room_updateOK(MultipartHttpServletRequest mtfRequest, HttpSession session, HttpServletRequest req,
 			@ModelAttribute roomDTO dto) {
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		String hnum = (String) session.getAttribute("hnum");
@@ -493,6 +517,7 @@ public class HADController {
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
 		int res = roomMapper.updateRoom(dto);
+		req.setAttribute("page_name", "Room List");
 
 		return "redirect:ADroom_list.do";
 	}
@@ -501,6 +526,7 @@ public class HADController {
 	public ModelAndView room_show(HttpServletRequest req) {
 		roomDTO dto = roomMapper.getRoom(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("hotelAD/room/room_show", "dto", dto);
+		req.setAttribute("page_name", "Room Show");
 		return mav;
 	}
 
@@ -549,6 +575,7 @@ public class HADController {
 			mav.addObject("roomlist", roomlist);
 			mav.addObject("hnum", hnum);
 		}
+		req.setAttribute("page_name", "Hotel Resv");
 		return mav;
 	}
 
@@ -598,7 +625,7 @@ public class HADController {
 		mav.addObject("MDTO", MDTO);
 		mav.addObject("HDTO", HDTO);
 		mav.addObject("RDTO", RDTO);
-
+		req.setAttribute("page_name", "Hotel Resv Show");
 		return mav;
 	}
 }

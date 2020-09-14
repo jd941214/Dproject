@@ -15,19 +15,19 @@ public class Bus_resvMapper {
    private SqlSession sqlSession;
    
    public List<bus_resvDTO> listBus_resv(){
-	      return sqlSession.selectList("listBus_resv");
+	      return sqlSession.selectList("listBus_resv1");
    }
    public int insertBus_resv(bus_resvDTO dto){
-	      return sqlSession.insert("insertBus_resv",dto);
+	      return sqlSession.insert("insertBus_resv1",dto);
    }
    public int deletetBus_resv(String no){
-	      return sqlSession.insert("deleteBus_resv",no);
+	      return sqlSession.insert("deleteBus_resv1",no);
    }
    public bus_resvDTO getBus_resv(String no){
-	   return sqlSession.selectOne("getBus_resv",no);
+	   return sqlSession.selectOne("getBus_resv1",no);
    }
    public int updateBus_resv(bus_resvDTO dto){
-	      return sqlSession.insert("updateBus_resv",dto);
+	      return sqlSession.insert("updateBus_resv1",dto);
    }
     
 

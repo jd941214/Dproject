@@ -1,6 +1,5 @@
 package team.Dproject.main.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import team.Dproject.main.model.MemberDTO;
+import team.Dproject.main.model.hotelDTO;
 
 @Service
 public class MemberMapper {
@@ -46,8 +46,41 @@ public class MemberMapper {
 		}
 		
 	}
+	
+	public List<MemberDTO> searchMemberId(String searchString, String ssn1, String ssn2) {
+		java.util.Map<String, String> map = new java.util.Hashtable<String, String>();
+		map.put("searchString", searchString);
+		map.put("ssn1", ssn1);
+		map.put("ssn2", ssn2);
+		List<MemberDTO> list = sqlSession.selectList("searchMemberId", map);
+		return list;
+		
+	}
+	
+	public List<hotelDTO> getHotelReserve(int member_no) {
+		List<hotelDTO> list = sqlSession.selectList("getHotelReserve", member_no);
+		return list;
+	}
+
+	public List<MemberDTO> searchMemberPasswd(String searchString, String ssn1, String ssn2) {
+		java.util.Map<String, String> map = new java.util.Hashtable<String, String>();
+		map.put("searchString", searchString);
+		map.put("ssn1", ssn1);
+		map.put("ssn2", ssn2);
+		List<MemberDTO> list = sqlSession.selectList("searchMemberPasswd", map);
+		return list;
+		
+	}
+	
+	
+	
+	public int deleteMember(int member_no) {
+		int res = sqlSession.delete("deleteMember", member_no);
+		return res;
+	}
 
 	public List<MemberDTO> memberList() {
+		
 		List<MemberDTO> list = sqlSession.selectList("memberList");
 		return list;
 		
@@ -118,6 +151,10 @@ public class MemberMapper {
 		map.put("ssn2", ssn2);
 		List<MemberDTO> list = sqlSession.selectList("searchMember", map);
 		return list;
+	}
+	
+	public int Member_buspoint_update(MemberDTO dto){
+		return sqlSession.update("Member_buspoint_update",dto);
 	}
 	
 }

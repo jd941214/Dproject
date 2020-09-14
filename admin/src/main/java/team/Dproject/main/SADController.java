@@ -109,11 +109,13 @@ public class SADController {
 
 	@RequestMapping(value = "/ADsuperAD.do")
 	public String SuperAD(HttpServletRequest req) {
+		req.setAttribute("page_name", "Super Admin");
 		return "SuperAD/SAD_main";
 	}
 
 	@RequestMapping(value = "/ADmember_list.do")
 	public ModelAndView MemberList(HttpServletRequest req) {
+		req.setAttribute("page_name", "Member List");
 		String mode = req.getParameter("mode");
 		List<MemberDTO> list = null;
 		if (mode == null) {
@@ -138,6 +140,7 @@ public class SADController {
 		String id = req.getParameter("id");
 		MemberDTO dto = memberMapper.getMember(id);
 		req.setAttribute("dto", dto);
+		req.setAttribute("page_name", "Member Update");
 		return "SuperAD/member/member_edit";
 
 	}
@@ -174,13 +177,15 @@ public class SADController {
 			}
 
 		}
+		req.setAttribute("page_name", "Member List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
 
 	@RequestMapping(value = "/ADmember_input.do")
-	public String MemberInput() {
+	public String MemberInput(HttpServletRequest req) {
+		req.setAttribute("page_name", "Member Insert");
 		return "SuperAD/member/member_input";
 
 	}
@@ -215,6 +220,7 @@ public class SADController {
 			url = "ADmember_list.do";
 
 		}
+		req.setAttribute("page_name", "Super Admin");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -223,10 +229,11 @@ public class SADController {
 
 	@RequestMapping(value = "/ADmember_show.do")
 	public ModelAndView Member_show(HttpServletRequest req) {
-		MemberDTO dto = memberMapper.getMember2(req.getParameter("no"));
+		MemberDTO dto = memberMapper.getMember2(req.getParameter("no")); 
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("SuperAD/member/member_show");
+		req.setAttribute("page_name", "Member Show");
 		mav.addObject("dto", dto);
 		return mav;
 	}
@@ -239,6 +246,7 @@ public class SADController {
 		List<MemberDTO> list = memberMapper.getPosition(req.getParameter("pos"));
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("SuperAD/BAD/BAD_list");
+		req.setAttribute("page_name", "Bus List");
 		mav.addObject("list", list);
 		return mav;
 	}
@@ -248,6 +256,7 @@ public class SADController {
 		List<MemberDTO> list = memberMapper.getPosition(req.getParameter("pos"));
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("SuperAD/HAD/HAD_list");
+		req.setAttribute("page_name", "Hotel List");
 		mav.addObject("list", list);
 		return mav;
 	}
@@ -259,6 +268,7 @@ public class SADController {
 		List<hotelDTO> list = hotelMapper.listHotel(MNUM);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("SuperAD/HAD/Hotel");
+		req.setAttribute("page_name", "Hotel List");
 		mav.addObject("list", list);
 		return mav;
 	}

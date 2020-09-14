@@ -2,11 +2,8 @@ package team.Dproject.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import team.Dproject.main.model.MemberDTO;
-import team.Dproject.main.model.busDTO;
+import team.Dproject.main.model.BusDTO;
 import team.Dproject.main.model.bus_loadDTO;
 import team.Dproject.main.model.bus_resvDTO;
 import team.Dproject.main.model.bus_stationDTO;
-import team.Dproject.main.model.hotelDTO;
+import team.Dproject.main.model.MemberDTO;
 import team.Dproject.main.service.BusMapper;
 import team.Dproject.main.service.Bus_loadMapper;
 import team.Dproject.main.service.Bus_resvMapper;
@@ -58,18 +53,18 @@ public class BADController {
 	@Resource(name = "upLoadPath")
 	private String upLoadPath;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, HttpSession session) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		return "home";
-	}
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public String home(Locale locale, Model model, HttpSession session) {
+//		logger.info("Welcome home! The client locale is {}.", locale);
+//		
+//		Date date = new Date();
+//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+//		
+//		String formattedDate = dateFormat.format(date);
+//		
+//		model.addAttribute("serverTime", formattedDate );
+//		return "home";
+//	}
 	
 	
 	@RequestMapping("/home.do")
@@ -78,26 +73,25 @@ public class BADController {
 	}
 	
 	//버스관련---------------------------------------------------------------
-	@RequestMapping("/ADbusAD.do")
-	public String busAD() {
-		return "busAD/BAD_main";
-	}
+
 	
 	//버스---------------------------------------------------------------
 	@RequestMapping(value="/ADbus_list.do" )
-	public ModelAndView bus_list() {
-		List<busDTO> list = busMapper.listBus();
+	public ModelAndView bus_list(HttpServletRequest req) {
+		List<BusDTO> list = busMapper.listBus();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus/bus_list");
 		mav.addObject("bus_list", list);
+		req.setAttribute("page_name", "Bus List");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_insert.do",method = RequestMethod.GET)
-	public String bus_insert() {
+	public String bus_insert(HttpServletRequest req) {
+		req.setAttribute("page_name", "Bus Insert");
 		return "busAD/bus/bus_insert";
 	}
 	@RequestMapping(value="/ADbus_insert.do",method = RequestMethod.POST)
-	public String bus_insertOK(HttpServletRequest req, busDTO dto)  {
+	public String bus_insertOK(HttpServletRequest req, BusDTO dto)  {
 		int res=busMapper.insertBus(dto);
 		String msg = null, url = null;
 		if (res > 0) {
@@ -107,13 +101,14 @@ public class BADController {
 			msg = "버스등록 실패";
 			url = "ADbus_list.do";
 		}
+		req.setAttribute("page_name", "Bus List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
 	@RequestMapping("ADbus_delete.do")
 	public String bus_delete(HttpServletRequest req) {
-		int res=busMapper.deletetBus(req.getParameter("no"));
+		int res=busMapper.deletetBus(Integer.parseInt(req.getParameter("no")));
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "버스삭제 성공";
@@ -122,18 +117,20 @@ public class BADController {
 			msg = "버스삭제 실패";
 			url = "ADbus_list.do";
 		}
+		req.setAttribute("page_name", "Bus List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
 	}
 	@RequestMapping(value="/ADbus_update.do",method = RequestMethod.GET)
 	public ModelAndView bus_update(HttpServletRequest req) {
-		busDTO dto = busMapper.getBus(req.getParameter("no"));
+		BusDTO dto = busMapper.getBus(Integer.parseInt(req.getParameter("no")));
 		ModelAndView mav = new ModelAndView("busAD/bus/bus_update", "bus", dto);
+		req.setAttribute("page_name", "Bus Update");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_update.do",method = RequestMethod.POST)
-	public String bus_updateOK(HttpServletRequest req, busDTO dto)  {
+	public String bus_updateOK(HttpServletRequest req, BusDTO dto)  {
 		int res=busMapper.updateBus(dto); 
 		String msg = null, url = null;
 		if (res > 0) {
@@ -143,6 +140,7 @@ public class BADController {
 			msg = "버스수정 실패";
 			url = "ADbus_list.do";
 		}
+		req.setAttribute("page_name", "Bus List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -151,15 +149,17 @@ public class BADController {
 	
 	//터미널---------------------------------------------------------------
 	@RequestMapping("/ADbus_station_list.do")
-	public ModelAndView bus_station_list() {
+	public ModelAndView bus_station_list(HttpServletRequest req) {
 		List<bus_stationDTO> list = bus_stationMapper.listBus_station();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_station/bus_station_list");
-		mav.addObject("bus_station_list", list);
-		return mav;
+		mav.addObject("bus_station_list", list); 
+		req.setAttribute("page_name", "Bus Station List");
+		return mav; 
 	}
 	@RequestMapping(value="/ADbus_station_insert.do",method = RequestMethod.GET)
-	public String bus_station_insert() {
+	public String bus_station_insert(HttpServletRequest req) {
+		req.setAttribute("page_name", "Bus Station Insert");
 		return "busAD/bus_station/bus_station_insert";
 	}
 	
@@ -191,6 +191,7 @@ public class BADController {
 			msg = "터미널추가 실패";
 			url = "ADbus_station_list.do";
 		}
+		req.setAttribute("page_name", "Bus Station List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -208,6 +209,7 @@ public class BADController {
 			msg = "터미널삭제 실패";
 			url = "ADbus_station_list.do";
 		}
+		req.setAttribute("page_name", "Bus Station List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -216,6 +218,7 @@ public class BADController {
 	public ModelAndView bus_station_update(HttpServletRequest req) {
 		bus_stationDTO dto = bus_stationMapper.getBus_station(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_station/bus_station_update", "station", dto);
+		req.setAttribute("page_name", "Bus Station List");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_station_update.do",method = RequestMethod.POST)
@@ -231,13 +234,14 @@ public class BADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Bus Station List");
 		return "message";
 	}
 	
 	
 	//노선---------------------------------------------------------------
 	@RequestMapping(value="/ADbus_load_list.do" )
-	public ModelAndView bus_load_list() {
+	public ModelAndView bus_load_list(HttpServletRequest req) {
 		List<bus_loadDTO> list = bus_loadMapper.listBus_load();
 		for(bus_loadDTO LDTO : list){
 			LDTO.setArrival(bus_stationMapper.getBus_station(LDTO.getArrival()).getStation_name());
@@ -245,19 +249,21 @@ public class BADController {
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_load/bus_load_list");
+		req.setAttribute("page_name", "Bus Road List");
 		mav.addObject("bus_load_list", list);
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.GET)
-	public ModelAndView bus_load_insert() {
+	public ModelAndView bus_load_insert(HttpServletRequest req) {
 		List<bus_loadDTO> llist = bus_loadMapper.listBus_load();
-		List<busDTO> list = busMapper.listBus();
+		List<BusDTO> list = busMapper.listBus();
 		List<bus_stationDTO> list2 = bus_stationMapper.listBus_station();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_load/bus_load_insert");
 		mav.addObject("bus_list", list);
 		mav.addObject("bus_station_list", list2);
 		mav.addObject("llist", llist);
+		req.setAttribute("page_name", "Bus Road Insert");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_insert.do",method = RequestMethod.POST)
@@ -273,6 +279,8 @@ public class BADController {
 			msg = "노선등록 실패";
 			url = "ADbus_load_list.do";
 		}
+		req.setAttribute("page_name", "Bus Road List");
+
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -287,7 +295,8 @@ public class BADController {
 		} else {
 			msg = "노선삭제 실패";
 			url = "ADbus_load_list.do";
-		}
+		}req.setAttribute("page_name", "Bus Road List");
+
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";
@@ -296,11 +305,12 @@ public class BADController {
 	public ModelAndView bus_load_update(HttpServletRequest req) {
 		bus_loadDTO dto = bus_loadMapper.getBus_load(req.getParameter("no"));
 		ModelAndView mav = new ModelAndView("busAD/bus_load/bus_load_update", "bus", dto);
-		List<busDTO> list = busMapper.listBus();
+		List<BusDTO> list = busMapper.listBus();
 		List<bus_stationDTO> list2 = bus_stationMapper.listBus_station();
 		mav.addObject("bus_list", list);
 		mav.addObject("bus_station_list", list2);
 		mav.addObject("LDTO", dto);
+		req.setAttribute("page_name", "Bus Road Update");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_load_update.do",method = RequestMethod.POST)
@@ -316,6 +326,7 @@ public class BADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Bus Road List");
 		return "message";
 	}
 		
@@ -323,7 +334,7 @@ public class BADController {
 	
 	//예약---------------------------------------------------------------
 	@RequestMapping(value="/ADbus_resv_list.do" )
-	public ModelAndView bus_resv_list() {
+	public ModelAndView bus_resv_list(HttpServletRequest req) {
 		List<bus_resvDTO> list = bus_resvMapper.listBus_resv();
 		List<bus_loadDTO> llist = new ArrayList();
 		for(bus_resvDTO dto : list){
@@ -335,7 +346,7 @@ public class BADController {
 			bus_loadDTO price=bus_loadMapper.getBus_load(String.valueOf(dto.getRoad_no()));
 			dto.setPrice(price.getPrice());
 		}
-		
+		req.setAttribute("page_name", "Bus Resv List");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_resv/bus_resv_list");
 		mav.addObject("list", list);
@@ -355,7 +366,8 @@ public class BADController {
 		c=bus_stationMapper.getBus_station(b);
 		temp=c.getStation_name(); 
 		dto.setDeparture(temp);
-		
+		req.setAttribute("page_name", "Bus Resv Insert");
+
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("busAD/bus_resv/bus_resv_insert");
 		mav.addObject("dto", dto);
@@ -375,6 +387,7 @@ public class BADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Bus Resv List");
 		return "message";
 	}
 	@RequestMapping("ADbus_resv_delete.do")
@@ -390,6 +403,7 @@ public class BADController {
 		}
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
+		req.setAttribute("page_name", "Bus Resv List");
 		return "message";
 	}
 	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.GET)
@@ -404,6 +418,7 @@ public class BADController {
 		ModelAndView mav = new ModelAndView("busAD/bus_resv/bus_resv_update", "rdto", dto);
 		mav.addObject("mlist", mlist);
 		mav.addObject("llist", llist);
+		req.setAttribute("page_name", "Bus Resv Update");
 		return mav;
 	}
 	@RequestMapping(value="/ADbus_resv_update.do",method = RequestMethod.POST)
@@ -417,6 +432,7 @@ public class BADController {
 			msg = "예약수정 실패";
 			url = "ADbus_resv_list.do";
 		}
+		req.setAttribute("page_name", "Bus Resv List");
 		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		return "message";

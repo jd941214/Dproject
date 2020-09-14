@@ -2,9 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="team.Dproject.main.model.*"%>
-<%@ include file="../top.jsp"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>   
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -221,11 +223,15 @@
 
 </script>
 </head>
-<div id="slider">
+<div>
+<div id="slider"style="margin-top:62px">
+	<%
+	roomDTO dto=(roomDTO)request.getAttribute("RDTO");
+	String img=dto.getFilename();  
+	%>
 	<ul class="slides">
 		<%
-		roomDTO dto=(roomDTO)request.getAttribute("RDTO");
-		String img=dto.getFilename();  
+
 		String cla="slide slide";
 		String[] SPimg;
 		if(img!=null){
@@ -255,11 +261,12 @@
 		<div id="slider-nav-nxt">&#10095;</div>
 		<div id="slider-nav-dot-con">
 			<% 
+			if(img!=null){
 			SPimg=img.split("/");	
 			for(int i=1;i<=SPimg.length;i++){
 				String id="nav-dot"+i; %>
 				<span class="slider-nav-dot" style="background:white" id="<%=id%>"></span>
-			<%}%>
+			<%}}%>
 		</div>
 	</div>
 </div>
@@ -292,5 +299,6 @@
 	<tr align="center"><td><input type="button" value="돌아가기" onclick="window.location='ADresv_list.do?hnum=${dto.hotel_no}'">	
 </table>
 </div>
-<%@ include file="../bottom.jsp"%>
+</div>
+<%@ include file="../../Basic/bottom.jsp" %>
  

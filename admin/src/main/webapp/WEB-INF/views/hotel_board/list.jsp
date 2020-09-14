@@ -21,12 +21,14 @@
 <%
 	hotelDTO hdto=(hotelDTO)request.getAttribute("hdto");
 %>
-<div align="center">
-		<h2><%=hdto.getName()%> 호텔게시판</h2>
+<%@ include file="../Basic/head.jsp" %>   
+<%@ include file="../Basic/nav_Hotel.jsp" %>
+<div align="center"style="margin-top:62px">
+		<br>
+		<font style="font-weight:700">☆<%=hdto.getName()%> 호텔게시판☆</font>
 		<table bgcolor="white" width="80%" style="border-inline:1px solid #adadad">
 		<tr align="right">
 		<td colspan="6"><a href="hotel_board_write.do?hotel_no=<%=hdto.getHotel_no()%>">쓰기</a>
-		<a href="home.do">관리자</a>
 		</td>
 		</tr>
 			<tr bgcolor="#dbdbdb" align="center">
@@ -81,3 +83,4 @@
 	</div>
   </body>
 </html>
+<%@ include file="../Basic/bottom.jsp" %>  

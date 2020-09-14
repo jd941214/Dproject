@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ include file="top.jsp" %>
-				<h3>슈퍼관리자 페이지</h3>
-<%@ include file="bottom.jsp" %> 
+<%@ include file="../Basic/head.jsp" %> 
+<%@ include file="../Basic/nav_AD.jsp" %>  
+<%@ include file="top2.jsp" %>    
+				 
+<%@ include file="../Basic/bottom.jsp" %>

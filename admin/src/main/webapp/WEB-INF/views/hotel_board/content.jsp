@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="team.Dproject.main.model.*"%>
 <%@page import="java.util.*" %>
+<%@ include file="../Basic/head.jsp" %>   
+<%@ include file="../Basic/nav_Hotel.jsp" %> 
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -226,14 +228,14 @@
 </head>
 
 <body>
-	<div align="center">
+	<div align="center"style="margin-top:62px">
 			<fieldset style="width: 600;">
 				<div>
 					<table border="1">
 						<tr>
 							<td align="left" width="60%">제목 : ${getBoard.title }</td>
 							<td width="28%">글쓴이 : ${getBoard.member_no}</td>
-							<td width="12%"><a href="hotel_board_list.do?hotel_no=${getBoard.hotel_no}">뒤로가기</a></td>
+							<td width="12%"><a href="hotel_board_list.do?hnum=${getBoard.hotel_no}">뒤로가기</a></td>
 						</tr>
 						
 						
@@ -364,3 +366,4 @@
 			</fieldset>
 	</div>
 </body>
+<%@ include file="../Basic/bottom.jsp" %> 

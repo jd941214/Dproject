@@ -62,8 +62,9 @@
 		  -o-transform: scale(1.4);
 	}
 </style>
-<%@ include file="../top.jsp"%>
-<DIV width="80%" height="40">
+<%@ include file="../../Basic/head.jsp" %>   
+<%@ include file="../../Basic/nav_AD.jsp" %>   
+<DIV width="80%" height="40"style="margin-top:62px">
 	<table width="100%" height="40">
 		<tr>
 			<td height="60">
@@ -99,8 +100,9 @@
 		</tr>
 	</table>
 	<br>
-	<table bgcolor="#FFFFFF" align="center">
+	<table bgcolor="#FFFFFF" align="center" >
 		<THEAD>
+		<tr><td align="right" colspan="7"><a href="ADhotel_list.do">뒤로가기</a></td></tr>
 			<TR bgcolor="#c0a1ff">
 				<TD width='100px'>
 					<DIV align="center">
@@ -251,4 +253,4 @@
 	</TABLE>
 </DIV>
 
-<%@ include file="../bottom.jsp"%>
+<%@ include file="../../Basic/bottom.jsp" %> 
