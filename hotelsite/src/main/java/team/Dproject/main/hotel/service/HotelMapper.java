@@ -29,6 +29,20 @@ public class HotelMapper {
 	public List<HotelDTO> listHotel1(String address){
 		return sqlSession.selectList("listHotel1",address);
 	}
+	public List<String> getRoomno(String address,String sleep){
+		java.util.Map<String, Object> map=new java.util.Hashtable<String, Object>();
+		
+		int sleeps =  Integer.parseInt(sleep);
+		
+		if(sleeps <= 2){
+			sleeps = 2;
+		}
+		
+		map.put("address", address);
+		map.put("sleeps", sleeps);
+		return sqlSession.selectList("getRoomno",map);
+	}
+
 	
 	public int deletetHotel(String no) {
 		return sqlSession.delete("deleteHotel", no);

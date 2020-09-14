@@ -8,7 +8,7 @@
 	</select>
 	
 	<insert id="insertHotel" parameterType="hotelDTO">
-		insert into hotel values(hotel_no_seq.nextval,
+		insert into hotel values(hotel_seq.nextval,
 		#{name}, #{address}, #{hp1}, #{hp2}, #{hp3}, #{member_num}, 
 		#{hotel_info}, #{star}, #{filename}, #{filesize})
 	</insert>
@@ -19,6 +19,11 @@
 	
 	<select id="listHotel1" parameterType="String" resultType="hotelDTO">
 		select * from hotel where address like #{address}
+	</select>
+	
+	<select id="getRoomno" parameterType="java.util.Map" resultType="String">
+		select room_no from room a,hotel b where a.sleeps=#{sleeps} and b.address like 
+		#{address} and a.hotel_no=b.hotel_no and a.room_no like '%-1'  
 	</select>
 	
 	<delete id="deleteHotel" parameterType="String">

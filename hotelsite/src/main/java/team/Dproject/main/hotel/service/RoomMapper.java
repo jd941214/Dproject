@@ -13,8 +13,8 @@ public class RoomMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public int insertRoom(RoomDTO dto,int hotel_no){
-		dto.setHotel_no(hotel_no);
+	public int insertRoom(RoomDTO dto){
+		
 		return sqlSession.insert("insertRoom", dto);
 	}
 	
@@ -28,6 +28,18 @@ public class RoomMapper {
 	
 	public RoomDTO getRoom(String room_no){
 		return sqlSession.selectOne("getRoom", room_no);
+	}
+	
+	public List<RoomDTO> getRoom1(String room_name){
+		return sqlSession.selectList("getRoom1", room_name);
+	}
+	
+	public RoomDTO getRoom2(int hotel_no, int grade){
+		java.util.Map<String,Object> map = new java.util.Hashtable<String,Object>();
+		
+		map.put("hotel_no", hotel_no);
+		map.put("grade", grade);
+		return sqlSession.selectOne("getRoom2",map);
 	}
 	
 	public int deletetRoom(String no) {

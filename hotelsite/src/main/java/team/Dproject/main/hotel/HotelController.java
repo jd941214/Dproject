@@ -3,9 +3,9 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -368,7 +368,8 @@ public class HotelController {
 		}
 		List<MultipartFile> fileList = mtfRequest.getFiles("filename");
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
-		roomMapper.seqUP();
+		
+		roomMapper.seqUP(); 
 		String seq = String.valueOf(roomMapper.seqGET());
 
 		String filename = "";
@@ -391,7 +392,8 @@ public class HotelController {
 			dto.setFilename(filename);
 			dto.setFilesize(filesize);
 			dto.setRoom_no(seq + "-" + i);
-			int res = roomMapper.insertRoom(dto,hotel_no);
+			dto.setHotel_no(hotel_no);
+			int res = roomMapper.insertRoom(dto);
 		}
 		if(dto.getHotel_no()==hotel_no){
 			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
@@ -438,52 +440,65 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/hotel_resvlist")
-	public String hotel_resvlist(HttpServletRequest req,@ModelAttribute HotelDTO dto,@ModelAttribute RoomDTO rdto){
-		String address = req.getParameter("address");
-		List<HotelDTO> list = hotelMapper.listHotel1(address);
-		int arrhotel_no[];
-		int hotel_no=0;
+	public String hotel_resvlist(HttpServletRequest req/*,@ModelAttribute HotelDTO dto,@ModelAttribute RoomDTO rdto*/){
+		List<String> list = hotelMapper.getRoomno(req.getParameter("address"),req.getParameter("sleeps"));
+		List<HotelDTO> hlist = new ArrayList<HotelDTO>();
+		List<RoomDTO> rlist = new ArrayList<RoomDTO>();
+		int stay = 0;
+		//호텔,룸 리스트 가져오기(호텔 넘버와 인원 수 에 맞는 룸 가져오기)
+		for (String i : list){
+			RoomDTO getroom = roomMapper.getRoom(i);
+			HotelDTO gethotel = hotelMapper.getHotel(getroom.getHotel_no());
+			hlist.add(gethotel);
+			rlist.add(getroom);
+		}
 		
-		//호텔 리스트 메인 사진 한장 가져오기
-		for(HotelDTO hdto : list){
-			hotel_no = hdto.getHotel_no();
+		for(HotelDTO hdto : hlist){
 			String name=hdto.getFilename();
 			String[] arrname=name.split("/");
-			dto.setFilename(arrname[0]);
+			hdto.setFilename(arrname[0]);
 		}
+		//.replaceAll("[\\-\\+\\.\\^:,]","");특수문자 제거
 		
-		/*for(HotelDTO hdto : list){
-		for(int i = 0;i<list.size();i++){
-			int j=0;
-			hotel_no = hdto.getHotel_no();
-			if(arrhotel_no[i]!=hdto.getHotel_no()){
-				j+=1;
-				arrhotel_no[j]=hdto.getHotel_no();
-			}
-		 }
-		}
+		//date 날짜 사이 값 계산(박수와 시작부터 끝 날짜 까지 불러오기)
+		String strStartDate = req.getParameter("start_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
+        String strEndDate = req.getParameter("end_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
+        String strFormat = "yyyyMMdd";    //strStartDate 와 strEndDate 의 format
+        
+        //SimpleDateFormat 을 이용하여 startDate와 endDate의 Date 객체를 생성한다.
+        SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
+        try{
+            Date startDate = sdf.parse(strStartDate);
+            Date endDate = sdf.parse(strEndDate);
+ 
+            //두날짜 사이의 시간 차이를 하루 동안의 (24시*60분*60초*1000밀리초) 로 나눈다.
+            long diffDay = (startDate.getTime() - endDate.getTime()) / (24*60*60*1000);
+           
+            stay = (int)Math.abs(diffDay);
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+
+            //Calendar 타입으로 변경 add()메소드로 1일씩 추가해 주기위해 변경
+            c1.setTime( startDate );
+            c2.setTime( endDate );
+            
+            while( c1.compareTo( c2 ) !=1 ){
+
+                //시작날짜 + 1 일
+                c1.add(Calendar.DATE, 1);
+                }
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
 		
-		for(int i = 0;i<arrhotel_no.length;i++){
-			System.out.println(arrhotel_no[i]);
-		}*/
-		//hotel에 맞는 room 가져오기
-		List<RoomDTO> rlist = roomMapper.listRoom2(hotel_no);
-		for(RoomDTO rdto1 : rlist){
-			if(rdto1.getHotel_no()==hotel_no){
-				if(rdto1.getSleeps()==Integer.parseInt(req.getParameter("sleeps"))){
-				rdto.setSleeps(rdto1.getSleeps());
-				rdto.setPrice(rdto1.getPrice());
-				rdto.setName(rdto1.getName());
-				rdto.setRoom_no(rdto1.getRoom_no());
-				
-				req.setAttribute("rdto", rdto);
-				}
-			}
-		}
-		
+		req.setAttribute("stay", stay);
+		req.setAttribute("address", req.getParameter("address"));
+		req.setAttribute("roomsu", req.getParameter("roomsu"));
+		req.setAttribute("sleeps", req.getParameter("sleeps"));
 		req.setAttribute("start_resv_date", req.getParameter("start_resv_date"));
 		req.setAttribute("end_resv_date", req.getParameter("end_resv_date"));
-		req.setAttribute("hotelList", list);
+		req.setAttribute("rlist", rlist);
+		req.setAttribute("hlist", hlist);
 		return "hotel_resv/hotel_resvlist";
 	}
 	
@@ -497,9 +512,9 @@ public class HotelController {
 	}
 	
 	@RequestMapping("/hotel_resvroomcontent")
-	public String hotel_resvroomcontent(HttpServletRequest req,@ModelAttribute RoomDTO rdto){
+	public String hotel_resvroomcontent(HttpServletRequest req){
+		RoomDTO rdto = roomMapper.getRoom2(Integer.parseInt(req.getParameter("hotel_no")),Integer.parseInt(req.getParameter("grade")));
 		
-		rdto=roomMapper.getRoom(req.getParameter("room_no"));
 		
 		req.setAttribute("rdto", rdto);
 		return "hotel_resv/hotel_resvroomcontent";

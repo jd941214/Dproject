@@ -7,7 +7,7 @@
 <script>
 
 function openWindowPop(url, name){
-    var options = 'top=400, left=600, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no';
+    var options = 'top=10, left=10, width=600, height=700, status=no, menubar=no, toolbar=no, resizable=no';
     window.open(url, name, options);
 }
 </script>
@@ -29,7 +29,13 @@ function openWindowPop(url, name){
 		</c:choose>
 	</div>
 	<div align="center">
-	<a href="javascript:openWindowPop('hotel_resvroomcontent?hotel_no=${hotel_no}&room_no=${room_no}', 'popup');">디럭스</a>
+	<a href="javascript:openWindowPop('hotel_resvroomcontent?hotel_no=${hotel_no}&grade=${1}', 'popup');">디럭스</a>
+	</div>
+	<div align="center">
+	<a href="javascript:openWindowPop('hotel_resvroomcontent?hotel_no=${hotel_no}&grade=${2}', 'popup');">스탠다드</a>
+	</div>
+	<div align="center">
+	<a href="javascript:openWindowPop('hotel_resvroomcontent?hotel_no=${hotel_no}&grade=${3}', 'popup');">패밀리</a>
 	</div>
 </body>
 </html>

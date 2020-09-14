@@ -5,8 +5,8 @@
 <mapper namespace="team.Dproject.hotel.main.model">
 	<insert id="insertRoom" parameterType="roomDTO">
 		insert into room values(#{room_no},
-		#{hotel_no}, #{name}, #{roomsize}, #{sleeps}, 
-		#{item}, #{filename}, #{filesize},  #{rooms}, #{price})
+		#{hotel_no},#{name},#{roomsize}, #{sleeps}, 
+		#{item}, #{filename}, #{filesize},  #{rooms}, #{price}, #{grade})
 	</insert>
 	<select id="listRoom" resultType="roomDTO">
 		select * from room order by room_no desc
@@ -17,7 +17,15 @@
 	<select id="getRoom" parameterType="String" resultType="roomDTO">
 		select * from room where room_no = #{room_no}
 	</select>
-	
+	<select id="getRoom1" resultType="roomDTO" parameterType="String">
+		select * from room where room_name = #{room_name}
+	</select>
+	<select id="getRoom2" resultType="roomDTO" parameterType="java.util.Map">
+		select * from room where hotel_no=#{hotel_no} and grade=#{grade} and room_no like '%-1'
+	</select>
+	<!-- <select id="getRoomNo" parameterType="java.util.map" resultType="String">
+		select room_no from room a,hotel b where a.sleeps=#{sleeps} and b.address like #{address} and a.hotel_no=b.hotel_no 
+	</select> -->
 	<delete id="deleteRoom" parameterType="String">
     	delete from room where room_no=#{no}
     </delete>
@@ -25,7 +33,6 @@
     <update id="updateRoom" parameterType="roomDTO">
     	update room set hotel_no=#{hotel_no}, name=#{name}, roomsize=#{roomsize}, sleeps=#{sleeps}, item=#{item}, filename=#{filename}, filesize=#{filesize} where room_no=#{room_no}
     </update>
-    
     <insert id="seqUP" >
     	insert into seq values(room_seq.nextval)
     </insert>

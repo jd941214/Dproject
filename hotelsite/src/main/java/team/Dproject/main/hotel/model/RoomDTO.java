@@ -11,6 +11,7 @@ public class RoomDTO {
 	private int filesize;
 	private int price;
 	private int rooms;
+	private int grade;
 	
 	
 	public String getRoom_no() {
@@ -73,6 +74,13 @@ public class RoomDTO {
 	public void setRooms(int rooms) {
 		this.rooms = rooms;
 	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	
 	
 	
 }
