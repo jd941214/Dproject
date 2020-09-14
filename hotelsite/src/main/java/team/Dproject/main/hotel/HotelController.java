@@ -29,10 +29,10 @@ import org.springframework.web.servlet.ModelAndView;
 import team.Dproject.main.hotel.model.HotelDTO;
 import team.Dproject.main.hotel.model.MemberDTO;
 import team.Dproject.main.hotel.model.RoomDTO;
-import team.Dproject.main.hotel.service.HotelMapper;
-import team.Dproject.main.hotel.service.HotelResvMapper;
-import team.Dproject.main.hotel.service.MemberMapper;
-import team.Dproject.main.hotel.service.RoomMapper;
+import team.Dproject.main.hotel.service.HotelMapper_sks;
+import team.Dproject.main.hotel.service.HotelResvMapper_sks;
+import team.Dproject.main.hotel.service.MemberMapper_sks;
+import team.Dproject.main.hotel.service.RoomMapper_sks;
 
 /**
  * Handles requests for the application home page.
@@ -41,16 +41,16 @@ import team.Dproject.main.hotel.service.RoomMapper;
 public class HotelController {
 	
 	@Autowired
-	private MemberMapper memberMapper;
+	private MemberMapper_sks memberMapper;
 	
 	@Autowired
-	private HotelMapper hotelMapper;
+	private HotelMapper_sks hotelMapper;
 	
 	@Autowired
-	private RoomMapper roomMapper;
+	private RoomMapper_sks roomMapper;
 	
 	@Autowired
-	private HotelResvMapper hotelResvMapper;
+	private HotelResvMapper_sks hotelResvMapper;
 	
 	@Resource(name="upLoadPath")
 	private String upLoadPath;
@@ -110,7 +110,7 @@ public class HotelController {
 		String ssn1 = req.getParameter("ssn1");
 		String ssn2 = req.getParameter("ssn2");
 		
-		boolean chek = memberMapper.checkMember(ssn1, ssn2);
+		boolean chek = memberMapper.checkMember_sks(ssn1, ssn2);
 		
 		String msg = null,url=null;
 		if (chek){
@@ -133,7 +133,7 @@ public class HotelController {
 	@RequestMapping("/memberok")
 	public String memberInputOk(HttpServletRequest req, MemberDTO dto) {
 		int sex=Integer.parseInt(req.getParameter("sex"));
-		int res = memberMapper.insertMember(dto,sex);
+		int res = memberMapper.insertMember_sks(dto,sex);
 		String msg = null, url = null;
 		if (res > 0) {
 			msg = "회원가입성공!! 회원목록페이지로 이동합니다.";
@@ -149,7 +149,7 @@ public class HotelController {
 	
 	@RequestMapping("/memberlist")
 	public String memberlist(HttpServletRequest req){
-		List<MemberDTO> list = memberMapper.listMember();
+		List<MemberDTO> list = memberMapper.listMember_sks();
 		req.setAttribute("memberlist", list);
 		return "member/memberlist";
 	}
@@ -179,11 +179,11 @@ public class HotelController {
 		String id = req.getParameter("id");
 		String passwd = req.getParameter("passwd");
 		String saveId = req.getParameter("saveId");
-		int res = memberMapper.memberLogin(id, passwd);
+		int res = memberMapper.memberLogin_sks(id, passwd);
 		String msg = null, url = null;
 		switch(res){
 		case 0 :
-			MemberDTO dto = memberMapper.getMember1(id);
+			MemberDTO dto = memberMapper.getMember1_sks(id);
 			HttpSession session = req.getSession();
 			Cookie ck = new Cookie("id", id);
 			if(saveId != null){
@@ -265,7 +265,7 @@ public class HotelController {
 		}
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
-		int res = hotelMapper.insertHotel(dto);
+		int res = hotelMapper.insertHotel_sks(dto);
 		
 		
 		return "redirect:hotelmember";
@@ -273,7 +273,7 @@ public class HotelController {
 	
 	@RequestMapping("/hotelmember")
 	public String hotelmember(HttpServletRequest req){
-		List<HotelDTO> list = hotelMapper.listHotel();
+		List<HotelDTO> list = hotelMapper.listHotel_sks();
 		req.setAttribute("hotelList", list);
 		return "hotel/hotellist";
 	}
@@ -281,7 +281,7 @@ public class HotelController {
 	@RequestMapping("/hotelupdate")
 	public String hotelupdate(HttpServletRequest req){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
-		HotelDTO dto = hotelMapper.getHotel(hotel_no);
+		HotelDTO dto = hotelMapper.getHotel_sks(hotel_no);
 		req.setAttribute("dto", dto);
 		return "hotel/hotelupdate";
 	}
@@ -303,7 +303,7 @@ public class HotelController {
 		dto.setFilename(filename);
 		dto.setFilesize(filesize);
 		dto.setMember_num(Integer.parseInt(req.getParameter("member_num")));
-		int res = hotelMapper.updateHotel(dto);
+		int res = hotelMapper.updateHotel_sks(dto);
 		String msg=null,url=null;
 		if (res > 0) {
 			msg = "호텔수정성공!! 호텔목록페이지로 이동합니다.";
@@ -320,9 +320,9 @@ public class HotelController {
 	@RequestMapping("/hotelcontent")
 	public String hotelcontent(HttpServletRequest req){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
-		HotelDTO dto = hotelMapper.getHotel(hotel_no);
+		HotelDTO dto = hotelMapper.getHotel_sks(hotel_no);
 		int member_num = dto.getMember_num();
-		MemberDTO mdto = memberMapper.getMember(member_num);
+		MemberDTO mdto = memberMapper.getMember_sks(member_num);
 		String name = mdto.getName();
 		//filename split사용해서 끊어서 보내기
 		/*String hotelfile = dto.getFilename();
@@ -338,7 +338,7 @@ public class HotelController {
 	
 	@RequestMapping("/hotellist")
 	public String hotellist(HttpServletRequest req){
-		List<HotelDTO> list = hotelMapper.listHotel();
+		List<HotelDTO> list = hotelMapper.listHotel_sks();
 		req.setAttribute("hotelList", list);
 		return "hotel/hotellist";
 	}
@@ -369,8 +369,8 @@ public class HotelController {
 		List<MultipartFile> fileList = mtfRequest.getFiles("filename");
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		
-		roomMapper.seqUP(); 
-		String seq = String.valueOf(roomMapper.seqGET());
+		roomMapper.seqUP_sks(); 
+		String seq = String.valueOf(roomMapper.seqGET_sks());
 
 		String filename = "";
 		int filesize = 0; 	
@@ -393,10 +393,10 @@ public class HotelController {
 			dto.setFilesize(filesize);
 			dto.setRoom_no(seq + "-" + i);
 			dto.setHotel_no(hotel_no);
-			int res = roomMapper.insertRoom(dto);
+			int res = roomMapper.insertRoom_sks(dto);
 		}
 		if(dto.getHotel_no()==hotel_no){
-			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
+			List<RoomDTO> list = roomMapper.listRoom2_sks(hotel_no);
 			req.setAttribute("roomList", list);
 		}
 		
@@ -408,7 +408,7 @@ public class HotelController {
 	public String roomlist(HttpServletRequest req, @ModelAttribute RoomDTO dto){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		if(dto.getHotel_no()==hotel_no){
-			List<RoomDTO> list = roomMapper.listRoom2(hotel_no);
+			List<RoomDTO> list = roomMapper.listRoom2_sks(hotel_no);
 			req.setAttribute("roomList", list);	
 		}
 		
@@ -418,7 +418,7 @@ public class HotelController {
 	@RequestMapping("/roomcontent")
 	public String roomcontent(HttpServletRequest req){
 		String room_no = req.getParameter("room_no");
-		RoomDTO dto = roomMapper.getRoom(room_no);
+		RoomDTO dto = roomMapper.getRoom_sks(room_no);
 		//룸 사진 여러장 가져오기
 		String roomfile = dto.getFilename();
 		String regex="/";
@@ -441,14 +441,14 @@ public class HotelController {
 	
 	@RequestMapping("/hotel_resvlist")
 	public String hotel_resvlist(HttpServletRequest req/*,@ModelAttribute HotelDTO dto,@ModelAttribute RoomDTO rdto*/){
-		List<String> list = hotelMapper.getRoomno(req.getParameter("address"),req.getParameter("sleeps"));
+		List<String> list = hotelMapper.getRoomno_sks(req.getParameter("address"),req.getParameter("sleeps"));
 		List<HotelDTO> hlist = new ArrayList<HotelDTO>();
 		List<RoomDTO> rlist = new ArrayList<RoomDTO>();
 		int stay = 0;
 		//호텔,룸 리스트 가져오기(호텔 넘버와 인원 수 에 맞는 룸 가져오기)
 		for (String i : list){
-			RoomDTO getroom = roomMapper.getRoom(i);
-			HotelDTO gethotel = hotelMapper.getHotel(getroom.getHotel_no());
+			RoomDTO getroom = roomMapper.getRoom_sks(i);
+			HotelDTO gethotel = hotelMapper.getHotel_sks(getroom.getHotel_no());
 			hlist.add(gethotel);
 			rlist.add(getroom);
 		}
@@ -505,7 +505,56 @@ public class HotelController {
 	@RequestMapping("/hotel_resvcontent")
 	public String hotel_resvcontent(HttpServletRequest req){
 		/*HttpSession session = req.getSession();*/
+		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
+		HotelDTO hdto = hotelMapper.getHotel_sks(hotel_no);
 		
+		//호텔의 룸 등급별 룸 하나 가져오기
+		RoomDTO rdto1 = roomMapper.getRoom2_sks(hotel_no,1);
+		RoomDTO rdto2 = roomMapper.getRoom2_sks(hotel_no,2);
+		RoomDTO rdto3 = roomMapper.getRoom2_sks(hotel_no,3);
+		
+		int stay=0;
+		String strStartDate = req.getParameter("start_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
+        String strEndDate = req.getParameter("end_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
+        String strFormat = "yyyyMMdd";    
+        
+        SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
+        try{
+            Date startDate = sdf.parse(strStartDate);
+            Date endDate = sdf.parse(strEndDate);
+ 
+            long diffDay = (startDate.getTime() - endDate.getTime()) / (24*60*60*1000);
+           
+            stay = (int)Math.abs(diffDay);
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+
+            
+            c1.setTime( startDate );
+            c2.setTime( endDate );
+            
+            while( c1.compareTo( c2 ) !=1 ){
+
+                c1.add(Calendar.DATE, 1);
+                }
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+		
+		//검색 값 유지
+		req.setAttribute("stay", stay);
+		req.setAttribute("address", req.getParameter("address"));
+		req.setAttribute("roomsu", req.getParameter("roomsu"));
+		req.setAttribute("sleeps", req.getParameter("sleeps"));
+		req.setAttribute("start_resv_date", req.getParameter("start_resv_date"));
+		req.setAttribute("end_resv_date", req.getParameter("end_resv_date"));
+		//디럭스
+		req.setAttribute("d", rdto1);
+		//스탠다드
+		req.setAttribute("s", rdto2);
+		//패밀리
+		req.setAttribute("f", rdto3);
+		req.setAttribute("getHotel", hdto);
 		req.setAttribute("hotel_no", req.getParameter("hotel_no"));
 		req.setAttribute("room_no", req.getParameter("room_no"));
 		return "hotel_resv/hotel_resvcontent";
@@ -513,8 +562,7 @@ public class HotelController {
 	
 	@RequestMapping("/hotel_resvroomcontent")
 	public String hotel_resvroomcontent(HttpServletRequest req){
-		RoomDTO rdto = roomMapper.getRoom2(Integer.parseInt(req.getParameter("hotel_no")),Integer.parseInt(req.getParameter("grade")));
-		
+		RoomDTO rdto = roomMapper.getRoom2_sks(Integer.parseInt(req.getParameter("hotel_no")),Integer.parseInt(req.getParameter("grade")));
 		
 		req.setAttribute("rdto", rdto);
 		return "hotel_resv/hotel_resvroomcontent";

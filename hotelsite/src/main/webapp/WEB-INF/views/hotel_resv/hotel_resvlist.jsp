@@ -34,14 +34,14 @@
 					<th><label>지역</label></th>
 					<td> <select name="address">
 							<!-- select값 유지 -->
-							<option value="%서울%"<c:if test="${address=='%서울%'}">selected</c:if>>서울</option>
-							<option value="%경기%"<c:if test="${address=='%경기%'}">selected</c:if>>경기</option>
-							<option value="%대전%"<c:if test="${address=='%대전%'}">selected</c:if>>대전</option>
-							<option value="%대구%"<c:if test="${address=='%대구%'}">selected</c:if>>대구</option>
-							<option value="%부산%"<c:if test="${address=='%부산%'}">selected</c:if>>부산</option>
-							<option value="%울산%"<c:if test="${address=='%울산%'}">selected</c:if>>울산</option>
-							<option value="%강원%"<c:if test="${address=='%강원%'}">selected</c:if>>강원</option>
-							<option value="%인천%"<c:if test="${address=='%인천%'}">selected</c:if>>인천</option>
+							<option value="서울"<c:if test="${address=='서울'}">selected</c:if>>서울</option>
+							<option value="경기"<c:if test="${address=='경기'}">selected</c:if>>경기</option>
+							<option value="대전"<c:if test="${address=='대전'}">selected</c:if>>대전</option>
+							<option value="대구"<c:if test="${address=='대구'}">selected</c:if>>대구</option>
+							<option value="부산"<c:if test="${address=='부산'}">selected</c:if>>부산</option>
+							<option value="울산"<c:if test="${address=='울산'}">selected</c:if>>울산</option>
+							<option value="강원"<c:if test="${address=='강원'}">selected</c:if>>강원</option>
+							<option value="인천"<c:if test="${address=='인천'}">selected</c:if>>인천</option>
 					</select></td>
 					<th><label>체크 인</label></th>
 					<td> 
@@ -106,13 +106,17 @@
 				for(int i=0;i<hlist.size();i++){%>
 				<tr>
 					<td>
-					<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>">
+					<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>
+							&stay=${stay}&address=${address}&roomsu=${roomsu}&sleeps=${sleeps}
+							&start_resv_date=${start_resv_date}&end_resv_date=${end_resv_date}"> 
 						<img width="100px" height="70px"
 						src="c:/hotelimg/<%=hlist.get(i).getFilename() %>"/>
 						</a>
 					</td>
 					<td>
-					<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>">
+					<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>
+							&stay=${stay}&address=${address}&roomsu=${roomsu}&sleeps=${sleeps}
+							&start_resv_date=${start_resv_date}&end_resv_date=${end_resv_date}">
 						<%=hlist.get(i).getName() %>
 					</a>	
 					</td>
@@ -132,8 +136,10 @@
 						<%=rlist.get(i).getName() %> 정원 <%=rlist.get(i).getSleeps()%>명<br>
 						</div>
 						<c:set var="su" value="${stay}" ></c:set>
-						<%=su%>박 <%=rlist.get(i).getPrice()*su%>\<br>
-						<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>">
+						<%=su%>박 <%=rlist.get(i).getPrice()*su%> 원<br>
+						<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>
+								&stay=${stay}&address=${address}&roomsu=${roomsu}&sleeps=${sleeps}
+								&start_resv_date=${start_resv_date}&end_resv_date=${end_resv_date}">
 						<div align="center">
 							<input type="button" value="객실선택">
 						</div>

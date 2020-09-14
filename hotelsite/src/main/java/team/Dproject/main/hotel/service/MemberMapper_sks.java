@@ -7,41 +7,41 @@ import java.util.*;
 import team.Dproject.main.hotel.model.MemberDTO;
 
 @Service
-public class MemberMapper {
+public class MemberMapper_sks {
 	
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public boolean checkMember(String ssn1, String ssn2){
+	public boolean checkMember_sks(String ssn1, String ssn2){
 		java.util.Map<String,String> map = new java.util.Hashtable<String,String>();
 		map.put("ssn1", ssn1);
 		map.put("ssn2", ssn2);
-		MemberDTO dto = sqlSession.selectOne("checkMember",map);
+		MemberDTO dto = sqlSession.selectOne("checkMember_sks",map);
 		if(dto==null)return false;
 		return true;
 		
 	}
 	
-	public int insertMember(MemberDTO dto, int sex){
+	public int insertMember_sks(MemberDTO dto, int sex){
 		dto.setPosition(3);
 		dto.setPoint(0);
 		dto.setSex(sex);
-		int res = sqlSession.insert("insertMember",dto);
+		int res = sqlSession.insert("insertMember_sks",dto);
 		//sqlSession.commit();
 		//db에 추가,삭제,수정을 할 때 session.commit을 해줘야 한다.
 		//만약 예를 들어 승인 후 가입이면 승인처리 한 후 commit을 써줘야한다. 단 session.close를 하면 commit이 안된다.
 		return res;
     }
-	public List<MemberDTO> listMember(){
-		return sqlSession.selectList("listMember");
+	public List<MemberDTO> listMember_sks(){
+		return sqlSession.selectList("listMember_sks");
 	}
 	
-	public MemberDTO getMember(int member_no){
-		return sqlSession.selectOne("getMember",member_no);
+	public MemberDTO getMember_sks(int member_no){
+		return sqlSession.selectOne("getMember_sks",member_no);
 	}
 	
-	public int memberLogin(String id, String passwd) {
-		String dbPasswd = sqlSession.selectOne("getMemberPasswd", id);
+	public int memberLogin_sks(String id, String passwd) {
+		String dbPasswd = sqlSession.selectOne("getMemberPasswd_sks", id);
 		if(dbPasswd == null){
 			return 2; //해당하는 아이디가 없음
 			
@@ -58,8 +58,8 @@ public class MemberMapper {
 		
 	}
 
-	public MemberDTO getMember1(String id) {
-		MemberDTO dto = sqlSession.selectOne("getMember1", id);
+	public MemberDTO getMember1_sks(String id) {
+		MemberDTO dto = sqlSession.selectOne("getMember1_sks", id);
 		return dto;
 		
 	}
