@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page import="team.Dproject.main.hotel.model.*" %>
+<%@page import="team.Dproject.main.model.*" %>
 <%@page import="java.util.*" %>
+<%@page import="java.text.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -99,8 +100,9 @@
 			</tr>
 			<!-- 호텔,룸 리스트 불러오기. -->
 			<%
-				List<HotelDTO> hlist=(List<HotelDTO>)request.getAttribute("hlist");
-				List<RoomDTO> rlist=(List<RoomDTO>)request.getAttribute("rlist");
+				DecimalFormat df = new DecimalFormat("###,###");
+				List<HotelDTO_sks> hlist=(List<HotelDTO_sks>)request.getAttribute("hlist");
+				List<RoomDTO_sks> rlist=(List<RoomDTO_sks>)request.getAttribute("rlist");
 				int su = (Integer)request.getAttribute("stay");
 				
 				for(int i=0;i<hlist.size();i++){%>
@@ -136,7 +138,7 @@
 						<%=rlist.get(i).getName() %> 정원 <%=rlist.get(i).getSleeps()%>명<br>
 						</div>
 						<c:set var="su" value="${stay}" ></c:set>
-						<%=su%>박 <%=rlist.get(i).getPrice()*su%> 원<br>
+						<%=su%>박 <%=df.format(rlist.get(i).getPrice()*su)%> 원<br>
 						<a href="hotel_resvcontent?hotel_no=<%=hlist.get(i).getHotel_no()%>&room_no=<%=rlist.get(i).getRoom_no()%>
 								&stay=${stay}&address=${address}&roomsu=${roomsu}&sleeps=${sleeps}
 								&start_resv_date=${start_resv_date}&end_resv_date=${end_resv_date}">

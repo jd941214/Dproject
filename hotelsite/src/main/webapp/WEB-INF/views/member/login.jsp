@@ -21,7 +21,9 @@
 			f.passwd.focus()
 			return
 		}
-		document.f.submit()
+		window.opener.location.reload();
+		document.f.submit();
+		//window.close();
 	}
 </script>
 </head>

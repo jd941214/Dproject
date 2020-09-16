@@ -77,19 +77,6 @@
 							<option value="9">9명</option>
 							<option value="10">10명</option>
 					</select></td>
-					<!-- <th><label>아동</label></th>
-					<td><select name="children">
-							<option value="0" selected>0명</option>
-							<option value="1">1명</option>
-							<option value="2">2명</option>
-							<option value="3">3명</option>
-							<option value="4">4명</option>
-							<option value="5">5명</option>
-							<option value="6">6명</option>
-							<option value="7">7명</option>
-							<option value="8">8명</option>
-							<option value="9">9명</option>
-					</select></td> -->
 					<th><label>&nbsp;</label></th>
 					<td>
 						<button type="submit">검색</button></td>

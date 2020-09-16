@@ -15,8 +15,8 @@
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
-		<property name="typeAliasesPackage" value="team.Dproject.main.hotel.model"/>
-		<property name="mapperLocations" value="classpath:team/Dproject/main/hotel/model/*.xml"/>
+		<property name="typeAliasesPackage" value="team.Dproject.main.model"/>
+		<property name="mapperLocations" value="classpath:team/Dproject/main/model/*.xml"/>
 	</bean>
 	
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

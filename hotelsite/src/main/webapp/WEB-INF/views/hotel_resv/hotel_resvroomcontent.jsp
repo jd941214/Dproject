@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -41,7 +42,9 @@ function slideShow(){
 			<th width="20%" bgcolor="yellow">룸 이름</th>
 			<td align="center" width="30%">${rdto.name}</td>
 			<th width="20%" bgcolor="yellow">룸 가격</th>
-			<td align="center" width="30%">${rdto.price}원</td>
+			<td align="center" width="30%">
+			<f:formatNumber value="${rdto.price}" type="number"/>원
+			</td>
 		</tr>
 		<tr height="30">
 			<th width="20%" bgcolor="yellow">룸 템</th>
