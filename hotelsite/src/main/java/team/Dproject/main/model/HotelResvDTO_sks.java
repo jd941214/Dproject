@@ -2,7 +2,7 @@ package team.Dproject.main.model;
 
 public class HotelResvDTO_sks {
 	private int hotel_resv_no;
-	private int memger_no;
+	private int member_no;
 	private int hotel_no;
 	private String room_no;
 	private int use_point;
@@ -11,18 +11,17 @@ public class HotelResvDTO_sks {
 	private String start_resv_date;
 	private String end_resv_date;
 	private String resvdate;
-	
 	public int getHotel_resv_no() {
 		return hotel_resv_no;
 	}
 	public void setHotel_resv_no(int hotel_resv_no) {
 		this.hotel_resv_no = hotel_resv_no;
 	}
-	public int getMemger_no() {
-		return memger_no;
+	public int getMember_no() {
+		return member_no;
 	}
-	public void setMemger_no(int memger_no) {
-		this.memger_no = memger_no;
+	public void setMember_no(int member_no) {
+		this.member_no = member_no;
 	}
 	public int getHotel_no() {
 		return hotel_no;
@@ -73,4 +72,5 @@ public class HotelResvDTO_sks {
 		this.resvdate = resvdate;
 	}
 	
+		
 }

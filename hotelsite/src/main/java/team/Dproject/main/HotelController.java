@@ -845,7 +845,7 @@ public class HotelController {
 	
 	//결제 완료 후 페이지,예약 테이블에 값 넣어주기
 	@RequestMapping("/hotel_paymentok")
-	public String hotel_paymentok(HttpServletRequest req,@ModelAttribute HotelResvDTO_sks dto,MemberDTO_sks mdto){
+	public String hotel_paymentok(HttpServletRequest req,@ModelAttribute HotelResvDTO_sks dto){
 		//전 페이지에서 배열로 넘겨지지 못해서 다시 쓰는거..
 		String d = req.getParameter("droom_no").replaceAll("[\\[\\]\\p{Z}]","");
 		String s = req.getParameter("sroom_no").replaceAll("[\\[\\]\\p{Z}]","");
@@ -887,7 +887,7 @@ public class HotelController {
 		 }
 		}
 		
-		//예약 DTO에 값넣어주기!
+		//예약 DTO에 넣어줄 값 가져오기!
 		int member_no = Integer.parseInt(req.getParameter("member_no"));
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		String start_resv_date = req.getParameter("start_resv_date");
@@ -896,8 +896,27 @@ public class HotelController {
 		int save_point= Integer.parseInt(req.getParameter("save_point"));		
 		int use_point = Integer.parseInt(req.getParameter("use_point"));
 		int user_point = Integer.parseInt(req.getParameter("user_point"))+save_point;
+		String pay = "O";
 		
+		//예약 DTO에 값 넣어주기!
+		dto.setMember_no(member_no);
+		dto.setHotel_no(hotel_no);
+		dto.setRoom_no(room_no);
+		dto.setUse_point(use_point);
+		dto.setPay(pay);
+		dto.setSave_point(save_point);
+		dto.setStart_resv_date(start_resv_date);
+		dto.setEnd_resv_date(end_resv_date);
+		int res = hotelResvMapper.insertHotelResv_sks(dto);
 		
+		if(res<0){
+			String msg = "예약이 제대로 이루어지지 않았습니다. 다시 확인하시고 입력해 주세요";
+			String url = "hotel_resvfinal";
+					
+			req.setAttribute("msg", msg);
+			req.setAttribute("url", url);
+			return "message";
+		}
 		
 		req.setAttribute("member_no", member_no);
 		req.setAttribute("hotel_no", hotel_no);
