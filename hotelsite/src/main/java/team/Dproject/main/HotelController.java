@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -27,6 +31,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import team.Dproject.main.model.HotelDTO_sks;
+import team.Dproject.main.model.HotelResvDTO_sks;
 import team.Dproject.main.model.MemberDTO_sks;
 import team.Dproject.main.model.RoomDTO_sks;
 import team.Dproject.main.service.HotelMapper_sks;
@@ -455,12 +460,6 @@ public class HotelController {
 			return "member/loginclear";
 		}
 		
-		//로그인 완료 후 팝업 창 닫기
-		@RequestMapping("/popup")
-		public String popup(){
-			return "hotel_resv/popup";
-		}
-		
 		//로그인 창 팝업 로그인 작업 완료 후 팝업창 닫는 jsp로 가기
 		@RequestMapping("/loginclearok")
 		public String loginclearOk(HttpServletRequest req, HttpServletResponse resp){
@@ -469,40 +468,47 @@ public class HotelController {
 			String saveId = req.getParameter("saveId");
 			int res = memberMapper.memberLogin_sks(id, passwd);
 			String msg = null, url = null;
-			switch(res){
-			case 0 :
-				MemberDTO_sks dto = memberMapper.getMember1_sks(id);
-				HttpSession session = req.getSession();
-				Cookie ck = new Cookie("id", id);
-				if(saveId != null){
-					ck.setMaxAge(10*60);
-					
-				}else{
-					ck.setMaxAge(0);
-					
-				}
-				resp.addCookie(ck);
-				session.setAttribute("sedto", dto);
-				msg = dto.getName() + "님 환영합니다. 로그인 창을 닫습니다.";
-				url = "popup";
-				break;
+		switch(res){
+		case 0 :
+			MemberDTO_sks dto = memberMapper.getMember1_sks(id);
+			HttpSession session = req.getSession();
+			Cookie ck = new Cookie("id", id);
+			if(saveId != null){
+				ck.setMaxAge(10*60);
 				
-			case 1 :
-				msg = "비밀번호를 잘못 입력하셨습니다. 다시 입력해 주세요";
-				url = "loginclear";
-				break;
+			}else{
+				ck.setMaxAge(0);
 				
-			case 2 :
-				msg = "없는 아이디 입니다. 다시 확인하시고 입력해 주세요";
-				url = "loginclear";
-				break;
-			
 			}
-			
+			resp.addCookie(ck);
+			session.setAttribute("sedto", dto);
+			msg = dto.getName() + "님 환영합니다. 로그인 창을 닫습니다.";
+			url = "popup";
+			break;
+						
+		case 1 :
+			msg = "비밀번호를 잘못 입력하셨습니다. 다시 입력해 주세요";
+			url = "loginclear";
+			break;
+						
+		case 2 :
+			msg = "없는 아이디 입니다. 다시 확인하시고 입력해 주세요";
+			url = "loginclear";
+			break;
+					
+		}
+					
 			req.setAttribute("msg", msg);
 			req.setAttribute("url", url);
 			return "message";
 		}
+		
+		//로그인 완료 후 팝업 창 닫기
+		@RequestMapping("/popup")
+		public String popup(){
+			return "hotel_resv/popup";
+	}
+		
 	
 	/*
 	호텔 예약 컨트롤
@@ -628,6 +634,7 @@ public class HotelController {
 		req.setAttribute("s", rdto2);
 		//패밀리
 		req.setAttribute("f", rdto3);
+		req.setAttribute("droom_su", 10);
 		req.setAttribute("getHotel", hdto);
 		req.setAttribute("hotel_no", req.getParameter("hotel_no"));
 		req.setAttribute("room_no", req.getParameter("room_no"));
@@ -643,13 +650,19 @@ public class HotelController {
 	}
 	
 	
-	//예약 하기!(예약 페이지)
+	//예약 하기!(예약 페이지, 선택 한 룸에 대한 정보 보여주기)
 	@RequestMapping("/hotel_resvfinal")
-	public String hotel_resvfinal(HttpServletRequest req){
+	public String hotel_resvfinal(HttpServletRequest req,MemberDTO_sks mdto){
 		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
 		//호텔 이름 가져오기
 		HotelDTO_sks hdto = hotelMapper.getHotel_sks(hotel_no);
 		String hotelname = hdto.getName();
+		
+		//총액 구하기
+		int d_price=0;
+		int s_price=0;
+		int f_price=0;
+		int stay=Integer.parseInt(req.getParameter("stay"));
 		
 		int d_roomsu = Integer.parseInt(req.getParameter("d_roomsu"));
 		int s_roomsu = Integer.parseInt(req.getParameter("s_roomsu"));
@@ -681,6 +694,7 @@ public class HotelController {
 			for(int i = 0;i<d_roomsu;i++){
 				d_rn.add(i, d_rnlist.get(i));
 			}
+			d_price=drdto.getPrice()*stay*d_roomsu;
 			req.setAttribute("d_roomsu", d_roomsu);
 			req.setAttribute("drdto", drdto);
 			req.setAttribute("drname", drname);
@@ -699,6 +713,7 @@ public class HotelController {
 			for(int i = 0;i<s_roomsu;i++){
 				s_rn.add(i, s_rnlist.get(i));
 			}
+			s_price=srdto.getPrice()*stay*s_roomsu;
 			req.setAttribute("s_roomsu", s_roomsu);
 			req.setAttribute("srdto", srdto);
 			req.setAttribute("srname", srname);
@@ -717,6 +732,7 @@ public class HotelController {
 			for(int i = 0;i<f_roomsu;i++){
 				f_rn.add(i, f_rnlist.get(i));
 			}
+			f_price=frdto.getPrice()*stay*f_roomsu;
 			req.setAttribute("f_roomsu", f_roomsu);
 			req.setAttribute("frdto", frdto);
 			req.setAttribute("frname", frname);
@@ -724,7 +740,7 @@ public class HotelController {
 		}
 		
 		//박수와 날짜 계산
-		int stay=0;
+		/*int stay=0;*/
 		String strStartDate = req.getParameter("start_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
         String strEndDate = req.getParameter("end_resv_date").replaceAll("[\\-\\+\\.\\^:,]","");
         String strFormat = "yyyyMMdd";    
@@ -751,9 +767,13 @@ public class HotelController {
         }catch(ParseException e){
             e.printStackTrace();
         }
-		
+        
+		//총합 값 넘기기
+        int total = d_price+s_price+f_price;
+        req.setAttribute("total", total);
         req.setAttribute("hotelname", hotelname);
 		//검색 값 유지
+        req.setAttribute("hotel_no", hotel_no);
 		req.setAttribute("stay", stay);
 		req.setAttribute("start_resv_date", req.getParameter("start_resv_date"));
 		req.setAttribute("end_resv_date", req.getParameter("end_resv_date"));
@@ -761,39 +781,133 @@ public class HotelController {
 		return "hotel_resv/hotel_resvfinal";
 	}
 	
+	//결제하는 페이지
 	@RequestMapping("/hotel_resvpayment")
 	public String hotel_resvpayment(HttpServletRequest req){
+		//넘겨줄 값
 		String start = req.getParameter("start_resv_date");
 		String end = req.getParameter("end_resv_date");
+		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
+		int member_no = Integer.parseInt(req.getParameter("member_no"));
 		
-		//넘어온 룸 넘버 가져오기
+		//넘어온 룸 넘버 가져와서 배열로 옮기기
 		String[] droom_no = new String[]{};
 		String[] sroom_no = new String[]{};
 		String[] froom_no = new String[]{};
 		
 		if (req.getParameterValues("d_rn") != null) {
-			String d = req.getParameter("d_rn").replaceAll("[\\[\\]\\p{Z}]","");
+			//jsp에서 넘어온 룸 넘버가 여러 개 일 때 []과 공백 제거 후 스플릿으로 배열에 저장
+			/*String d = req.getParameter("d_rn").replaceAll("[\\[\\]\\p{Z}]","");
 			droom_no=d.split(",");
-			for(int i = 0;i<Integer.parseInt(req.getParameter("d_roomsu"));i++){
+			req.setAttribute("droom_no", droom_no);*/
+			
+			req.setAttribute("dr", req.getParameter("d_rn"));
+			
+			//배열 잘 들어가나 확인
+			/*for(int i = 0;i<Integer.parseInt(req.getParameter("d_roomsu"));i++){
 				System.out.println(droom_no[i]);
-			}
+			}*/
 		}
 		if (req.getParameter("s_rn") != null) {
-			String s = req.getParameter("s_rn").replaceAll("[\\[\\]\\p{Z}]","");
+			/*String s = req.getParameter("s_rn").replaceAll("[\\[\\]\\p{Z}]","");
 			sroom_no=s.split(",");
-			for(int i = 0;i<Integer.parseInt(req.getParameter("s_roomsu"));i++){
+			req.setAttribute("sroom_no",sroom_no);*/
+			
+			req.setAttribute("sr", req.getParameter("s_rn"));
+			
+			/*for(int i = 0;i<Integer.parseInt(req.getParameter("s_roomsu"));i++){
 				System.out.println(sroom_no[i]);
-			}
+			}*/
 		}
 		if (req.getParameter("f_rn") != null) {
-			String f = req.getParameter("f_rn").replaceAll("[\\[\\]\\p{Z}]","");
+			/*String f = req.getParameter("f_rn").replaceAll("[\\[\\]\\p{Z}]","");
 			froom_no=f.split(",");
-			for(int i = 0;i<Integer.parseInt(req.getParameter("f_roomsu"));i++){
+			req.setAttribute("froom_no", froom_no);*/
+			
+			req.setAttribute("fr", req.getParameter("f_rn"));
+			
+			/*for(int i = 0;i<Integer.parseInt(req.getParameter("f_roomsu"));i++){
 				System.out.println(froom_no[i]);
+			}*/
+		}
+		int total=Integer.parseInt(req.getParameter("total"));
+		//결제 하면서 데이터 넘겨 주기
+		req.setAttribute("use_point", req.getParameter("use_point"));
+		req.setAttribute("user_point", req.getParameter("user_point"));
+		req.setAttribute("save_point", req.getParameter("save_point"));
+		req.setAttribute("member_no", member_no);
+		req.setAttribute("hotel_no", hotel_no);
+		req.setAttribute("start_resv_date", start);
+		req.setAttribute("end_resv_date", end);
+		req.setAttribute("total", total);
+		return "hotel_resv/hotel_resvpayment";
+	}
+	
+	//결제 완료 후 페이지,예약 테이블에 값 넣어주기
+	@RequestMapping("/hotel_paymentok")
+	public String hotel_paymentok(HttpServletRequest req,@ModelAttribute HotelResvDTO_sks dto,MemberDTO_sks mdto){
+		//전 페이지에서 배열로 넘겨지지 못해서 다시 쓰는거..
+		String d = req.getParameter("droom_no").replaceAll("[\\[\\]\\p{Z}]","");
+		String s = req.getParameter("sroom_no").replaceAll("[\\[\\]\\p{Z}]","");
+		String f = req.getParameter("froom_no").replaceAll("[\\[\\]\\p{Z}]","");
+		
+		String room_no = "";
+		
+		//디럭스를 선택했을 때
+		if(d!=null){
+			//d!=""해주지 않으면 넘어갈 때 0이 선택되면 //가 추가되서 넘어간다.
+			if(d!=""){
+		String[] droom_no=d.split(",");
+		req.setAttribute("droom_no", droom_no);
+		for(int i = 0;i<droom_no.length;i++){
+			room_no+=droom_no[i]+"/";
+				}
 			}
 		}
 		
-		return "hotel_resv/hotel_resvpayment";
+		//스탠다드를 선택했을 때
+		if(s!=null){
+			if(s!=""){
+		String[] sroom_no=s.split(",");
+		req.setAttribute("sroom_no", sroom_no);
+		for(int i = 0;i<sroom_no.length;i++){
+			room_no+=sroom_no[i]+"/";
+		}
+		 }
+		}
+		
+		//패밀리를 선택했을 때
+		if(f!=null){
+			if(f!=""){
+		String[] froom_no=f.split(",");
+		req.setAttribute("froom_no", froom_no);
+		for(int i = 0;i<froom_no.length;i++){
+			room_no+=froom_no[i]+"/";
+		}
+		 }
+		}
+		
+		//예약 DTO에 값넣어주기!
+		int member_no = Integer.parseInt(req.getParameter("member_no"));
+		int hotel_no = Integer.parseInt(req.getParameter("hotel_no"));
+		String start_resv_date = req.getParameter("start_resv_date");
+		String end_resv_date = req.getParameter("end_resv_date");
+		int total = Integer.parseInt(req.getParameter("total"));
+		int save_point= Integer.parseInt(req.getParameter("save_point"));		
+		int use_point = Integer.parseInt(req.getParameter("use_point"));
+		int user_point = Integer.parseInt(req.getParameter("user_point"))+save_point;
+		
+		
+		
+		req.setAttribute("member_no", member_no);
+		req.setAttribute("hotel_no", hotel_no);
+		req.setAttribute("start_resv_date", start_resv_date);
+		req.setAttribute("end_resv_date", end_resv_date);
+		req.setAttribute("total", total);
+		req.setAttribute("use_point", use_point);
+		req.setAttribute("user_point", user_point);
+		req.setAttribute("save_point", save_point);
+		return "hotel_resv/hotel_paymentok";
 	}
 }
 

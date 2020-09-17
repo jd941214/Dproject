@@ -11,7 +11,8 @@
 	
 	<insert id="insertMember_sks" parameterType="memberDTO_sks">
 		insert into member values(member_seq.nextval,
-		#{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},#{hp1},#{hp2},#{hp3},#{position},#{sex},#{point},sysdate)
+		#{name},#{id},#{passwd},#{ssn1},#{ssn2},#{email},
+		#{hp1},#{hp2},#{hp3},#{position},#{sex},#{point},sysdate)
 	</insert>
 	
 	

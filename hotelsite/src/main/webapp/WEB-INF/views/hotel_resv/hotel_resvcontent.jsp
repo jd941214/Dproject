@@ -41,18 +41,22 @@ function slideShow(){
 	setTimeout(slideShow,2500);
 }
 function test(){
-	var form = document.getElementById("f");
+	var form = document.getElementById("fo");
 	var d_roomsu = $("#d_roomsu option:selected").val();
 	var s_roomsu = $("#s_roomsu option:selected").val();
 	var f_roomsu = $("#f_roomsu option:selected").val();
-
+	var droom_su = ${droom_su};
+	
+	/* if(d_roomsu.click){
+		alert("예약가능한 방이 "+droom_su+"개 남았습니다.");
+	} */
+	
 	if(d_roomsu == 0 && s_roomsu == 0 && f_roomsu == 0){
 		alert("객실을 선택해 주세요.");
 	}else{
 
 		form.submit();
 	}
-	console.log(form);
 	
 	
 }
@@ -147,11 +151,12 @@ function test(){
 		</form>
 	</div>
 	<div align="left">
-	<form id="f"  name = "f" action="hotel_resvfinal">
+	<form id="fo"  name = "fo" action="hotel_resvfinal">
 	<input type="hidden" name="hotel_no" value="${hotel_no}"/>
 	<input type="hidden" name="stay" value="${stay}"/>
 	<input type="hidden" name="start_resv_date" value="${start_resv_date}"/>
 	<input type="hidden" name="end_resv_date" value="${end_resv_date}"/>
+	<input type="hidden" name="member_no" value="${sedto.member_no}"/>
 		<table border="1" align="center">
 			<tr>
 				<th>객실 유형</th>
