@@ -29,7 +29,7 @@
    	</beans:bean>
    
    	<beans:bean id="upLoadPath" class="java.lang.String">
-      <beans:constructor-arg value="c://hotelimg"/> 
+      <beans:constructor-arg value="C:\Users\82107\git\Dproject3\hotelsite\src\main\webapp\resources\img"/> 
   	</beans:bean>
 	
 </beans:beans>

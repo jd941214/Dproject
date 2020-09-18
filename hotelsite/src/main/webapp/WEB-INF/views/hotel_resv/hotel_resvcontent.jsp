@@ -10,7 +10,37 @@
   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
   crossorigin="anonymous"></script>
 <script  type="text/javascript">
-
+function check() {
+	var start = f.start_resv_date.value;
+	var end = f.end_resv_date.value;
+	var date = new Date();
+	var year = date.getFullYear(); //년도
+	var month = date.getMonth() + 1; //월
+	var day = date.getDate(); //일
+	if ((day + "").length < 2) { // 일이 한자리 수인 경우 앞에 0을 붙여주기 위해
+		day = "0" + day;
+	}
+	var today = year + "-" + month + "-" + day; // 오늘 날짜 (2017-02-07)
+	if (start == "") {
+		alert("입실 시작 날짜를 입력 해 주세요!!")
+		return false;
+	}
+	if (end == "") {
+		alert("퇴실 시작 날짜를  입력 해 주세요!!")
+		return false;
+	}
+	if (start >= end) {
+		alert("퇴실 날짜를 입실날짜 이후로 지정해주세요!!")
+		return false;
+	}
+	var s = new Date(start);
+	var t = new Date(today);
+	if (s < t) {
+		alert("이전 날짜는 예약할 수 없습니다.")
+		return false;
+	}
+	return true;
+}
 function openWindowPop(url, name){
     var options = 'top=10, left=10, width=600, height=700, status=no, menubar=no, toolbar=no, resizable=no';
     window.open(url, name, options);
@@ -81,7 +111,7 @@ function test(){
 	<div align="center">
 	<c:forTokens var="file" items="${getHotel.filename}" delims="/">
 			<div>
-			 <img  width="40%" height="20%" class="slide" src="c:/hotelimg/${file}">
+			 <img  width="40%" height="20%" class="slide" src="${pageContext.request.contextPath}/resources/img/${file}">
 			</div>
 	</c:forTokens>
 	<table>
@@ -91,7 +121,7 @@ function test(){
 	</table>
 	</div>
 	<div align="center">
-		<form action="hotel_resvlist">
+		<form name="f" action="hotel_resvlist" onSubmit='return check();'>
 			<table border="1">
 				<tr>
 					<th><label>지역</label></th>

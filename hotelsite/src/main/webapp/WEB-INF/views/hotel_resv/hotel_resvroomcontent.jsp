@@ -32,7 +32,7 @@ function slideShow(){
 <div align="center">
 	<c:forTokens var="file" items="${rdto.filename}" delims="/">
 			<div>
-			 <img  width="25%" height="15%" class="slide" src="c:/hotelimg/${file}">
+			 <img  width="25%" height="15%" class="slide" src="${pageContext.request.contextPath}/resources/img/${file}">
 			</div>
 	</c:forTokens>
 	</div>

@@ -54,8 +54,8 @@ function point(val){ //포인트계산 스크립트
 <input type="hidden" name="f_rn" value="${f_rn}"/>
 <input type="hidden" name="f_pay" value="${frdto.price * stay * f_roomsu}"/>
 </c:if>
-<c:if test="${not empty drdto}">
 <table border="1">
+<c:if test="${not empty drdto}">
 <tr>
 	<th>체크 인 : 15:00</th>
 	<th>체크 아웃 : 12:00</th>
@@ -78,10 +78,8 @@ function point(val){ //포인트계산 스크립트
 	<f:formatNumber value="${drdto.price * stay * d_roomsu}" type="number"/>
 	</td>
 </tr>
-</table>
 </c:if>
 <c:if test="${not empty srdto}">
-<table border="1">
 <tr>
 	<th>체크 인 : 15:00</th>
 	<th>체크 아웃 : 12:00</th>
@@ -104,10 +102,8 @@ function point(val){ //포인트계산 스크립트
 	<f:formatNumber value="${srdto.price * stay * s_roomsu}" type="number"/>
 	</td>
 </tr>
-</table>
 </c:if>
 <c:if test="${not empty frdto}">
-<table border="1">
 <tr>
 	<th>체크 인 : 15:00</th>
 	<th>체크 아웃 : 12:00</th>
@@ -130,8 +126,33 @@ function point(val){ //포인트계산 스크립트
 	<f:formatNumber value="${frdto.price * stay * f_roomsu}" type="number"/>
 	</td>
 </tr>
-</table>
 </c:if>
+<tr>
+<td>사용 포인트 : <input  type="text" name="use_point"  onkeyup="point(this.value)" value="0" id="use_point"> </td>
+<td>남은 포인트 : <input type="text" id="user_point" name="user_point" value="${sedto.point}" readonly></td>
+</tr>
+<tr>
+<td align="left">총 금액</td>
+<td align="right">
+<input type="text" id="total" name="total" value="${total}" readonly> 원
+</td>
+</tr>
+<tr>
+<td align="left"> 적립 포인트
+</td>
+<td align="right">
+<f:parseNumber var="save_point" integerOnly="true" value="${total*0.1}"/>
+<input type="text" name="save_point" value="${save_point}" readonly>
+</td>
+</tr>
+</table> 
+<div align="center">
+<input type="submit" value="결제">
+</div>
+</form>
+</div>
+</body>
+</html>
 <!-- jstl로 값 구하기 -->
 <%-- <table border="1">
 <tr>
@@ -163,31 +184,3 @@ function point(val){ //포인트계산 스크립트
 </tr>
 </table> --%>
 <!-- controller에서 값 받아오기. -->
-
-<table border="1">
-<tr>
-<td>사용 포인트:<input  type="text" name="use_point"  onkeyup="point(this.value)" value="0" id="use_point">점 </td>
-<td>남은 포인트:<input type="text" id="user_point" name="user_point" value="${sedto.point}" readonly>점</td>
-</tr>
-<tr>
-<td align="left">총 금액</td>
-<td align="right">
-<input type="text" id="total" name="total" value="${total}" readonly>
-</td>
-</tr>
-<tr>
-<td align="left"> 적립 포인트
-</td>
-<td align="right">
-<f:parseNumber var="save_point" integerOnly="true" value="${total*0.1}"/>
-<input type="text" name="save_point" value="${save_point}" readonly>
-</td>
-</tr>
-</table> 
-<div align="center">
-<input type="submit" value="결제">
-</div>
-</form>
-</div>
-</body>
-</html>

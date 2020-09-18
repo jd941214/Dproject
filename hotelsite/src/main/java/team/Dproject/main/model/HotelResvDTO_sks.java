@@ -11,6 +11,7 @@ public class HotelResvDTO_sks {
 	private String start_resv_date;
 	private String end_resv_date;
 	private String resvdate;
+	
 	public int getHotel_resv_no() {
 		return hotel_resv_no;
 	}

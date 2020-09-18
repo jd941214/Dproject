@@ -897,7 +897,7 @@ public class HotelController {
 		int use_point = Integer.parseInt(req.getParameter("use_point"));
 		int user_point = Integer.parseInt(req.getParameter("user_point"))+save_point;
 		String pay = "O";
-		
+		System.out.println(member_no);
 		//예약 DTO에 값 넣어주기!
 		dto.setMember_no(member_no);
 		dto.setHotel_no(hotel_no);
@@ -908,6 +908,11 @@ public class HotelController {
 		dto.setStart_resv_date(start_resv_date);
 		dto.setEnd_resv_date(end_resv_date);
 		int res = hotelResvMapper.insertHotelResv_sks(dto);
+		List<HotelResvDTO_sks> h_resvdto = hotelResvMapper.getHotelResv_sks(member_no);
+		if(res>0){
+			HttpSession session = req.getSession();
+			session.setAttribute("h_resvdto", h_resvdto);
+		}
 		
 		if(res<0){
 			String msg = "예약이 제대로 이루어지지 않았습니다. 다시 확인하시고 입력해 주세요";
@@ -917,16 +922,32 @@ public class HotelController {
 			req.setAttribute("url", url);
 			return "message";
 		}
+		//결제 후 잔여 포인트,금액에 따른 포인트 저장
+		int update_point = memberMapper.updateMemberPoint_sks(user_point, member_no);
+		if(update_point<0){
+			String msg = "고객님의 포인트가 제대로 변경되지 않았습니다. 관리자에게 문의해주세요.";
+			String url = "hotel_resvfinal";
+			
+			req.setAttribute("msg", msg);
+			req.setAttribute("url", url);
+			return "message";
+		}
 		
-		req.setAttribute("member_no", member_no);
-		req.setAttribute("hotel_no", hotel_no);
-		req.setAttribute("start_resv_date", start_resv_date);
-		req.setAttribute("end_resv_date", end_resv_date);
+		
 		req.setAttribute("total", total);
-		req.setAttribute("use_point", use_point);
-		req.setAttribute("user_point", user_point);
-		req.setAttribute("save_point", save_point);
+		
 		return "hotel_resv/hotel_paymentok";
+	}
+	
+	@RequestMapping("/hotel_paymentoklist")
+	public String hotel_paymentoklist(HttpServletRequest req){
+		HttpSession session = req.getSession();
+		if(session.getAttribute("sedto")==null){
+			session.removeAttribute("h_resvdto");
+		}
+		req.setAttribute("total", req.getParameter("total"));
+		
+		return "hotel_resv/hotel_paymentoklist";
 	}
 }
 

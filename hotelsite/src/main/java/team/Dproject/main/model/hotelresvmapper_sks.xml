@@ -8,4 +8,8 @@
 		#{member_no}, #{hotel_no}, #{room_no}, #{use_point}, #{pay}, #{save_point}, 
 		#{start_resv_date}, #{end_resv_date}, sysdate)
 	</insert>
+	<select id="getHotelResv_sks" parameterType="int" resultType="java.util.Map">
+		select * from hotel_resv where member_no = #{member_no}
+	</select>
+	
 </mapper>

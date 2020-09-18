@@ -30,5 +30,7 @@
 	<select id = "getMemberPasswd_sks" parameterType = "String" resultType = "String">
 		select passwd from member where id = #{id}
 	</select>
-
+	<update id="updateMemberPoint_sks" parameterType="int">
+    	update member set point=#{user_point} where member_no=#{member_no}
+    </update>
 </mapper>

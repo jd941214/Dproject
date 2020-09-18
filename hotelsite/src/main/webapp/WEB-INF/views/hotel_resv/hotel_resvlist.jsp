@@ -11,6 +11,39 @@
 	href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script type="text/javascript">
+	function check() {
+		var start = f.start_resv_date.value;
+		var end = f.end_resv_date.value;
+		var date = new Date();
+		var year = date.getFullYear(); //년도
+		var month = date.getMonth() + 1; //월
+		var day = date.getDate(); //일
+		if ((day + "").length < 2) { // 일이 한자리 수인 경우 앞에 0을 붙여주기 위해
+			day = "0" + day;
+		}
+		var today = year + "-" + month + "-" + day; // 오늘 날짜 (2017-02-07)
+		if (start == "") {
+			alert("입실 시작 날짜를 입력 해 주세요!!")
+			return false;
+		}
+		if (end == "") {
+			alert("퇴실 시작 날짜를  입력 해 주세요!!")
+			return false;
+		}
+		if (start >= end) {
+			alert("퇴실 날짜를 입실날짜 이후로 지정해주세요!!")
+			return false;
+		}
+		var s = new Date(start);
+		var t = new Date(today);
+		if (s < t) {
+			alert("이전 날짜는 예약할 수 없습니다.")
+			return false;
+		}
+		return true;
+	}
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
@@ -29,7 +62,7 @@
 	</div>
 	<div>
 	<div align="center">
-		<form action="hotel_resvlist">
+		<form name="f" action="hotel_resvlist" onSubmit='return check();'>
 			<table border="1">
 				<tr>
 					<th><label>지역</label></th>
@@ -112,7 +145,7 @@
 							&stay=${stay}&address=${address}&roomsu=${roomsu}&sleeps=${sleeps}
 							&start_resv_date=${start_resv_date}&end_resv_date=${end_resv_date}"> 
 						<img width="100px" height="70px"
-						src="c:/hotelimg/<%=hlist.get(i).getFilename() %>"/>
+						src="${pageContext.request.contextPath}/resources/img/<%=hlist.get(i).getFilename() %>"/>
 						</a>
 					</td>
 					<td>
